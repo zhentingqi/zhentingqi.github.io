@@ -1,7 +1,14 @@
 - date: Oct 2023 
-  Our papers [*QTSumm: A New Benchmark for Query-Focused Table Summarization*](https://arxiv.org/abs/2305.14303), *PiLLow: Efficient Instruction Fine-tuning via Prompt Matching under Low-Resource Settings*, *Self-Criticism: Aligning Large Language Models with their Understanding of Helpfulness, Honesty, and Harmlessness* were accepted by **EMNLP 2023**.
-- date: Jun 2023 
-  I graduated from [Zhejiang University](https://www.zju.edu.cn/english/) as an **Outstanding Graduate**. :star2:
+  description: >-
+  Our papers [*QTSumm: A New Benchmark for Query-Focused Table Summarization*](https://arxiv.org/abs/2305.14303), 
+  *PILLOW: Efficient Instruction Fine-tuning via Prompt Matching under Low-Resource Settings*, 
+  *Self-Criticism: Aligning Large Language Models with their Understanding of Helpfulness, Honesty, and Harmlessness* 
+  were accepted by **EMNLP 2023**.
+
+- date: Jun 2023
+  description: >-
+  I graduated from [Zhejiang University](https://www.zju.edu.cn/english/) as an **Outstanding Graduate**. 
+
 # - date: 06/14/2023 
 #   I was on the post of the official account of my undergraduate institution. Check [this](https://mp.weixin.qq.com/s/9EV4UOjXe6hAcCCsQpJy8w) out!
 # - date: 06/13/2023 
