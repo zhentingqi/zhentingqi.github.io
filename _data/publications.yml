@@ -74,7 +74,7 @@
     - "Oral Presentation"
 
 - id: folio
-  title: "LoFT: Enhancing Faithfulness and Diversity for Table-to-Text Generation via Logic Form Control"
+  title: "FOLIO: Natural Language Reasoning with First-Order Logic"
   venue: Preprint 2022
   description: "We present FOLIO, a human-annotated, open-domain, and logically complex and diverse dataset for reasoning in natural language (NL), equipped with first order logic (FOL) annotations."
   # project_page: "https://www.google.com"
