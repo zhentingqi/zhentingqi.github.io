@@ -23,10 +23,10 @@ name: Zhenting Qi
 position: Master Student 
 email: zhentingqi@g.harvard.edu
 description: >-
-  I am a first year Master's student in Computational Science Engineering at [Harvard University](https://www.harvard.edu/). I received dual degree in Computer Engineering from [UIUC](https://illinois.edu/) and [ZJU](https://www.zju.edu.cn/english/) with highest honors.
+  I am a first year Master's student in Computational Science Engineering at [Harvard University](https://www.harvard.edu/). I received dual bachelor's degree in Computer Engineering from [UIUC](https://illinois.edu/) and [ZJU](https://www.zju.edu.cn/english/) with highest honors.
   
   
-  I am interested in NLP and LLMs, especially in the areas of Reasoning and Safety. 
+  My research interest lies in NLP and LLMs, especially in the areas of Reasoning and Safety. 
 
 
   Previously, I worked as research intern at Yale (2022-2023) with Professor [Dragomir R. Radev](http://www.cs.yale.edu/homes/radev/), and at UIUC (2022) with Professor [Volodymyr Kindratenko](https://ece.illinois.edu/about/directory/faculty/kindrtnk). For more information, please see [Google Scholar](https://scholar.google.com/citations?hl=en&user=WZ00HCUAAAAJ), [Semantic Scholar](https://www.semanticscholar.org/author/Zhenting-Qi/2186056193) and [DBLP](https://dblp.org/pid/329/2118.html). 
@@ -39,9 +39,9 @@ misc: >-
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://zhentingqi.github.io" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: Stepenyang
-github_username: StephenYangjz
-google_scholar: BzyVxVUAAAAJ
+twitter_username: ZhentingQi
+github_username: zhentingqi
+google_scholar: WZ00HCUAAAAJ
 # google_analytics: G-MFWSBLRKG0
 
 # Build settings

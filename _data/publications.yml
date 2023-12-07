@@ -1,32 +1,17 @@
 - id: hypernerf
-  title: "CARFF: Conditional Auto-encoded Radiance Field for 3D Scene Forecasting"
-  venue: Submitted to CVPR 2024
-  description: "We predict future 3D scenes given past 2D observations, such as 2D ego-centric image in autonomous driving settings."
-  project_page: "https://www.carff.website/"
+  title: "PILLOW: Enhancing Efficient Instruction Fine-tuning via Prompt Matching"
+  venue: EMNLP 2023, Industry Track (oral)
+  description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
+  # project_page: "https://www.carff.website/"
   # arxiv: 2305.16289
-  image: carff.jpg
+  image: pillow.png
   authors:
-    - stephenyang
+    - zhentingqi
     - khushidesai
     - harshilbhatia
     - charlespacker
     - josephgonzalez
   
-- id: hypernerf
-  title: "Diversify Your Vision Datasets with Automatic Diffusion-Based Augmentation"
-  venue: NeurIPS 2023
-  description: "We used natural language descriptions with vision models to generate useful variations of the training data for data augmentation"
-  project_page: "https://lisadunlap.github.io/alia-website/"
-  arxiv: 2305.16289
-  image: augmentation.jpg
-  authors:
-    - lisabdunlap
-    - alyssaumino
-    - hanzhang
-    - stephenyang
-    - josephgonzalez
-    - trevordarrell
-
 # - id: hypernerf
 #   title: "HyperNeRF: A Higher-Dimensional Representation for Topologically Varying Neural Radiance Fields"
 #   venue: SIGGRAPH Asia, 2021
