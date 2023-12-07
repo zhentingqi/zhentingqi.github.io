@@ -1,38 +1,181 @@
-stephenyang:
-  first_name: Jiezhi
-  last_name: Yang
-  website: https://www.stephenjyang.com
+me:
+  first_name: Zhenting
+  last_name: Qi
+  website: https://zhentingqi.github.io
   is_me: true
 
-khushidesai:
-  first_name: Khushi
-  last_name: Desai
-  website: https://www.linkedin.com/in/khushidesai1/
-harshilbhatia:
-  first_name: Harshil
-  last_name: Bhatia
-  website: https://www.linkedin.com/in/harshil-bhatia/?originalSubdomain=in
-charlespacker:
-  first_name: Charles
-  last_name: Packer
-  website: https://people.eecs.berkeley.edu/~cpacker/
-lisabdunlap:
-  first_name: Lisa
-  last_name: Dunlap
-  website: https://www.lisabdunlap.com/
-alyssaumino:
-  first_name: Alyssa 
-  last_name: Umino
-  website: https://www.linkedin.com/in/alyssa-umino-b897531a2/
-hanzhang:
-  first_name: Han
+xiaoyutan:
+  first_name: Xiaoyu
+  last_name: Tan
+
+shaojieshi:
+  first_name: Shaojie
+  last_name: Shi
+
+chaoqu:
+  first_name: Chao
+  last_name: Qu
+
+yinghuixu:
+  first_name: Yinghui  
+  last_name: Xu
+
+yuanqi:
+  first_name: Yuan 
+  last_name: Qi
+
+xiheqiu:
+  first_name: Xihe
+  last_name: Qiu
+
+yilunzhao:
+  first_name: Yilun
+  last_name: Zhao
+
+linyongnan:
+  first_name: Lingyong
+  last_name: Nan
+
+boyumi:
+  first_name: Boyu
+  last_name: Mi
+
+yixinliu:
+  first_name: Yixin 
+  last_name: Liu
+
+weijinzou:
+  first_name: Weijin
+  last_name: Zou
+
+simenghan:
+  first_name: Simeng
+  last_name: Han
+
+xiangrutang:
+  first_name: Xiangru
+  last_name: Tang
+
+yumoxu:
+  first_name: yumo
+  last_name: xu
+
+armancohan:
+  first_name: Arman
+  last_name: Cohan
+
+drago:
+  first_name: Dragomir
+  last_name: Radev
+
+minghaoguo:
+  first_name: Minghao
+  last_name: Guo
+
+chenzhao:
+  first_name: Chen
+  last_name: Zhao
+
+wenlinzhang:
+  first_name: Wenlin
   last_name: Zhang
-  website: https://pariszhang11.github.io/
-josephgonzalez:
-  first_name: Joseph
-  last_name: Gonzalez
-  website: https://people.eecs.berkeley.edu/~jegonzal/
-trevordarrell:
-  first_name: Trevor
-  last_name: Darrell
-  website: https://people.eecs.berkeley.edu/~trevor/
+
+lorenzoflores:
+  first_name: Lorenzo
+  last_name: Flores
+
+haileyschoelkopf:
+  first_name: Hailey
+  last_name: Schoelkopf
+
+martinriddell:
+  first_name: Martin
+  last_name: Riddell
+
+lukebenson:
+  first_name: Luke
+  last_name: Benson
+
+lucysun:
+  first_name: Lucy
+  last_name: Sun
+
+ekaterinazubova:
+  first_name: Ekaterina
+  last_name: Zubova
+
+yujieqiao:
+  first_name: Yujie 
+  last_name: Qiao
+
+matthewburtell:
+  first_name: Matthew
+  last_name: Burtell
+
+davidpeng:
+  first_name: David
+  last_name: Peng
+
+jonathanfan:
+  first_name: Jonathan
+  last_name: Fan
+
+brianwong:
+  first_name: Brian
+  last_name: Wong
+
+malcolmsailor:
+  first_name: Malcolm
+  last_name: Sailor
+
+ansongni:
+  first_name: Ansong
+  last_name: Ni 
+
+jungokasai:
+  first_name: Jungo
+  last_name: Kasai
+
+taoyu:
+  first_name: Tao
+  last_name: Yu 
+
+ruizhang:
+  first_name: Rui
+  last_name: Zhang
+
+shafiqjoty:
+  first_name: Shafiq
+  last_name: Joty
+
+alexanderfabbri:
+  first_name: Alexander
+  last_name: Fabbri
+
+wojciechkryscinski:
+  first_name: Wojciech 
+  last_name: Kryscinski
+
+xilin:
+  first_name: Xi
+  last_name: Lin
+
+caimingxiong:
+  first_name: Caiming
+  last_name: Xiong
+
+ruikezhu:
+  first_name: Ruike
+  last_name: Zhu
+
+zheyufu:
+  first_name: Zheyu
+  last_name: Fu
+
+wenhaochai:
+  first_name: Wenhao
+  last_name: Chai
+
+vk:
+  first_name: Volodymyr
+  last_name: Kindratenko

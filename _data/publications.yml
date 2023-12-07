@@ -1,17 +1,98 @@
-- id: hypernerf
+- id: pillow
   title: "PILLOW: Enhancing Efficient Instruction Fine-tuning via Prompt Matching"
-  venue: EMNLP 2023, Industry Track (oral)
+  venue: EMNLP 2023, Industry Track
   description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
-  # project_page: "https://www.carff.website/"
+  # project_page: "https://www.google.com"
+  # github: keunhong/photoshape
   # arxiv: 2305.16289
   image: pillow.png
+  # image_mouseover: hypernerf_after.mp4
   authors:
-    - zhentingqi
-    - khushidesai
-    - harshilbhatia
-    - charlespacker
-    - josephgonzalez
-  
+    - me
+    - xiaoyutan
+    - shaojieshi
+    - chaoqu
+    - yinghuixu
+    - yuanqi
+  awards:
+    - "Oral Presentation"
+
+- id: self_criticism
+  title: "Self-Criticism: Aligning Large Language Models with their Understanding of Helpfulness, Honesty, and Harmlessness"
+  venue: EMNLP 2023, Industry Track
+  # description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
+  # project_page: "https://www.google.com"
+  # github: keunhong/photoshape
+  # arxiv: 2305.16289
+  # image: pillow.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - xiaoyutan
+    - shaojieshi
+    - xiheqiu
+    - chaoqu
+    - me
+    - yinghuixu
+    - yuanqi
+  awards:
+    - "Oral Presentation"
+
+- id: qtsumm
+  title: "QTSumm: A New Benchmark for Query-Focused Table Summarization"
+  venue: EMNLP 2023
+  # description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
+  # project_page: "https://www.google.com"
+  # github: keunhong/photoshape
+  arxiv: 2305.14303
+  # image: pillow.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - yilunzhao
+    - me
+    - linyongnan
+    - boyumi
+    - yixinliu
+    - weijinzou
+    - simenghan
+    - xiangrutang
+    - yumoxu
+    - armancohan
+    - drago
+
+- id: safer
+  title: "SaFER: A Robust and Efficient Framework for Finetuning BERT-based Classifier with Noisy Labels"
+  venue: ACL 2023, Industry Track
+  # description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
+  # project_page: "https://www.google.com"
+  # github: keunhong/photoshape
+  # arxiv: 2305.14303
+  # image: pillow.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - me
+    - xiaoyutan
+    - chaoqu
+    - yinghuixu
+    - yuanqi
+
+- id: loft
+  title: "LoFT: Enhancing Faithfulness and Diversity for Table-to-Text Generation via Logic Form Control"
+  venue: EACL 2023
+  # description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
+  # project_page: "https://www.google.com"
+  # github: keunhong/photoshape
+  # arxiv: 2305.16289
+  # image: pillow.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - yilunzhao, me
+    # - me
+    - linyongnan
+    - lorenzoflores
+    - drago
+  awards:
+    - "Oral Presentation"
+
 # - id: hypernerf
 #   title: "HyperNeRF: A Higher-Dimensional Representation for Topologically Varying Neural Radiance Fields"
 #   venue: SIGGRAPH Asia, 2021
