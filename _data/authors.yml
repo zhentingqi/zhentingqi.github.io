@@ -37,6 +37,7 @@ xiheqiu:
 yilunzhao:
   first_name: Yilun
   last_name: Zhao
+  website: https://yilunzhao.github.io
 
 yilunzhao_:
   first_name: Yilun
@@ -45,6 +46,7 @@ yilunzhao_:
 linyongnan:
   first_name: Lingyong
   last_name: Nan
+  website: https://linyongnan.github.io
 
 boyumi:
   first_name: Boyu
@@ -61,6 +63,7 @@ weijinzou:
 simenghan:
   first_name: Simeng
   last_name: Han
+  website: https://shirleyhan6.github.io
 
 xiangrutang:
   first_name: Xiangru
@@ -73,10 +76,12 @@ yumoxu:
 armancohan:
   first_name: Arman
   last_name: Cohan
+  website: https://armancohan.com
 
 drago:
   first_name: Dragomir
   last_name: Radev
+  website: https://www.cs.yale.edu/homes/radev
 
 minghaoguo:
   first_name: Minghao
@@ -141,6 +146,7 @@ malcolmsailor:
 ansongni:
   first_name: Ansong
   last_name: Ni 
+  website: https://niansong1996.github.io
 
 jungokasai:
   first_name: Jungo
@@ -149,6 +155,7 @@ jungokasai:
 taoyu:
   first_name: Tao
   last_name: Yu 
+  website: https://taoyds.github.io
 
 ruizhang:
   first_name: Rui
