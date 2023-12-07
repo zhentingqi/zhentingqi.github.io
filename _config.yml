@@ -23,16 +23,19 @@ name: Zhenting Qi
 position: Master Student 
 email: zhentingqi@g.harvard.edu
 description: >-
-Hi there! I am a master student in Computational Science and Engineering (CSE) at Harvard. 
-
-
-Before that, I obtained dual bachelor's degrees in Computer Engineering at both Zhejiang University (ZJU) and University of Illinois at Urbana-Champaign (UIUC) with highest honors. 
+  I am a first year Master's student in Computational Science Engineering at [Harvard University](https://www.harvard.edu/). I received my B.A. in Computer Science and Cognitive Science from [UC Berkeley](https://www.berkeley.edu/), where I graduated from the [EECS Honors Program](https://eecs.berkeley.edu/resources/undergrads/honors) with high distinction.
+  
+  
+  I am interested in computer vision, especially 3D vision and Neural Radiance Field (NeRF). At Berkeley, I was fortunate to work at [RISE](https://rise.cs.berkeley.edu/) and [BAIR](https://bair.berkeley.edu/) Lab under Prof. [Joseph E. Gonzalez](https://people.eecs.berkeley.edu/~jegonzal/) and [Trevor Darrell](https://people.eecs.berkeley.edu/~trevor/), with Ph.D. candidate [Charles Packer](https://people.eecs.berkeley.edu/~cpacker/), [Lisa Dunlap](https://www.lisabdunlap.com/), and [Alvin Wan](https://alvinwan.com/).
+  
+  
+  I am open to research or internship opportunities. Please contact me at stephenyang[AT]berkeley[DOT]edu.
 
 misc: >-
-  I enjoy playing basketball, reading, cooking, movies, and I am a huge fan of guitar and music! 
+  I was born in the beautiful, German-style coastal city of [Qingdao](https://en.wikipedia.org/wiki/Qingdao), or Tsingtao. I like VR games and photography, espacially aerial photography with drones. I am also trying to improve my very much out of practice piano skills...  
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://zhentingqi.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://stephenjyang.com" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: Stepenyang
 github_username: StephenYangjz
 google_scholar: BzyVxVUAAAAJ
