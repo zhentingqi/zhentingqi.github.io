@@ -59,8 +59,8 @@
   title: "LoFT: Enhancing Faithfulness and Diversity for Table-to-Text Generation via Logic Form Control"
   venue: EACL 2023
   description: "LOFT utilizes logic forms as fact verifiers and content planners to control Logical Table-to-Text generation."
-  # project_page: "https://www.google.com"
-  # github: keunhong/photoshape
+  project_page: "https://github.com/Yale-LILY/LoFT"
+  github: Yale-LILY/LoFT
   arxiv: 2302.02962
   image: loft.png
   # image_mouseover: hypernerf_after.mp4
@@ -77,7 +77,7 @@
   title: "FOLIO: Natural Language Reasoning with First-Order Logic"
   venue: Preprint 2022
   description: "We present FOLIO, a human-annotated, open-domain, and logically complex and diverse dataset for reasoning in natural language (NL), equipped with first order logic (FOL) annotations."
-  # project_page: "https://www.google.com"
+  project_page: "https://github.com/Yale-LILY/FOLIO"
   github: Yale-LILY/FOLIO
   arxiv: 2209.00840
   image: folio.png
