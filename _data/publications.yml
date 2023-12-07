@@ -20,7 +20,7 @@
 - id: qtsumm
   title: "QTSumm: A New Benchmark for Query-Focused Table Summarization"
   venue: EMNLP 2023
-  # description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
+  description: "We introduce a new benchmark named QTSUMM for query-focused table summarization, which contains 7,111 human-annotated query-summary pairs over 2,934 tables covering diverse topics."
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
   arxiv: 2305.14303
