@@ -1,6 +1,5 @@
-- id: hypernerf
-  title: "Research Intern, Robert Bosch GmbH"
-  date: "May - August 2021"
-  description: "Researched on modeling Radar, LIDAR, and camera data for infrastructure based autonomous driving."
-  # arxiv: 2305.16289
-  image: bosch.jpg
+- id: inf
+  title: "Research Intern, LLM"
+  date: "Feb 2022 - Jun 2023"
+  description: "Researched on LLM in industrial applications."
+  image: inf.png
