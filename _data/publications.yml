@@ -17,26 +17,6 @@
   awards:
     - "Oral Presentation"
 
-- id: self_criticism
-  title: "Self-Criticism: Aligning Large Language Models with their Understanding of Helpfulness, Honesty, and Harmlessness"
-  venue: EMNLP 2023, Industry Track
-  # description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
-  # project_page: "https://www.google.com"
-  # github: keunhong/photoshape
-  # arxiv: 2305.16289
-  # image: pillow.png
-  # image_mouseover: hypernerf_after.mp4
-  authors:
-    - xiaoyutan
-    - shaojieshi
-    - xiheqiu
-    - chaoqu
-    - me
-    - yinghuixu
-    - yuanqi
-  awards:
-    - "Oral Presentation"
-
 - id: qtsumm
   title: "QTSumm: A New Benchmark for Query-Focused Table Summarization"
   venue: EMNLP 2023
@@ -44,7 +24,7 @@
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
   arxiv: 2305.14303
-  # image: pillow.png
+  image: qtsumm.png
   # image_mouseover: hypernerf_after.mp4
   authors:
     - yilunzhao
@@ -66,7 +46,7 @@
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
   # arxiv: 2305.14303
-  # image: pillow.png
+  image: safer.png
   # image_mouseover: hypernerf_after.mp4
   authors:
     - me
@@ -82,7 +62,7 @@
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
   # arxiv: 2305.16289
-  # image: pillow.png
+  image: loft.png
   # image_mouseover: hypernerf_after.mp4
   authors:
     - yilunzhao_
