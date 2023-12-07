@@ -8,8 +8,8 @@
   image: pillow.png
   # image_mouseover: hypernerf_after.mp4
   authors:
-    - me
-    - xiaoyutan
+    - me_
+    - xiaoyutan_
     - shaojieshi
     - chaoqu
     - yinghuixu
@@ -49,8 +49,8 @@
   image: safer.png
   # image_mouseover: hypernerf_after.mp4
   authors:
-    - me
-    - xiaoyutan
+    - me_
+    - xiaoyutan_
     - chaoqu
     - yinghuixu
     - yuanqi
