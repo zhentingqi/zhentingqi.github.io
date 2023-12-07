@@ -42,7 +42,7 @@
 - id: safer
   title: "SaFER: A Robust and Efficient Framework for Finetuning BERT-based Classifier with Noisy Labels"
   venue: ACL 2023, Industry Track
-  # description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
+  description: "We propose a robust and efficient fine-tuning framework for BERT-based text classifiers, combating label noises without access to any clean data for training or validation."
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
   # arxiv: 2305.14303
@@ -61,7 +61,7 @@
   # description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
-  # arxiv: 2305.16289
+  arxiv: 2302.02962
   image: loft.png
   # image_mouseover: hypernerf_after.mp4
   authors:
@@ -72,6 +72,43 @@
     - drago
   awards:
     - "Oral Presentation"
+
+- id: folio
+  title: "LoFT: Enhancing Faithfulness and Diversity for Table-to-Text Generation via Logic Form Control"
+  venue: Preprint 2022
+  description: "We present FOLIO, a human-annotated, open-domain, and logically complex and diverse dataset for reasoning in natural language (NL), equipped with first order logic (FOL) annotations."
+  # project_page: "https://www.google.com"
+  github: Yale-LILY/FOLIO
+  arxiv: 2209.00840
+  image: folio.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - simenghan
+    - haileyschoekopf
+    - yilunzhao
+    - me
+    - martinriddell
+    - lukebenson
+    - lucysun
+    - ekaterinazubova
+    - yujieqiao
+    - matthewburtell
+    - davidpeng
+    - jonathanfan
+    - yixinliu
+    - brianwong
+    - malcolmsailor
+    - ansongni
+    - linyongnan
+    - jungokasai
+    - taoyu
+    - ruizhang
+    - shafiqjoty
+    - alexanderfabbri
+    - wojciechkryscinski
+    - xilin
+    - caimingxiong
+    - drago
 
 # - id: hypernerf
 #   title: "HyperNeRF: A Higher-Dimensional Representation for Topologically Varying Neural Radiance Fields"
