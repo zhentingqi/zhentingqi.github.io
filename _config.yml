@@ -26,7 +26,7 @@ description: >-
   I am a first year Master's student in Computational Science Engineering at [Harvard University](https://www.harvard.edu/). Prior to Harvard, I received dual bachelor's degree in Computer Engineering from [UIUC](https://illinois.edu/) and [ZJU](https://www.zju.edu.cn/english/) with highest honors.
   
 
-  Previously, I worked as research intern at Yale (2022-2023) with Professor [Dragomir R. Radev](http://www.cs.yale.edu/homes/radev/), and at UIUC (2022) with Professor [Volodymyr Kindratenko](https://ece.illinois.edu/about/directory/faculty/kindrtnk). For more information, please see [Google Scholar](https://scholar.google.com/citations?hl=en&user=WZ00HCUAAAAJ), [Semantic Scholar](https://www.semanticscholar.org/author/Zhenting-Qi/2186056193) and [DBLP](https://dblp.org/pid/329/2118.html). 
+  Previously, I worked as research intern at Yale (2022-2023) with Professor [Dragomir R. Radev](http://www.cs.yale.edu/homes/radev/), and at UIUC (2022) with Professor [Volodymyr Kindratenko](https://ece.illinois.edu/about/directory/faculty/kindrtnk).  
   
 
   I am open to research or internship opportunities! Please contact me at zhentingqi[AT]g[DOT]harvard[DOT]edu.
@@ -43,6 +43,8 @@ research: >-
 
   2) Safety: How do we enhance the controllability, reliability, and robustness of AI? How can we design scalable method to ensure AIs' safety while we are improving their capabilities?
 
+
+  For more information, please see [Google Scholar](https://scholar.google.com/citations?hl=en&user=WZ00HCUAAAAJ), [Semantic Scholar](https://www.semanticscholar.org/author/Zhenting-Qi/2186056193) and [DBLP](https://dblp.org/pid/329/2118.html).
 
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://zhentingqi.github.io" # the base hostname & protocol for your site, e.g. http://example.com
