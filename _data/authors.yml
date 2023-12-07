@@ -4,6 +4,12 @@ me:
   website: https://zhentingqi.github.io
   is_me: true
 
+me_:
+  first_name: Zhenting
+  last_name: Qi*
+  website: https://zhentingqi.github.io
+  is_me: true
+
 xiaoyutan:
   first_name: Xiaoyu
   last_name: Tan
@@ -31,6 +37,10 @@ xiheqiu:
 yilunzhao:
   first_name: Yilun
   last_name: Zhao
+
+yilunzhao_:
+  first_name: Yilun
+  last_name: Zhao*
 
 linyongnan:
   first_name: Lingyong

@@ -85,8 +85,8 @@
   # image: pillow.png
   # image_mouseover: hypernerf_after.mp4
   authors:
-    - yilunzhao, me
-    # - me
+    - yilunzhao_
+    - me_
     - linyongnan
     - lorenzoflores
     - drago
