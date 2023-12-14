@@ -4,7 +4,7 @@
   description: "We improve LoRA-finetuned LLMs with a prompt matching framework and reached performance on par with full SFT."
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
-  # arxiv: 2305.16289
+  arxiv: 2312.05621
   image: pillow.png
   # image_mouseover: hypernerf_after.mp4
   authors:
