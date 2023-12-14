@@ -14,6 +14,10 @@ xiaoyutan:
   first_name: Xiaoyu
   last_name: Tan
 
+xiaoyutan_:
+  first_name: Xiaoyu
+  last_name: Tan*
+
 shaojieshi:
   first_name: Shaojie
   last_name: Shi
