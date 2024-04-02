@@ -4,7 +4,7 @@
   description: "We show that an adversary can exploit LMs' instruction-following capabilities to easily extract text data verbatim from the datastore of RAG systems built with instruction-tuned LMs via prompt injection."
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
-  arxiv: 2402.17840
+  arxiv: 2402.17840 
   image: beans.png
   # image_mouseover: hypernerf_after.mp4
   authors:
