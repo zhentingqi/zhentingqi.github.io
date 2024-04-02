@@ -1,3 +1,19 @@
+- id: beans
+  title: "Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems"
+  venue: ICLR 2024 Workshop on Navigating and Addressing Data Problems for Foundation Models (DPFM)
+  description: "We show that an adversary can exploit LMs' instruction-following capabilities to easily extract text data verbatim from the datastore of RAG systems built with instruction-tuned LMs via prompt injection."
+  # project_page: "https://www.google.com"
+  # github: keunhong/photoshape
+  arxiv: 2402.17840
+  image: beans.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - me_
+    - hanlin
+    - ericxing
+    - sham
+    - hima
+
 - id: pillow
   title: "PILLOW: Enhancing Efficient Instruction Fine-tuning via Prompt Matching"
   venue: EMNLP 2023, Industry Track

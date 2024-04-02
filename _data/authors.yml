@@ -10,6 +10,22 @@ me_:
   website: https://zhentingqi.github.io
   is_me: true
 
+hanlin:
+  first_name: Hanlin 
+  last_name: Zhang
+
+ericxing:
+  first_name: Eric 
+  last_name: Xing
+
+sham:
+  first_name: Sham 
+  last_name: Kakade
+
+hima:
+  first_name: Himabindu 
+  last_name: Lakkaraju
+
 xiaoyutan:
   first_name: Xiaoyu
   last_name: Tan
