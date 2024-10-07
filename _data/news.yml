@@ -1,6 +1,18 @@
+- date: Sep, 2024
+  description: >-
+    Our papers [_FOLIO: Natural Language Reasoning with First-Order Logic_](https://arxiv.org/abs/2209.00840), [_P-FOLIO: Evaluating and Improving Logical Reasoning with Abundant Human-Written Reasoning Chains_](https://openreview.net/pdf?id=TmP2HtY36Z) has been accepted to EMNLP 2024.
+
+- date: Sep, 2024
+  description: >-
+    Our paper [_Constrained Human-AI Cooperation: An Inclusive Embodied Social Intelligence Challenge_](https://openreview.net/pdf?id=2vs1fIAy3X) has been accepted to NeurIPS 2024.
+
+- date: Feb, 2024
+  description: >-
+    Our paper [_Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems_](https://arxiv.org/abs/2402.17840) has been accepted to DPFM @ ICLR 2024.
+
 - date: Oct 10, 2023
   description: >-
-    Our papers [_QTSumm: A New Benchmark for Query-Focused Table Summarization_](https://arxiv.org/abs/2305.14303), _PILLOW: Efficient Instruction Fine-tuning via Prompt Matching under Low-Resource Settings_ (oral), _Self-Criticism: Aligning Large Language Models with their Understanding of Helpfulness, Honesty, and Harmlessness_ (oral) has been accepted to EMNLP 2023.
+    Our papers [_QTSumm: A New Benchmark for Query-Focused Table Summarization_](https://arxiv.org/abs/2305.14303), [_PILLOW: Efficient Instruction Fine-tuning via Prompt Matching under Low-Resource Settings_](https://arxiv.org/abs/2312.05621) (oral), [_Self-Criticism: Aligning Large Language Models with their Understanding of Helpfulness, Honesty, and Harmlessness_](https://aclanthology.org/2023.emnlp-industry.62/) (oral) has been accepted to EMNLP 2023.
 
 - date: Sep 1, 2023
   description: >-
