@@ -1,3 +1,64 @@
+- id: scylla
+  title: "Quantifying Generalization Complexity for Large Language Models"
+  venue: Preprint. In submission to ICLR 2025.
+  description: "We first introduce Scylla, a dynamic evaluation framework that quantitatively measures the generalization abilities of LLMs. We also uncover a non-monotonic relationship between task complexity and the performance gap between ID and OOD data, which we term the \"generalization valley\". This phenomenon reveals \"critical complexity\" where reliance on non-generalizable behavior peaks, indicating the upper bound of generalization capabilities."
+  # project_page: "https://www.google.com"
+  github: https://github.com/zhentingqi/scylla
+  arxiv: https://arxiv.org/abs/2410.01769
+  pdf: https://arxiv.org/pdf/2410.01769
+  image: scylla.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - me
+    - hongyinluo
+    - xulianghuang
+    - zhuokaizhao
+    - yibojiang
+    - xiangjunfan
+    - hima
+    - jamesglass
+
+- id: rstar
+  title: "Mutual Reasoning Makes Smaller LLMs Stronger Problem-Solvers"
+  venue: Preprint. In submission to ICLR 2025.
+  description: "We introduce rStar, a self-play mutual reasoning approach that significantly improves reasoning capabilities of small language models (SLMs) without fine-tuning or superior models."
+  # project_page: "https://www.google.com"
+  github: https://github.com/zhentingqi/rStar
+  arxiv: https://arxiv.org/abs/2408.06195
+  pdf: https://arxiv.org/pdf/2408.06195
+  image: rstar.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - me_
+    - mingyuanma_
+    - jiahangxu_
+    - lilynazhang
+    - fanyang
+    - maoyang
+
+- id: chaic
+  title: "Constrained Human-AI Cooperation: An Inclusive Embodied Social Intelligence Challenge"
+  venue: NeurIPS 2024
+  description: "We introduce the Constrained Human-AI Cooperation (CHAIC), an inclusive embodied social intelligence challenge for testing social perception and cooperation in embodied agents."
+  # project_page: "https://www.google.com"
+  github: https://github.com/CHAIC-NeurIPS/CHAIC
+  arxiv: https://openreview.net/pdf?id=2vs1fIAy3X
+  pdf: https://openreview.net/pdf?id=2vs1fIAy3X
+  image: chaic.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - weihuadu
+    - qiushilyu
+    - jiamingshan
+    - me
+    - hongxinzhang
+    - sunlichen
+    - andipeng
+    - tianminshu
+    - kwonjoonlee
+    - behzaddariush
+    - chuanggan
+
 - id: beans
   title: "Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems"
   venue: ICLR 2024 Workshop on Navigating and Addressing Data Problems for Foundation Models (DPFM)
@@ -5,7 +66,7 @@
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
   arxiv: https://arxiv.org/abs/2402.17840
-  pdf: https://arxiv.org/pdf/2402.17840.pdf
+  pdf: https://arxiv.org/pdf/2402.17840
   image: beans.png
   # image_mouseover: hypernerf_after.mp4
   authors:
@@ -22,7 +83,7 @@
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
   arxiv: https://arxiv.org/abs/2312.05621
-  pdf: https://arxiv.org/pdf/2312.05621.pdf
+  pdf: https://arxiv.org/pdf/2312.05621
   image: pillow.png
   # image_mouseover: hypernerf_after.mp4
   authors:
@@ -35,6 +96,44 @@
   awards:
     - "Oral Presentation"
 
+- id: folio
+  title: "FOLIO: Natural Language Reasoning with First-Order Logic"
+  venue: EMNLP 2024
+  description: "We present FOLIO, a human-annotated, open-domain, and logically complex and diverse dataset for reasoning in natural language (NL), equipped with first order logic (FOL) annotations."
+  project_page: "https://github.com/Yale-LILY/FOLIO"
+  github: Yale-LILY/FOLIO
+  arxiv: https://arxiv.org/abs/2209.00840
+  pdf: https://arxiv.org/pdf/2209.00840
+  image: folio.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - simenghan
+    - haileyschoelkopf
+    - yilunzhao
+    - me
+    - martinriddell
+    - lukebenson
+    - lucysun
+    - ekaterinazubova
+    - yujieqiao
+    - matthewburtell
+    - davidpeng
+    - jonathanfan
+    - yixinliu
+    - brianwong
+    - malcolmsailor
+    - ansongni
+    - linyongnan
+    - jungokasai
+    - taoyu
+    - ruizhang
+    - shafiqjoty
+    - alexanderfabbri
+    - wojciechkryscinski
+    - xilin
+    - caimingxiong
+    - drago
+
 - id: qtsumm
   title: "QTSumm: A New Benchmark for Query-Focused Table Summarization"
   venue: EMNLP 2023
@@ -42,7 +141,7 @@
   # project_page: "https://www.google.com"
   # github: keunhong/photoshape
   arxiv: https://arxiv.org/abs/2305.14303
-  pdf: https://arxiv.org/pdf/2305.14303.pdf
+  pdf: https://arxiv.org/pdf/2305.14303
   image: qtsumm.png
   # image_mouseover: hypernerf_after.mp4
   authors:
@@ -82,7 +181,7 @@
   project_page: "https://github.com/Yale-LILY/LoFT"
   github: Yale-LILY/LoFT
   arxiv: https://arxiv.org/abs/2302.02962
-  pdf: https://arxiv.org/pdf/2302.02962.pdf
+  pdf: https://arxiv.org/pdf/2302.02962
   image: loft.png
   # image_mouseover: hypernerf_after.mp4
   authors:
@@ -93,44 +192,6 @@
     - drago
   awards:
     - "Oral Presentation"
-
-- id: folio
-  title: "FOLIO: Natural Language Reasoning with First-Order Logic"
-  venue: Preprint 2022
-  description: "We present FOLIO, a human-annotated, open-domain, and logically complex and diverse dataset for reasoning in natural language (NL), equipped with first order logic (FOL) annotations."
-  project_page: "https://github.com/Yale-LILY/FOLIO"
-  github: Yale-LILY/FOLIO
-  arxiv: https://arxiv.org/abs/2209.00840
-  pdf: https://arxiv.org/pdf/2209.00840.pdf
-  image: folio.png
-  # image_mouseover: hypernerf_after.mp4
-  authors:
-    - simenghan
-    - haileyschoelkopf
-    - yilunzhao
-    - me
-    - martinriddell
-    - lukebenson
-    - lucysun
-    - ekaterinazubova
-    - yujieqiao
-    - matthewburtell
-    - davidpeng
-    - jonathanfan
-    - yixinliu
-    - brianwong
-    - malcolmsailor
-    - ansongni
-    - linyongnan
-    - jungokasai
-    - taoyu
-    - ruizhang
-    - shafiqjoty
-    - alexanderfabbri
-    - wojciechkryscinski
-    - xilin
-    - caimingxiong
-    - drago
 
 # - id: hypernerf
 #   title: "HyperNeRF: A Higher-Dimensional Representation for Topologically Varying Neural Radiance Fields"
