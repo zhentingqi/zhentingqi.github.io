@@ -36,6 +36,44 @@
     - fanyang
     - maoyang
 
+- id: folio
+  title: "FOLIO: Natural Language Reasoning with First-Order Logic"
+  venue: EMNLP 2024
+  description: "We present FOLIO, a human-annotated, open-domain, and logically complex and diverse dataset for reasoning in natural language (NL), equipped with first order logic (FOL) annotations."
+  project_page: "https://github.com/Yale-LILY/FOLIO"
+  github: Yale-LILY/FOLIO
+  arxiv: https://arxiv.org/abs/2209.00840
+  pdf: https://arxiv.org/pdf/2209.00840
+  image: folio.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - simenghan
+    - haileyschoelkopf
+    - yilunzhao
+    - me
+    - martinriddell
+    - lukebenson
+    - lucysun
+    - ekaterinazubova
+    - yujieqiao
+    - matthewburtell
+    - davidpeng
+    - jonathanfan
+    - yixinliu
+    - brianwong
+    - malcolmsailor
+    - ansongni
+    - linyongnan
+    - jungokasai
+    - taoyu
+    - ruizhang
+    - shafiqjoty
+    - alexanderfabbri
+    - wojciechkryscinski
+    - xilin
+    - caimingxiong
+    - drago
+
 - id: chaic
   title: "Constrained Human-AI Cooperation: An Inclusive Embodied Social Intelligence Challenge"
   venue: NeurIPS 2024
@@ -95,44 +133,6 @@
     - yuanqi
   awards:
     - "Oral Presentation"
-
-- id: folio
-  title: "FOLIO: Natural Language Reasoning with First-Order Logic"
-  venue: EMNLP 2024
-  description: "We present FOLIO, a human-annotated, open-domain, and logically complex and diverse dataset for reasoning in natural language (NL), equipped with first order logic (FOL) annotations."
-  project_page: "https://github.com/Yale-LILY/FOLIO"
-  github: Yale-LILY/FOLIO
-  arxiv: https://arxiv.org/abs/2209.00840
-  pdf: https://arxiv.org/pdf/2209.00840
-  image: folio.png
-  # image_mouseover: hypernerf_after.mp4
-  authors:
-    - simenghan
-    - haileyschoelkopf
-    - yilunzhao
-    - me
-    - martinriddell
-    - lukebenson
-    - lucysun
-    - ekaterinazubova
-    - yujieqiao
-    - matthewburtell
-    - davidpeng
-    - jonathanfan
-    - yixinliu
-    - brianwong
-    - malcolmsailor
-    - ansongni
-    - linyongnan
-    - jungokasai
-    - taoyu
-    - ruizhang
-    - shafiqjoty
-    - alexanderfabbri
-    - wojciechkryscinski
-    - xilin
-    - caimingxiong
-    - drago
 
 - id: qtsumm
   title: "QTSumm: A New Benchmark for Query-Focused Table Summarization"
