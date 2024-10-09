@@ -23,7 +23,7 @@
   venue: Preprint. In submission to ICLR 2025.
   description: "We introduce rStar, a self-play mutual reasoning approach that significantly improves reasoning capabilities of small language models (SLMs) without fine-tuning or superior models."
   # project_page: "https://www.google.com"
-  github: https://github.com/zhentingqi/rStar
+  github: zhentingqi/rStar
   arxiv: https://arxiv.org/abs/2408.06195
   pdf: https://arxiv.org/pdf/2408.06195
   image: rstar.png
