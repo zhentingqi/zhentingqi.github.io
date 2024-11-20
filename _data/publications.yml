@@ -1,6 +1,6 @@
 - id: scylla
   title: "Quantifying Generalization Complexity for Large Language Models"
-  venue: Preprint. In submission to ICLR 2025.
+  venue: Preprint.
   description: "We first introduce Scylla, a dynamic evaluation framework that quantitatively measures the generalization abilities of LLMs. We also uncover a non-monotonic relationship between task complexity and the performance gap between ID and OOD data, which we term the \"generalization valley\". This phenomenon reveals \"critical complexity\" where reliance on non-generalizable behavior peaks, indicating the upper bound of generalization capabilities."
   # project_page: "https://www.google.com"
   github: https://github.com/zhentingqi/scylla
@@ -20,7 +20,7 @@
 
 - id: rstar
   title: "Mutual Reasoning Makes Smaller LLMs Stronger Problem-Solvers"
-  venue: Preprint. In submission to ICLR 2025.
+  venue: Preprint.
   description: "We introduce rStar, a self-play mutual reasoning approach that significantly improves reasoning capabilities of small language models (SLMs) without fine-tuning or superior models."
   # project_page: "https://www.google.com"
   github: zhentingqi/rStar
