@@ -3,7 +3,7 @@
   venue: Preprint.
   description: "We first introduce Scylla, a dynamic evaluation framework that quantitatively measures the generalization abilities of LLMs. We also uncover a non-monotonic relationship between task complexity and the performance gap between ID and OOD data, which we term the \"generalization valley\". This phenomenon reveals \"critical complexity\" where reliance on non-generalizable behavior peaks, indicating the upper bound of generalization capabilities."
   # project_page: "https://www.google.com"
-  github: https://github.com/zhentingqi/scylla
+  github: zhentingqi/scylla
   arxiv: https://arxiv.org/abs/2410.01769
   pdf: https://arxiv.org/pdf/2410.01769
   image: scylla.png

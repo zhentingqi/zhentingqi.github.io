@@ -1,11 +1,17 @@
 - id: Microsoft Research Asia
-  title: "Research Assistant in LLMs, Microsoft Research Asia (Beijing)"
-  date: "Oct 2023 - Present"
+  title: "Research Assistant in LLMs, Microsoft Research Asia (Beijing, China)"
+  date: "Oct 2023 - Jun 2024"
   description: "Researched on LLM Reasoning."
   image: msra.png
 
+- id: MIT-IBM Watson AI Lab
+  title: "Research Assistant in LLMs, MIT-IBM Watson AI Lab (Cambridge, MA, U.S.)"
+  date: "Aug 2024 - Present"
+  description: "Researched on LLM pre-training and post-training."
+  image: mit_ibm.jpg
+
 - id: inf
-  title: "Research Intern in AI Algorithms, INF Technology (Shanghai)"
+  title: "Research Intern in AI Algorithms, INF Technology (Shanghai, China)"
   date: "Feb 2022 - Jun 2023"
   description: "Researched on LLM in industrial applications."
   image: inf.png

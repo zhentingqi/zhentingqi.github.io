@@ -41,7 +41,7 @@ research: >-
   1) Reasoning: Why do current reasoning paradigms work and how do we improve them? How can we design AI systems to perform robust reasoning that generalizes well to out-of-distribution settings?
 
 
-  2) Trustworthy AI: How do we better understand AI systems and further enhance their controllability and robustness? How can we design scalable method to ensure the safety while we are improving their capabilities?
+  2) Reliability: How do we better understand AI systems and further enhance their controllability and robustness? How can we design scalable method to ensure their safety while we are improving their capabilities?
 
 
   For more information, please see [Google Scholar](https://scholar.google.com/citations?hl=en&user=WZ00HCUAAAAJ), [Semantic Scholar](https://www.semanticscholar.org/author/Zhenting-Qi/2186056193) and [DBLP](https://dblp.org/pid/329/2118.html).
