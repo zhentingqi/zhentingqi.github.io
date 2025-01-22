@@ -1,7 +1,7 @@
 - id: scylla
   title: "Quantifying Generalization Complexity for Large Language Models"
-  venue: Preprint.
-  description: "We first introduce Scylla, a dynamic evaluation framework that quantitatively measures the generalization abilities of LLMs. We also uncover a non-monotonic relationship between task complexity and the performance gap between ID and OOD data, which we term the \"generalization valley\". This phenomenon reveals \"critical complexity\" where reliance on non-generalizable behavior peaks, indicating the upper bound of generalization capabilities."
+  venue: ICLR 2025
+  description: "We introduce Scylla, a dynamic evaluation framework that quantitatively measures the generalization abilities of LLMs. We also uncover a non-monotonic relationship between task complexity and the performance gap between ID and OOD data, which we term the \"generalization valley\". This phenomenon reveals \"critical complexity\" where reliance on non-generalizable behavior peaks, indicating the upper bound of generalization capabilities."
   # project_page: "https://www.google.com"
   github: zhentingqi/scylla
   arxiv: https://arxiv.org/abs/2410.01769
@@ -20,7 +20,7 @@
 
 - id: rstar
   title: "Mutual Reasoning Makes Smaller LLMs Stronger Problem-Solvers"
-  venue: Preprint.
+  venue: ICLR 2025
   description: "We introduce rStar, a self-play mutual reasoning approach that significantly improves reasoning capabilities of small language models (SLMs) without fine-tuning or superior models."
   # project_page: "https://www.google.com"
   github: zhentingqi/rStar
@@ -35,6 +35,23 @@
     - lilynazhang
     - fanyang
     - maoyang
+
+- id: beans
+  title: "Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems"
+  venue: ICLR 2025; ICLR 2024 Workshop on Navigating and Addressing Data Problems for Foundation Models (DPFM).
+  description: "We show that an adversary can exploit LMs' instruction-following capabilities to easily extract text data verbatim from the datastore of RAG systems built with instruction-tuned LMs via prompt injection."
+  # project_page: "https://www.google.com"
+  # github: keunhong/photoshape
+  arxiv: https://arxiv.org/abs/2402.17840
+  pdf: https://arxiv.org/pdf/2402.17840
+  image: beans.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - me
+    - hanlin
+    - ericxing
+    - sham
+    - hima
 
 - id: folio
   title: "FOLIO: Natural Language Reasoning with First-Order Logic"
@@ -96,23 +113,6 @@
     - kwonjoonlee
     - behzaddariush
     - chuanggan
-
-- id: beans
-  title: "Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems"
-  venue: ICLR 2024 Workshop on Navigating and Addressing Data Problems for Foundation Models (DPFM)
-  description: "We show that an adversary can exploit LMs' instruction-following capabilities to easily extract text data verbatim from the datastore of RAG systems built with instruction-tuned LMs via prompt injection."
-  # project_page: "https://www.google.com"
-  # github: keunhong/photoshape
-  arxiv: https://arxiv.org/abs/2402.17840
-  pdf: https://arxiv.org/pdf/2402.17840
-  image: beans.png
-  # image_mouseover: hypernerf_after.mp4
-  authors:
-    - me
-    - hanlin
-    - ericxing
-    - sham
-    - hima
 
 - id: pillow
   title: "PILLOW: Enhancing Efficient Instruction Fine-tuning via Prompt Matching"

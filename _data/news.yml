@@ -1,3 +1,15 @@
+- date: Jan, 2025
+  description: >-
+    Our paper [_Mutual Reasoning Makes Smaller LLMs Stronger Problem-Solvers_](https://arxiv.org/abs/2408.06195) has been accepted to ICLR 2025.
+
+- date: Jan, 2025
+  description: >-
+    Our paper [_Quantifying Generalization Complexity for Large Language Models_](https://arxiv.org/abs/2410.01769) has been accepted to ICLR 2025.
+
+- date: Jan, 2025
+  description: >-
+    Our paper [_Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems_](https://arxiv.org/abs/2402.17840) has been accepted to ICLR 2025.
+
 - date: Sep, 2024
   description: >-
     Our papers [_FOLIO: Natural Language Reasoning with First-Order Logic_](https://arxiv.org/abs/2209.00840), [_P-FOLIO: Evaluating and Improving Logical Reasoning with Abundant Human-Written Reasoning Chains_](https://openreview.net/pdf?id=TmP2HtY36Z) has been accepted to EMNLP 2024.

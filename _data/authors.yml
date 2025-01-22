@@ -13,18 +13,22 @@ me_:
 hanlin:
   first_name: Hanlin 
   last_name: Zhang
+  website: https://hanlin-zhang.com/
 
 ericxing:
   first_name: Eric 
   last_name: Xing
+  website: https://en.wikipedia.org/wiki/Eric_Xing
 
 sham:
   first_name: Sham 
   last_name: Kakade
+  website: https://en.wikipedia.org/wiki/Sham_Kakade
 
 hima:
   first_name: Himabindu 
   last_name: Lakkaraju
+  website: https://himalakkaraju.github.io/
 
 xiaoyutan:
   first_name: Xiaoyu
@@ -62,6 +66,7 @@ yilunzhao:
 yilunzhao_:
   first_name: Yilun
   last_name: Zhao*
+  website: https://yilunzhao.github.io
 
 linyongnan:
   first_name: Lingyong
