@@ -1,3 +1,21 @@
+- id: rstar
+  title: "Mutual Reasoning Makes Smaller LLMs Stronger Problem-Solvers"
+  venue: ICLR 2025
+  description: "We introduce rStar, a self-play mutual reasoning approach that significantly improves reasoning capabilities of small language models (SLMs) without fine-tuning or superior models."
+  # project_page: "https://www.google.com"
+  github: zhentingqi/rStar
+  arxiv: https://arxiv.org/abs/2408.06195
+  pdf: https://arxiv.org/pdf/2408.06195
+  image: rstar.png
+  # image_mouseover: hypernerf_after.mp4
+  authors:
+    - me_
+    - mingyuanma_
+    - jiahangxu_
+    - lilynazhang
+    - fanyang
+    - maoyang
+
 - id: scylla
   title: "Quantifying Generalization Complexity for Large Language Models"
   venue: ICLR 2025; SoCalNLP 2024
@@ -17,24 +35,6 @@
     - xiangjunfan
     - hima
     - jamesglass
-
-- id: rstar
-  title: "Mutual Reasoning Makes Smaller LLMs Stronger Problem-Solvers"
-  venue: ICLR 2025
-  description: "We introduce rStar, a self-play mutual reasoning approach that significantly improves reasoning capabilities of small language models (SLMs) without fine-tuning or superior models."
-  # project_page: "https://www.google.com"
-  github: zhentingqi/rStar
-  arxiv: https://arxiv.org/abs/2408.06195
-  pdf: https://arxiv.org/pdf/2408.06195
-  image: rstar.png
-  # image_mouseover: hypernerf_after.mp4
-  authors:
-    - me_
-    - mingyuanma_
-    - jiahangxu_
-    - lilynazhang
-    - fanyang
-    - maoyang
 
 - id: beans
   title: "Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems"
