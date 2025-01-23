@@ -1,6 +1,6 @@
 - id: scylla
   title: "Quantifying Generalization Complexity for Large Language Models"
-  venue: ICLR 2025
+  venue: ICLR 2025; SoCalNLP 2024
   description: "We introduce Scylla, a dynamic evaluation framework that quantitatively measures the generalization abilities of LLMs. We also uncover a non-monotonic relationship between task complexity and the performance gap between ID and OOD data, which we term the \"generalization valley\". This phenomenon reveals \"critical complexity\" where reliance on non-generalizable behavior peaks, indicating the upper bound of generalization capabilities."
   # project_page: "https://www.google.com"
   github: zhentingqi/scylla
@@ -41,7 +41,7 @@
   venue: ICLR 2025; ICLR 2024 Workshop on Navigating and Addressing Data Problems for Foundation Models (DPFM).
   description: "We show that an adversary can exploit LMs' instruction-following capabilities to easily extract text data verbatim from the datastore of RAG systems built with instruction-tuned LMs via prompt injection."
   # project_page: "https://www.google.com"
-  # github: keunhong/photoshape
+  github: zhentingqi/rag-privacy
   arxiv: https://arxiv.org/abs/2402.17840
   pdf: https://arxiv.org/pdf/2402.17840
   image: beans.png

@@ -273,6 +273,7 @@ jiahangxu_:
 lilynazhang:
   first_name: Li Lyna
   last_name: Zhang
+  website: https://www.microsoft.com/en-us/research/people/lzhani/
 
 fanyang:
   first_name: Fan
@@ -285,6 +286,7 @@ maoyang:
 hongyinluo:
   first_name: Hongyin
   last_name: Luo
+  website: https://luohongyin.github.io/
 
 xulianghuang:
   first_name: Xuliang
@@ -293,6 +295,7 @@ xulianghuang:
 zhuokaizhao:
   first_name: Zhuokai
   last_name: Zhao
+  website: https://zhuokai-zhao.com/
 
 yibojiang:
   first_name: Yibo
@@ -305,3 +308,4 @@ xiangjunfan:
 jamesglass:
   first_name: James
   last_name: Glass
+  website: https://sls.csail.mit.edu/people/glass.shtml
