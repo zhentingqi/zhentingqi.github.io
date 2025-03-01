@@ -1,3 +1,24 @@
+- id: satori
+  title: "Satori: Reinforcement Learning with Chain-of-Action-Thought Enhances LLM Reasoning via Autoregressive Search"
+  venue: Preprint
+  description: "We introduce Satori, an advanced 7B reasoning model. Key features of Satori include: 1) Capable of self-reflection and self-exploration without external guidance. 2) Achieve state-of-the-art reasoning performance primarily through self-improvement (RL). 3) Exhibit strong generalizability of reasoning capabilities on unseen domains beyond math."
+  project_page: "https://satori-reasoning.github.io/blog/satori/"
+  github: satori-reasoning/Satori
+  arxiv: https://arxiv.org/abs/2502.02508
+  pdf: https://arxiv.org/pdf/2502.02508
+  image: satori.png
+  authors:
+    - maohaoshen_
+    - guangtaozeng_
+    - me_
+    - zhangweihong
+    - zhenfangchen
+    - weilu
+    - gregorywornell
+    - subhrodas
+    - davidcox
+    - chuanggan
+
 - id: rstar
   title: "Mutual Reasoning Makes Smaller LLMs Stronger Problem-Solvers"
   venue: ICLR 2025

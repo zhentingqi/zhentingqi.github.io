@@ -309,3 +309,44 @@ jamesglass:
   first_name: James
   last_name: Glass
   website: https://sls.csail.mit.edu/people/glass.shtml
+
+maohaoshen:
+  first_name: Maohao
+  last_name: Shen
+
+maohaoshen_:
+  first_name: Maohao
+  last_name: Shen*
+
+guangtaozeng:
+  first_name: Guangtao
+  last_name: Zeng
+
+guangtaozeng_:
+  first_name: Guangtao
+  last_name: Zeng*
+
+zhangweihong:
+  first_name: Weihong
+  last_name: Zhang
+
+zhenfangchen:
+  first_name: Zhenfang
+  last_name: Chen
+
+weilu:
+  first_name: Wei
+  last_name: Lu
+
+gregorywornell:
+  first_name: Gregory
+  last_name: Wornell
+
+subhrodas:
+  first_name: Subhro
+  last_name: Das
+
+davidcox:
+  first_name: David
+  last_name: Cox
+
