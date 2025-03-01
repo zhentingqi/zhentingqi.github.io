@@ -1,6 +1,6 @@
 - date: Feb, 2025
   description: >-
-    We open-sourced Satori, an advanced reasoning LLM [_Satori: Reinforcement Learning with Chain-of-Action-Thought Enhances LLM Reasoning via Autoregressive Search_](https://arxiv.org/abs/2502.02508), [_【新智元】_](https://mp.weixin.qq.com/s/wHU8m7rq2B3fIC5nA_mG6Q).
+    We open-sourced Satori, an advanced reasoning LLM with autoregressive search abilities. [_Satori: Reinforcement Learning with Chain-of-Action-Thought Enhances LLM Reasoning via Autoregressive Search_](https://arxiv.org/abs/2502.02508), [_【新智元】_](https://mp.weixin.qq.com/s/wHU8m7rq2B3fIC5nA_mG6Q).
 
 - date: Jan, 2025
   description: >-
