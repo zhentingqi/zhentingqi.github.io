@@ -313,26 +313,32 @@ jamesglass:
 maohaoshen:
   first_name: Maohao
   last_name: Shen
+  website: https://maohaos2.github.io/Maohao/
 
 maohaoshen_:
   first_name: Maohao
   last_name: Shen*
+  website: https://maohaos2.github.io/Maohao/
 
 guangtaozeng:
   first_name: Guangtao
   last_name: Zeng
+  website: https://chaoscodes.github.io/
 
 guangtaozeng_:
   first_name: Guangtao
   last_name: Zeng*
+  website: https://chaoscodes.github.io/
 
 zhangweihong:
-  first_name: Zhang-wei
+  first_name: Zhang-Wei
   last_name: Hong
+  website: https://williamd4112.github.io/
 
 zhenfangchen:
   first_name: Zhenfang
   last_name: Chen
+  website: https://zfchenunique.github.io/
 
 weilu:
   first_name: Wei
