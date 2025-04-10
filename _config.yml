@@ -23,22 +23,22 @@ name: Zhenting Qi
 position: Graduate Student 
 email: zhentingqi@g.harvard.edu
 description: >-
-  I am a Graduate student at [Harvard University](https://www.harvard.edu/). Prior to Harvard, I received dual bachelor's degree in Computer Engineering from both [UIUC](https://illinois.edu/) and [ZJU](https://www.zju.edu.cn/english/) with highest honors.
+  I am a CS PhD student at [Harvard University](https://www.harvard.edu/), working with Prof. [Yilun Du](https://yilundu.github.io/) and Prof. [Hima Lakkaraju](https://himalakkaraju.github.io/). Prior to Harvard, I received master's degree in Computational Science and Engineering from Harvard, and dual bachelor's degree in Computer Engineering from both [UIUC](https://illinois.edu/) and [ZJU](https://www.zju.edu.cn/english/) with highest honors.
+
+
+  Previously, I was a student researcher at Yale advised by (the late) Prof. [Dragomir R. Radev](http://www.cs.yale.edu/homes/radev/), and at UIUC advised by Prof. [Volodymyr Kindratenko](https://ece.illinois.edu/about/directory/faculty/kindrtnk). I also interned at [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/), advised by Dr. [Li Lyna Zhang](https://www.microsoft.com/en-us/research/people/lzhani/). I also worked closely with Prof. [James Glass](https://sls.csail.mit.edu/people/glass.shtml) at MIT.
   
 
-  I am currently a member at AI4LIFE group at Harvard, advised by Prof. [Hima Lakkaraju](https://himalakkaraju.github.io/). Previously, I was a student researcher at Yale (2022-2023) advised by (the late) Prof. [Dragomir R. Radev](http://www.cs.yale.edu/homes/radev/), and at UIUC (2022) advised by Prof. [Volodymyr Kindratenko](https://ece.illinois.edu/about/directory/faculty/kindrtnk). I also interned at [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/) (2023-2024), advised by Dr. [Li Lyna Zhang](https://www.microsoft.com/en-us/research/people/lzhani/). I also worked closely with Prof. [James Glass](https://sls.csail.mit.edu/people/glass.shtml) at MIT.
-  
-
-  I am seeking for research internship opportunities! Please contact me at zhentingqi[AT]g[DOT]harvard[DOT]edu.
+  Our group is open to collaborations! Please contact me at zhentingqi[AT]g[DOT]harvard[DOT]edu.
 
 misc: >-
-  I enjoy playing basketball, reading, cooking, movies, and I am a huge fan of guitar (fingerstyle) and music!
+  I enjoy playing basketball/badminton, training, reading, cooking, movies, and I am a huge fan of guitar and music!
 
 research: >-
   My research interest lies broadly in Language Modeling and Generative AI. My long-term research goal is to build intelligent and reliable AI systems for the benefit of human society. Motivated by this goal, I am currently interested in the following topics (w/o particular order)
   
 
-  1) Reasoning: Why do current reasoning paradigms work and how do we improve them? How can we design AI systems to perform robust reasoning that generalizes well to out-of-distribution settings?
+  1) Reasoning: Why do current reasoning paradigms work and how do we improve them? How can we design AI systems to perform robust reasoning that generalizes well to out-of-distribution scenarios?
 
 
   2) Reliability: How do we better understand AI systems and further enhance their controllability and robustness? How can we design scalable method to ensure their safety while we are improving their capabilities?
