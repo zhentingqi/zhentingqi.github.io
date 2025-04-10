@@ -29,16 +29,16 @@ description: >-
   Previously, I was a student researcher at Yale advised by (the late) Prof. [Dragomir R. Radev](http://www.cs.yale.edu/homes/radev/), and at UIUC advised by Prof. [Volodymyr Kindratenko](https://ece.illinois.edu/about/directory/faculty/kindrtnk). I also interned at [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/), advised by Dr. [Li Lyna Zhang](https://www.microsoft.com/en-us/research/people/lzhani/). I also worked closely with Prof. [James Glass](https://sls.csail.mit.edu/people/glass.shtml) at MIT.
   
 
-  Our group is open to collaborations! Please contact me at zhentingqi[AT]g[DOT]harvard[DOT]edu.
+  Our research group is open to collaborations! Please feel free to reach out at zhentingqi[AT]g[DOT]harvard[DOT]edu.
 
 misc: >-
   I enjoy playing basketball/badminton, training, reading, cooking, movies, and I am a huge fan of guitar and music!
 
 research: >-
-  My research interest lies broadly in Language Modeling and Generative AI. My long-term research goal is to build intelligent and reliable AI systems for the benefit of human society. Motivated by this goal, I am currently interested in the following topics (w/o particular order)
+  My research interest lies broadly in Foundation Models and Generative AI. My long-term research goal is to build intelligent and reliable AI systems for the benefit of human society. Motivated by this goal, I am currently interested in the following topics (w/o particular order)
   
 
-  1) Reasoning: Why do current reasoning paradigms work and how do we improve them? How can we design AI systems to perform robust reasoning that generalizes well to out-of-distribution scenarios?
+  1) Reasoning: Why do current reasoning paradigms work and how do we improve them? How can we train/design AI systems to perform robust reasoning that generalizes well to out-of-distribution scenarios?
 
 
   2) Reliability: How do we better understand AI systems and further enhance their controllability and robustness? How can we design scalable method to ensure their safety while we are improving their capabilities?
