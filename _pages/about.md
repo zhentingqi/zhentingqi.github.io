@@ -25,13 +25,17 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Hi there! I am an incoming CS PhD student at [Harvard University](https://www.harvard.edu/). I am fortunate to be co-advised by Prof. [Yilun Du](https://yilundu.github.io/) and Prof. [Hima Lakkaraju](https://himalakkaraju.github.io/). My research interest lies broadly in `Foundation Models` and `Generative AI`. My long-term research goal is to build intelligent and reliable AI systems for the benefit of human society. Motivated by this goal, I am generally interested in the following topics (w/o particular order)
+Hi there! I am an incoming CS PhD student at [Harvard University](https://www.harvard.edu/). I am fortunate to be co-advised by Prof. [Yilun Du](https://yilundu.github.io/) and Prof. [Hima Lakkaraju](https://himalakkaraju.github.io/). My research interest lies broadly in `Foundation Models` and `Generative AI`. My long-term research goal is to build intelligent and reliable AI systems for the benefit of human society. Motivated by this goal, I am generally interested in the following topics (w/o particular order):
 
-1) `Reasoning`: How do current ML models perform reasoning and how do we improve them? How do we train AI systems to perform robust reasoning that generalizes well to out-of-distribution scenarios?
+- **Reasoning**: How do current ML models perform reasoning and how do we improve them? How do we train AI systems to solve problems robustly and generalizes well to out-of-distribution scenarios?
 
-2) `Reliability`: How do we better understand AI systems and further enhance their controllability and robustness? How can we design scalable method to ensure their safety while we are improving their capabilities?
+- **Reliability**: How do we better understand AI systems and further enhance their controllability and robustness? How can we design scalable method to ensure their safety while we are improving their capabilities?
 
-My most recent research focused on 1) training language agents for complex reasoning tasks like coding assistance and scientific discovery, 2) memory mechanisms for language agents, 3) training-time/test-time self-evolution of ML models, and 4) designing dynamic evaluation benchmarks for reasoning/generalization capabilities of ML models.
+My most recent research focused on:
+- Training language agents for complex reasoning tasks like coding assistance and scientific discovery
+- Memory mechanisms for language agents
+- Training-time/test-time self-evolution
+- Designing dynamic evaluation benchmarks for reasoning/generalization
 
 Our research group is open to collaborations! Please feel free to reach out at `zhentingqi [at] g [dot] harvard [dot] edu`.
 
