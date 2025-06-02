@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-I will continue my research journey at Harvard as a PhD student!
+I will continue my research journey at **Harvard** as a PhD student!

@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Will be joining Google DeepMind (Mountain View office) as a Student Researcher!
+Will be joining **Google DeepMind** (Mountain View office) as a Student Researcher!

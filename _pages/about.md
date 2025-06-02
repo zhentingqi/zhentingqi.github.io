@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: zhentingqi [at] g [dot] harvard [dot] edu
+subtitle: 漆振霆 | [ch'i chen t'ing]
 
 profile:
   align: right
