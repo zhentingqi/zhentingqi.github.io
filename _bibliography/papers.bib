@@ -6,7 +6,7 @@
 @article{shen2025satori,
   title={Satori: Reinforcement Learning with Chain-of-Action-Thought Enhances LLM Reasoning via Autoregressive Search},
   author={Shen*, Maohao and Zeng*, Guangtao and Qi*, Zhenting and Hong, Zhang-Wei and Chen, Zhenfang and Lu, Wei and Wornell, Gregory and Das, Subhro and Cox, David and Gan, Chuang},
-  journal={Forty-Second International Conference on Machine Learning (ICML 2025)},
+  journal={Forty-Second International Conference on Machine Learning (ICML)},
   url={https://arxiv.org/abs/2502.02508},
   pdf={https://arxiv.org/pdf/2502.02508},
   abstract={Large language models (LLMs) have demonstrated remarkable reasoning capabilities across diverse domains. Recent studies have shown that increasing test-time computation enhances LLMs' reasoning capabilities. This typically involves extensive sampling at inference time guided by an external LLM verifier, resulting in a two-player system. Despite external guidance, the effectiveness of this system demonstrates the potential of a single LLM to tackle complex tasks. Thus, we pose a new research problem: Can we internalize the searching capabilities to fundamentally enhance the reasoning abilities of a single LLM? This work explores an orthogonal direction focusing on post-training LLMs for autoregressive searching (i.e., an extended reasoning process with self-reflection and self-exploration of new strategies). To achieve this, we propose the Chain-of-Action-Thought (COAT) reasoning and a two-stage training paradigm: 1) a small-scale format tuning stage to internalize the COAT reasoning format and 2) a large-scale self-improvement stage leveraging reinforcement learning. Our approach results in Satori, a 7B LLM trained on open-source models and data. Extensive empirical evaluations demonstrate that Satori achieves state-of-the-art performance on mathematical reasoning benchmarks while exhibits strong generalization to out-of-domain tasks. Code, data, and models will be fully open-sourced.},
@@ -18,7 +18,7 @@
   selected = {true},
   title={Mutual Reasoning Makes Smaller {LLM}s Stronger Problem-Solver},
   author={Zhenting Qi and Mingyuan MA and Jiahang Xu and Li Lyna Zhang and Fan Yang and Mao Yang},
-  booktitle={The Thirteenth International Conference on Learning Representations (ICLR 2025)},
+  booktitle={The Thirteenth International Conference on Learning Representations (ICLR)},
   year={2025},
   url={https://openreview.net/forum?id=6aHUmotXaw},
   pdf={https://arxiv.org/pdf/2408.06195},
@@ -29,7 +29,7 @@
   selected = {true},
   title={Quantifying Generalization Complexity for Large Language Models},
   author={Zhenting Qi and Hongyin Luo and Xuliang Huang and Zhuokai Zhao and Yibo Jiang and Xiangjun Fan and Himabindu Lakkaraju and James R. Glass},
-  booktitle={The Thirteenth International Conference on Learning Representations (ICLR 2025)},
+  booktitle={The Thirteenth International Conference on Learning Representations (ICLR)},
   year={2025},
   url={https://openreview.net/forum?id=jpSLXoRKnH},
   pdf={https://arxiv.org/pdf/2410.01769},
@@ -40,7 +40,7 @@
   selected = {true},
   title={Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems},
   author={Zhenting Qi and Hanlin Zhang and Eric P. Xing and Sham M. Kakade and Himabindu Lakkaraju},
-  booktitle={The Thirteenth International Conference on Learning Representations (ICLR 2025)},
+  booktitle={The Thirteenth International Conference on Learning Representations (ICLR)},
   year={2025},
   url={https://openreview.net/forum?id=Y4aWwRh25b},
   pdf={https://arxiv.org/pdf/2402.17840},
@@ -85,13 +85,25 @@
   year={2023}
 }
 
-@article{zhao2023loft,
-  title={Loft: Enhancing faithfulness and diversity for table-to-text generation via logic form control},
-  author={Zhao*, Yilun and Qi*, Zhenting and Nan, Linyong and Flores, Lorenzo Jaime Yu and Radev, Dragomir},
-  journal={arXiv preprint arXiv:2302.02962},
-  url={https://arxiv.org/abs/2302.02962},
-  selected={true},
-  year={2023}
+@inproceedings{zhao-etal-2023-loft,
+    selected = {true},
+    title = "{L}o{FT}: Enhancing Faithfulness and Diversity for Table-to-Text Generation via Logic Form Control",
+    author = "Zhao*, Yilun  and
+      Qi*, Zhenting  and
+      Nan, Linyong  and
+      Flores, Lorenzo Jaime  and
+      Radev, Dragomir",
+    editor = "Vlachos, Andreas  and
+      Augenstein, Isabelle",
+    booktitle = "Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics",
+    month = may,
+    year = "2023",
+    address = "Dubrovnik, Croatia",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2023.eacl-main.40/",
+    doi = "10.18653/v1/2023.eacl-main.40",
+    pages = "554--561",
+    abstract = "Logical Table-to-Text (LT2T) generation is tasked with generating logically faithful sentences from tables. There currently exists two challenges in the field: 1) Faithfulness: how to generate sentences that are factually correct given the table content; 2) Diversity: how to generate multiple sentences that offer different perspectives on the table. This work proposes LoFT, which utilizes logic forms as fact verifiers and content planners to control LT2T generation. Experimental results on the LogicNLG dataset demonstrate that LoFT is the first model that addresses unfaithfulness and lack of diversity issues simultaneously. Our code is publicly available at \url{https://github.com/Yale-LILY/LoFT}."
 }
 
 @INPROCEEDINGS{10098024,
@@ -264,7 +276,7 @@
     editor = "Al-Onaizan, Yaser  and
       Bansal, Mohit  and
       Chen, Yun-Nung",
-    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (EMNLP 2024)",
+    booktitle = "Proceedings of the 2024 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
     month = nov,
     year = "2024",
     address = "Miami, Florida, USA",
