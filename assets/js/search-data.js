@@ -440,15 +440,16 @@ ninja.data = [{
           description: "",
           section: "Books",handler: () => {
               window.location.href = "/books/the_godfather/";
-            },},{id: "news-a-simple-inline-announcement",
-          title: 'A simple inline announcement.',
+            },},{id: "news-our-papers-mutual-reasoning-makes-smaller-llms-stronger-problem-solvers-机器之心-quantifying-generalization-complexity-for-large-language-models-follow-my-instruction-and-spill-the-beans-scalable-data-extraction-from-retrieval-augmented-generation-systems-have-been-accepted-to-iclr-2025",
+          title: 'Our papers Mutual Reasoning Makes Smaller LLMs Stronger Problem-Solvers 【机器之心】, Quantifying Generalization Complexity...',
           description: "",
-          section: "News",},{id: "news-a-long-announcement-with-details",
-          title: 'A long announcement with details',
+          section: "News",},{id: "news-our-paper-satori-reinforcement-learning-with-chain-of-action-thought-enhances-llm-reasoning-via-autoregressive-search-新智元-has-been-accepted-to-icml-2025",
+          title: 'Our paper Satori: Reinforcement Learning with Chain-of-Action-Thought Enhances LLM Reasoning via Autoregressive Search...',
           description: "",
-          section: "News",handler: () => {
-              window.location.href = "/news/announcement_2/";
-            },},{id: "news-will-be-joining-google-deepmind-mountain-view-office-as-a-student-researcher",
+          section: "News",},{id: "news-i-will-continue-my-research-journey-at-harvard-as-a-phd-student",
+          title: 'I will continue my research journey at Harvard as a PhD student!',
+          description: "",
+          section: "News",},{id: "news-will-be-joining-google-deepmind-mountain-view-office-as-a-student-researcher",
           title: 'Will be joining Google DeepMind (Mountain View office) as a Student Researcher!',
           description: "",
           section: "News",},{id: "projects-project-1",
