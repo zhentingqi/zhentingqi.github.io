@@ -2,7 +2,7 @@
 layout: about
 title: about
 permalink: /
-subtitle: <a href='#'>Affiliations</a>. Address. Contacts. Motto. Etc.
+subtitle: zhentingqi [at] g [dot] harvard [dot] edu
 
 profile:
   align: right
@@ -20,7 +20,7 @@ announcements:
   limit: 5 # leave blank to include all the news in the `_news` folder
 
 latest_posts:
-  enabled: true
+  enabled: false
   scrollable: true # adds a vertical scroll bar if there are more than 3 new posts items
   limit: 3 # leave blank to include all the blog posts
 ---
@@ -29,4 +29,4 @@ Hi there! I am an incoming CS PhD student at [Harvard University](https://www.ha
 
 Previously, I was a student researcher at Yale advised by (the late) Prof. [Dragomir R. Radev](http://www.cs.yale.edu/homes/radev/), and at UIUC advised by Prof. [Volodymyr Kindratenko](https://ece.illinois.edu/about/directory/faculty/kindrtnk). I also interned at [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/), advised by Dr. [Li Lyna Zhang](https://www.microsoft.com/en-us/research/people/lzhani/). I also worked closely with Prof. [James Glass](https://sls.csail.mit.edu/people/glass.shtml) at MIT.
 
-Our research group is open to collaborations! Please feel free to reach out at zhentingqi[AT]g[DOT]harvard[DOT]edu.
+Our research group is open to collaborations! Please feel free to reach out at zhentingqi [at] g [dot] harvard [dot] edu.
