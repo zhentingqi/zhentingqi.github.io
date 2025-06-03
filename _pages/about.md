@@ -1,6 +1,6 @@
 ---
 layout: about
-title: about
+title: About
 permalink: /
 subtitle: 漆振霆 | [ch'i chen t'ing]
 
