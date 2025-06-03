@@ -39,7 +39,7 @@ Welcome! I am an incoming Computer Science Ph.D. student at [Harvard University]
 
 More specifically, I am currently investigating several exciting directions:
 
-- 🤖 Training language agents for complex reasoning tasks like coding assistance and scientific discovery
+- 🤖 Training language agents for coding assistance and scientific discovery
 - 🧠 Developing advanced memory mechanisms for language agents
 - 🔄 Exploring training-time and test-time self-evolution
 - 📊 Creating dynamic evaluation benchmarks for reasoning and generalization
