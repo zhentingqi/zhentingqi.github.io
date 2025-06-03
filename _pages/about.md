@@ -44,11 +44,10 @@ More specifically, I am currently investigating several exciting directions:
 - 🔄 Exploring training-time and test-time self-evolution
 - 📊 Creating dynamic evaluation benchmarks for reasoning and generalization
 
-Our research group actively welcomes collaborations! Feel free to reach out at:  
-`zhentingqi [at] g [dot] harvard [dot] edu`
+Our research group actively welcomes collaborations, and I am always excited to chat about research ideas! Please feel free to reach out at: `zhentingqi [at] g [dot] harvard [dot] edu`
 
-## About Me
+### About Me
 
-I hold a master's degree in Computational Science and Engineering from Harvard, and dual bachelor's degrees in Computer Engineering from [UIUC](https://illinois.edu/) and [ZJU](https://www.zju.edu.cn/english/) (highest honors).
+I hold a master's degree in Computational Science and Engineering from Harvard, and dual bachelor's degrees in Computer Engineering from [UIUC](https://illinois.edu/) and [ZJU](https://www.zju.edu.cn/english/) (highest honors). I am also a recipient of Harvard SEAS Prize Fellowship.
 
-I've had the privilege of working closely with many distinguished researchers, including (the late) Prof. [Dragomir R. Radev](http://www.cs.yale.edu/homes/radev/) at Yale, Prof. [Volodymyr Kindratenko](https://ece.illinois.edu/about/directory/faculty/kindrtnk) at UIUC, Dr. [Li Lyna Zhang](https://www.microsoft.com/en-us/research/people/lzhani/) at [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/), andProf. [James Glass](https://sls.csail.mit.edu/people/glass.shtml) at MIT
+I've had the privilege of working closely with many distinguished researchers, including (the late) Prof. [Dragomir R. Radev](http://www.cs.yale.edu/homes/radev/) at Yale, Prof. [Volodymyr Kindratenko](https://ece.illinois.edu/about/directory/faculty/kindrtnk) at UIUC, Dr. [Li Lyna Zhang](https://www.microsoft.com/en-us/research/people/lzhani/) at [Microsoft Research Asia](https://www.microsoft.com/en-us/research/lab/microsoft-research-asia/), Prof. [Chuang Gan](https://scholar.google.com/citations?user=PTeSCbIAAAAJ&hl=en) at [MIT-IBM Watson AI Lab](https://mitibmwatsonailab.mit.edu/), and Prof. [James Glass](https://sls.csail.mit.edu/people/glass.shtml) at MIT.
