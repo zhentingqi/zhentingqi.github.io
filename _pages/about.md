@@ -39,10 +39,10 @@ Welcome! I am an incoming Computer Science Ph.D. student at [Harvard University]
 
 More specifically, I am currently investigating several exciting directions:
 
-- 🤖 Training language agents for coding assistance and scientific discovery
-- 🧠 Developing advanced memory mechanisms for language agents
-- 🔄 Exploring training-time and test-time self-evolution
-- 📊 Creating dynamic evaluation benchmarks for reasoning and generalization
+- 🤖 Training agents for coding assistance and scientific discovery
+- 🧠 Developing advanced memory mechanisms for agents
+- 🔄 Training-time and test-time self-evolution
+- 📊 Dynamic evaluation for reasoning/generalization of foundation models and agents
 
 Our research group actively welcomes collaborations, and I am always excited to chat about research ideas! Please feel free to reach out at: `zhentingqi [at] g [dot] harvard [dot] edu`
 
