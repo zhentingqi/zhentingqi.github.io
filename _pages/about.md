@@ -17,7 +17,7 @@ social: true # includes social icons at the bottom of the page
 announcements:
   enabled: true # includes a list of news items
   scrollable: true # adds a vertical scroll bar if there are more than 3 news items
-  limit: 5 # leave blank to include all the news in the `_news` folder
+  limit: 6 # leave blank to include all the news in the `_news` folder
 
 latest_posts:
   enabled: false
@@ -29,11 +29,11 @@ Welcome! I am an incoming Computer Science Ph.D. student at [Harvard University]
 
 - **Reasoning**
   - Understanding and enhancing reasoning capabilities in foundation models
-  - Developing robust AI systems that generalize effectively to OOD scenarios
-  - Training agents for compositional reasoning tasks
+  - Developing AI systems that generalize effectively to OOD scenarios
+  - Training (multi-)agents for compositional reasoning tasks
 
 - **Reliability**
-  - Improving our understanding of AI systems
+  - Improving understanding of foundation models and AI systems
   - Enhancing AI controllability and robustness
   - Designing scalable methods to ensure reliability while advancing capabilities
 
@@ -45,6 +45,8 @@ More specifically, I am currently investigating several exciting directions:
 - 📊 Dynamic evaluation for reasoning/generalization of foundation models and agents
 
 Our research group actively welcomes collaborations, and I am always excited to chat about research ideas! Please feel free to reach out at: `zhentingqi [at] g [dot] harvard [dot] edu`
+
+For more information about my research, please see [Google Scholar](https://scholar.google.com/citations?hl=en&user=WZ00HCUAAAAJ), [Semantic Scholar](https://www.semanticscholar.org/author/Zhenting-Qi/2186056193), or [DBLP](https://dblp.org/pid/329/2118.html).
 
 ### About Me
 
