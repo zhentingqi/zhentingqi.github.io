@@ -8,8 +8,8 @@ profile:
   align: right
   image: me.jpg
   image_circular: false # crops the image to make it circular
-  # more_info: >
-  #   <p>Cambridge, MA 02138</p>
+  more_info: >
+    <p>Cambridge, MA 02138, U.S.A.</p>
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
@@ -25,7 +25,7 @@ latest_posts:
   limit: 3 # leave blank to include all the blog posts
 ---
 
-Welcome! I am an incoming Computer Science Ph.D. student at [Harvard University](https://www.harvard.edu/), where I am honored to be co-advised by Prof. [Yilun Du](https://yilundu.github.io/) and Prof. [Hima Lakkaraju](https://himalakkaraju.github.io/). My research focuses on advancing `Foundation Models` and `Generative AI`, with the ultimate vision of developing intelligent and reliable AI systems that benefit human society. Motivated by this, I am generally interested in the following topics (w/o particular order):
+Welcome! I am an incoming Computer Science Ph.D. student at [Harvard University](https://www.harvard.edu/), where I am honored to be co-advised by Prof. [Yilun Du](https://yilundu.github.io/) and Prof. [Hima Lakkaraju](https://himalakkaraju.github.io/). My research centers around developing intelligent and reliable AI systems that benefit human society. Motivated by this, I am generally interested in the following topics (w/o particular order):
 
 - **Reasoning**
   - Understanding and enhancing reasoning capabilities in foundation models
@@ -34,10 +34,10 @@ Welcome! I am an incoming Computer Science Ph.D. student at [Harvard University]
 
 - **Reliability**
   - Improving understanding of foundation models and AI systems
-  - Enhancing AI controllability and robustness
+  - Enhancing controllability and robustness
   - Designing scalable methods to ensure reliability while advancing capabilities
 
-More specifically, I am currently investigating several exciting directions:
+More specifically, I am currently exploring several exciting directions:
 
 - 🤖 Training agents for coding assistance and scientific discovery
 - 🧠 Developing advanced memory mechanisms for agents
