@@ -137,6 +137,7 @@
   <ul>
     <li><a href="#abstract">Abstract</a></li>
     <li><a href="#model-suite">Model Suite</a></li>
+    <li><a href="#evaluation-protocol">Evaluation Protocol</a></li>
     <li><a href="#key-findings">Key Findings</a>
       <ul>
         <li><a href="#pretraining-content">Pre-training</a>
@@ -1414,6 +1415,77 @@
     </div>
   </div>
 
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3" id="evaluation-protocol">Evaluation Protocol</h2>
+        <div class="content has-text-justified">
+          <p>
+            To ensure a systematic and transparent analysis of language model (LM) capabilities, we established a rigorous evaluation protocol that spans both upstream (language modeling) and downstream (problem-solving) tasks. This comprehensive setup enables robust benchmarking across all stages of the EvoLM training pipeline.
+          </p>
+
+          <h4>Upstream Cloze Tasks</h4>
+          <p>
+            We evaluate pre-trained and continued-pretrained models using a suite of <strong>cloze-style language modeling benchmarks</strong>, which focus on next-token prediction without requiring conversational abilities. The selected datasets are widely used for assessing general reasoning and language understanding:
+          </p>
+          <ul>
+            <li><strong>HellaSwag</strong>: Commonsense completion</li>
+            <li><strong>Winogrande</strong>: Coreference reasoning</li>
+            <li><strong>PIQA</strong>: Physical commonsense reasoning</li>
+            <li><strong>OBQA</strong>: Open book question answering</li>
+            <li><strong>ARC-Easy/Challenge</strong>: Science and multi-step reasoning</li>
+          </ul>
+          <p>
+            We report average zero-shot accuracy across these benchmarks, providing a high-level view of each model's raw language modeling strength.
+          </p>
+
+          <h4>Downstream Generative Tasks</h4>
+          <p>
+            For a practical assessment of problem-solving and reasoning, we test supervised fine-tuned and RL-finetuned models on <strong>open-ended, generative tasks</strong>. The evaluation covers both in-domain and out-of-domain (OOD) challenges:
+          </p>
+          <h5>In-Domain Tasks (Mathematical Reasoning)</h5>
+          <ul>
+            <li><strong>GSM8K-Platinum</strong>: High-quality, grade-school math word problems</li>
+            <li><strong>MATH</strong>: Competition-level mathematical problem-solving</li>
+          </ul>
+          <h5>Out-of-Domain (OOD) Tasks</h5>
+          <ul>
+            <li><strong>CRUXEval</strong>: Code reasoning and program output prediction</li>
+            <li><strong>BGQA</strong>: Logical reasoning with contradictions</li>
+            <li><strong>TabMWP</strong>: Mathematical reasoning over tables</li>
+            <li><strong>StrategyQA</strong>: Multi-hop commonsense and strategic reasoning</li>
+          </ul>
+          <p>
+            All tasks are evaluated in a zero-shot setting, where models generate full solutions without prior exposure to the specific test items.
+          </p>
+
+          <h4>Metrics and Decoding Schemes</h4>
+          <p>
+            To thoroughly assess performance, we employ several robust metrics under diverse sampling protocols:
+          </p>
+          <ul>
+            <li><strong>Accuracy</strong> under four prompting schemes:
+              <ul>
+                <li><strong>Pass@1:</strong> Deterministic, single output (temperature = 0)</li>
+                <li><strong>Maj@16:</strong> Majority vote among 16 stochastic samples (temperature = 1)</li>
+                <li><strong>RM@16:</strong> Best of 16 samples, selected by the highest Outcome Reward Model (ORM) score</li>
+                <li><strong>Pass@16:</strong> Problem considered solved if any one of 16 samples is correct</li>
+              </ul>
+            </li>
+            <li><strong>Correct Ratio:</strong> Fraction of correct solutions within a batch of generated responses</li>
+            <li><strong>ORM Score:</strong> Scalar reward assigned by a large, off-the-shelf reward model, reflecting the overall quality of generated solutions</li>
+          </ul>
+          <p>
+            Final answers are automatically extracted and compared to ground truth for precise, objective scoring.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
 
 
