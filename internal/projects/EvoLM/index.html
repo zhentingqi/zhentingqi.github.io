@@ -39,16 +39,7 @@
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
 
-  <script>
-    function toggleTable() {
-      var x = document.getElementById("foldable-table");
-      if (x.style.display === "none") {
-        x.style.display = "block";
-      } else {
-        x.style.display = "none";
-      }
-    }
-  </script>
+
 
   <style>
     .callout {
@@ -318,10 +309,7 @@
         <h2 class="title is-3" id="abstract">Abstract</h2>
         <div class="content has-text-justified">
           <p>
-            Modern language model (LM) training has been divided into multiple stages, making it difficult for downstream developers to evaluate the impact of design choices made at each stage.
-            We present <b>EvoLM</b>, a model suite that enables systematic analysis of LMs' training dynamics across their entire lifecycle, including pre-training, continued pre-training, supervised fine-tuning, and reinforcement learning. 
-            By training over 100 LMs (mostly with 1B and 4B parameters) from scratch, we rigorously evaluate both upstream (language modeling) and downstream (problem-solving) reasoning capabilities, including considerations of both in-domain and out-of-domain generalization. 
-            Key insights highlight the diminishing returns from excessive pre-training and post-training, the importance and practices of mitigating forgetting during domain-specific continued pre-training, the crucial role of continued pre-training in bridging pre-training and post-training phases, and various intricate trade-offs when configuring supervised fine-tuning and reinforcement learning. 
+            Modern language model (LM) training has been divided into multiple stages, making it difficult for downstream developers to evaluate the impact of design choices made at each stage. We present <b>EvoLM</b>, a model suite that enables systematic and transparent analysis of LMs' training dynamics across pre-training, continued pre-training, supervised fine-tuning, and reinforcement learning. By training over 100 LMs with 1B and 4B parameters from scratch, we rigorously evaluate both upstream (language modeling) and downstream (problem-solving) reasoning capabilities, including considerations of both in-domain and out-of-domain generalization. Key insights highlight the diminishing returns from excessive pre-training and post-training, the importance and practices of mitigating forgetting during domain-specific continued pre-training, the crucial role of continued pre-training in bridging pre-training and post-training phases, and various intricate trade-offs when configuring supervised fine-tuning and reinforcement learning. To facilitate open research and reproducibility, we release all pre-trained and post-trained models, training datasets for all stages, and our entire training and evaluation pipeline.
           </p>
         </div>
       </div>
@@ -345,25 +333,20 @@
     </div>
   </div>
 
-  <div class="has-text-centered" style="margin: 2em 0;">
-    <button class="button is-medium is-rounded custom-blue" onclick="toggleTable()">
-      Show/Hide Models
-    </button>
-  </div>
-  <div id="foldable-table" style="display:none;">
+  <div>
     <div class="container is-max-desktop">
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          <div class="table-container" style="margin-top:2em;">
-            <table class="table is-striped is-hoverable is-fullwidth is-bordered">
-              <thead>
+          <div class="table-container" style="margin-top:2em; max-height: 600px; overflow-y: auto; overflow-x: auto; border: 1px solid #dbdbdb; border-radius: 6px;">
+            <table class="table is-striped is-hoverable is-fullwidth is-bordered" style="margin-bottom: 0;">
+              <thead style="position: sticky; top: 0; background-color: #f5f5f5; z-index: 10;">
                 <tr>
-                  <th>Model Size</th>
-                  <th>Pre-training (BT)</th>
-                  <th>CPT (BT)</th>
-                  <th>SFT (epochs * examples)</th>
-                  <th>RL (epochs * examples)</th>
-                  <th>Link</th>
+                  <th style="background-color: #f5f5f5; position: sticky; top: 0; z-index: 11;">Model Size</th>
+                  <th style="background-color: #f5f5f5; position: sticky; top: 0; z-index: 11;">Pre-training (BT)</th>
+                  <th style="background-color: #f5f5f5; position: sticky; top: 0; z-index: 11;">CPT (BT)</th>
+                  <th style="background-color: #f5f5f5; position: sticky; top: 0; z-index: 11;">SFT (epochs * examples)</th>
+                  <th style="background-color: #f5f5f5; position: sticky; top: 0; z-index: 11;">RL (epochs * examples)</th>
+                  <th style="background-color: #f5f5f5; position: sticky; top: 0; z-index: 11;">Link</th>
                 </tr>
               </thead>
               <tbody>
@@ -1648,19 +1631,48 @@
 
 
 <section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title" id="bibtex">BibTeX</h2>
-    <pre><code>@article{park2021nerfies,
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div style="position: relative;">
+          <h2 class="title is-3" id="bibtex">BibTeX</h2>
+          <button id="copyBibtexBtn" class="button is-small is-primary" style="position: absolute; top: 0; right: 0;" onclick="copyBibtex()" title="Copy BibTeX">
+            <span class="icon is-small">
+              <i class="fas fa-copy"></i>
+            </span>
+            <span>Copy</span>
+          </button>
+        </div>
+        <div class="content has-text-left">
+          <pre><code id="bibtex-code">@article{park2021nerfies,
   author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
   title     = {Nerfies: Deformable Neural Radiance Fields},
   journal   = {ICCV},
   year      = {2021},
 }</code></pre>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
 
-<footer class="footer">
+<section class="section">
+  <div class="columns is-centered">
+    <div class="column is-8">
+      <div class="content">
+        <p>
+          This website is licensed under a <a rel="license"
+                                              href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+          Commons Attribution-ShareAlike 4.0 International License</a>.
+          Theme by <a
+            href="https://github.com/nerfies/nerfies.github.io">Nerfies</a>.
+        </p>
+      </div>
+    </div>
+</section>
+
+<!-- <footer class="footer">
   <div class="container">
     <div class="content has-text-centered">
       <a class="icon-link"
@@ -1687,7 +1699,7 @@
       </div>
     </div>
   </div>
-</footer>
+</footer> -->
 
 <!-- Back to Top Button -->
 <button onclick="topFunction()" id="backToTopBtn" title="Back to top">
@@ -1708,11 +1720,16 @@
   background-color: #fff;
   color: #3273dc;
   cursor: pointer;
-  padding: 10px 12px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   font-size: 18px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
 }
 #backToTopBtn:hover {
   background-color: #f1f8ff;
@@ -1894,6 +1911,48 @@ function scrollFunction() {
 // When the user clicks on the button, scroll to the top of the document
 function topFunction() {
   window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// Copy BibTeX function
+function copyBibtex() {
+  const bibtexText = document.getElementById('bibtex-code').textContent;
+  const copyBtn = document.getElementById('copyBibtexBtn');
+  
+  navigator.clipboard.writeText(bibtexText).then(function() {
+    // Success feedback
+    const originalHTML = copyBtn.innerHTML;
+    copyBtn.innerHTML = '<span class="icon is-small"><i class="fas fa-check"></i></span><span>Copied!</span>';
+    copyBtn.classList.remove('is-primary');
+    copyBtn.classList.add('is-success');
+    
+    // Reset button after 2 seconds
+    setTimeout(function() {
+      copyBtn.innerHTML = originalHTML;
+      copyBtn.classList.remove('is-success');
+      copyBtn.classList.add('is-primary');
+    }, 2000);
+  }).catch(function(err) {
+    // Fallback for older browsers
+    const textArea = document.createElement('textarea');
+    textArea.value = bibtexText;
+    document.body.appendChild(textArea);
+    textArea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textArea);
+    
+    // Success feedback
+    const originalHTML = copyBtn.innerHTML;
+    copyBtn.innerHTML = '<span class="icon is-small"><i class="fas fa-check"></i></span><span>Copied!</span>';
+    copyBtn.classList.remove('is-primary');
+    copyBtn.classList.add('is-success');
+    
+    // Reset button after 2 seconds
+    setTimeout(function() {
+      copyBtn.innerHTML = originalHTML;
+      copyBtn.classList.remove('is-success');
+      copyBtn.classList.add('is-primary');
+    }, 2000);
+  });
 }
 
 document.addEventListener('DOMContentLoaded', function() {
