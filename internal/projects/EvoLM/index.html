@@ -6,7 +6,7 @@
         content="A systematic analysis of LMs' training dynamics across pre-training, continued pre-training, supervised fine-tuning, and reinforcement learning.">
   <meta name="keywords" content="Language models, Pre-training, Post-training">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>EvoLM: In Search of Lost Language Models Training Dynamics</title>
+  <title>EvoLM: In Search of Lost Language Model Training Dynamics</title>
 
   <!-- Global site tag (gtag.js) - Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
@@ -38,8 +38,120 @@
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+
+  <script>
+    function toggleTable() {
+      var x = document.getElementById("foldable-table");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }
+  </script>
+
+  <style>
+    .callout {
+      border-left: 5px solid #0074D9;    /* colored border */
+      background-color: #f1f8ff;         /* light background */
+      padding: 16px;
+      margin: 16px 0;
+      border-radius: 8px;
+      font-size: 1.1em;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .button.custom-blue {
+      background-color: #3273dc !important;
+      color: white !important;
+      border: none;
+    }
+    .button.custom-blue:hover {
+      background-color: #2759a5 !important;
+    }
+    
+    /* Custom button styles for different link types */
+    .button.paper-btn {
+      background-color: white !important;
+      color: #3273dc !important;
+      border: 2px solid #3273dc !important;
+    }
+    .button.paper-btn:hover {
+      background-color: #f1f8ff !important;
+      color: #2759a5 !important;
+      border-color: #2759a5 !important;
+    }
+    
+    .button.arxiv-btn {
+      background-color: white !important;
+      color: #3273dc !important;
+      border: 2px solid #3273dc !important;
+    }
+    .button.arxiv-btn:hover {
+      background-color: #f1f8ff !important;
+      color: #2759a5 !important;
+      border-color: #2759a5 !important;
+    }
+    
+    .button.code-btn {
+      background-color: white !important;
+      color: #3273dc !important;
+      border: 2px solid #3273dc !important;
+    }
+    .button.code-btn:hover {
+      background-color: #f1f8ff !important;
+      color: #2759a5 !important;
+      border-color: #2759a5 !important;
+    }
+    
+    .button.data-btn {
+      background-color: white !important;
+      color: #3273dc !important;
+      border: 2px solid #3273dc !important;
+    }
+    .button.data-btn:hover {
+      background-color: #f1f8ff !important;
+      color: #2759a5 !important;
+      border-color: #2759a5 !important;
+    }
+    .toggle-content {
+      display: block;
+      transition: max-height 0.3s ease;
+    }
+    .toggle-content.folded {
+      display: none;
+    }
+    .toggle-header {
+      cursor: pointer;
+      user-select: none;
+    }
+    </style>
+    
 </head>
 <body>
+
+<div id="toc-sidebar">
+  <button id="toc-toggle" title="Toggle Table of Contents">
+    <span id="toc-toggle-icon">◀</span>
+  </button>
+  <div class="toc-title">Contents</div>
+  <ul>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#model-suite">Model Suite</a></li>
+    <li><a href="#key-findings">Key Findings</a>
+      <ul>
+        <li><a href="#pretraining-content">Pre-training</a>
+        </li>
+        <li><a href="#midtraining-content">Mid-training</a>
+        </li>
+        <li><a href="#posttraining-content">Post-training</a>
+        </li>
+        <li><a href="#validation-content">Validation</a>
+        </li>
+      </ul>
+    </li>
+    <li><a href="#bibtex">BibTeX</a></li>
+  </ul>
+</div>
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -103,10 +215,10 @@
               <a href="https://yilundu.github.io/">Yilun Du</a><sup>1</sup>,
             </span>
             <span class="author-block">
-              <a href="https://www.cs.cmu.edu/~epxing/">Eric Xing</a><sup>4</sup>
+              <a href="https://www.cs.cmu.edu/~epxing/">Eric Xing</a><sup>4</sup>,
             </span>
             <span class="author-block">
-              <a href="https://shamulent.github.io/">Sham Kakade</a><sup>1</sup>
+              <a href="https://shamulent.github.io/">Sham Kakade</a><sup>1</sup>,
             </span>
             <span class="author-block">
               <a href="http://hanlin-zhang.com">Hanlin Zhang</a><sup>1</sup>
@@ -125,7 +237,7 @@
               <!-- PDF Link. -->
               <span class="link-block">
                 <a href="https://arxiv.org/pdf/2011.12948"
-                   class="external-link button is-normal is-rounded is-dark">
+                   class="external-link button is-normal is-rounded paper-btn">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
                   </span>
@@ -134,7 +246,7 @@
               </span>
               <span class="link-block">
                 <a href="https://arxiv.org/abs/2011.12948"
-                   class="external-link button is-normal is-rounded is-dark">
+                   class="external-link button is-normal is-rounded arxiv-btn">
                   <span class="icon">
                       <i class="ai ai-arxiv"></i>
                   </span>
@@ -154,7 +266,7 @@
               <!-- Code Link. -->
               <span class="link-block">
                 <a href="https://github.com/zhentingqi/evolm"
-                   class="external-link button is-normal is-rounded is-dark">
+                   class="external-link button is-normal is-rounded code-btn">
                   <span class="icon">
                       <i class="fab fa-github"></i>
                   </span>
@@ -164,7 +276,7 @@
               <!-- Dataset Link. -->
               <span class="link-block">
                 <a href="https://huggingface.co/collections/ZhentingNLP/evolm-datasets-6850eeba3b03e89d4ce3862d"
-                   class="external-link button is-normal is-rounded is-dark">
+                   class="external-link button is-normal is-rounded data-btn">
                   <span class="icon">
                       <i class="far fa-images"></i>
                   </span>
@@ -202,12 +314,12 @@
     <!-- Abstract. -->
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
+        <h2 class="title is-3" id="abstract">Abstract</h2>
         <div class="content has-text-justified">
           <p>
             Modern language model (LM) training has been divided into multiple stages, making it difficult for downstream developers to evaluate the impact of design choices made at each stage.
             We present <b>EvoLM</b>, a model suite that enables systematic analysis of LMs' training dynamics across their entire lifecycle, including pre-training, continued pre-training, supervised fine-tuning, and reinforcement learning. 
-            By training over 100 LMs with 1B and 4B parameters from scratch, we rigorously evaluate both upstream (language modeling) and downstream (problem-solving) reasoning capabilities, including considerations of both in-domain and out-of-domain generalization. 
+            By training over 100 LMs (mostly with 1B and 4B parameters) from scratch, we rigorously evaluate both upstream (language modeling) and downstream (problem-solving) reasoning capabilities, including considerations of both in-domain and out-of-domain generalization. 
             Key insights highlight the diminishing returns from excessive pre-training and post-training, the importance and practices of mitigating forgetting during domain-specific continued pre-training, the crucial role of continued pre-training in bridging pre-training and post-training phases, and various intricate trade-offs when configuring supervised fine-tuning and reinforcement learning. 
           </p>
         </div>
@@ -217,1098 +329,1255 @@
   </div>
 </section>
 
+
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Model Suite Overview</h2>
+        <h2 class="title is-3" id="model-suite">Model Suite</h2>
         <div class="content has-text-justified">
           <p>
-            <img src="IMAGE_PLACEHOLDER_SUITE" alt="Model Suite Overview" style="max-width:100%; margin-bottom:1em;"/>
-            EvoLM consists of over 100 language models with 1B and 4B parameters, trained from scratch and through various post-training strategies. This suite enables controlled experiments to dissect the effects of pre-training, continued pre-training, supervised fine-tuning, and reinforcement learning.
+            EvoLM consists of over 100 language models with various parameters (ranging from 0.5B to 4B) trained from scratch with open-source training data and training frameworks, enabling controlled experiments to dissect the effects of pre-training, continued pre-training (CPT), supervised fine-tuning (SFT), and reinforcement learning (RL). In the following table, we list all the models in EvoLM (<b>BT</b>: billion tokens, <b>FW</b>: FineWeb-Edu, <b>FM</b>: FineMath, <b>ep</b>: epoch).
           </p>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="has-text-centered" style="margin: 2em 0;">
+    <button class="button is-medium is-rounded custom-blue" onclick="toggleTable()">
+      Show/Hide Models
+    </button>
+  </div>
+  <div id="foldable-table" style="display:none;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <div class="table-container" style="margin-top:2em;">
+            <table class="table is-striped is-hoverable is-fullwidth is-bordered">
+              <thead>
+                <tr>
+                  <th>Model Size</th>
+                  <th>Pre-training (BT)</th>
+                  <th>CPT (BT)</th>
+                  <th>SFT (epochs * examples)</th>
+                  <th>RL (epochs * examples)</th>
+                  <th>Link</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>0.5B</td>
+                  <td>10</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-0.5B-10BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>0.5B</td>
+                  <td>20</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-0.5B-20BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>0.5B</td>
+                  <td>40</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-0.5B-40BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>0.5B</td>
+                  <td>80</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-0.5B-80BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>0.5B</td>
+                  <td>160</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-0.5B-160BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>0.5B</td>
+                  <td>320</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-0.5B-320BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>20</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-20BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>20</td>
+                  <td>/</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-20BT-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>20</td>
+                  <td>FW8+FM42</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-20BT-cpt-MixedFW8FM42" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>20</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-20BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>20</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-20BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>20</td>
+                  <td>FM10</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-20BT-cpt-FM10BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>20</td>
+                  <td>FM30</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-20BT-cpt-FM30BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>20</td>
+                  <td>FM50</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-20BT-cpt-FM50BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>40</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-40BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>40</td>
+                  <td>/</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-40BT-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>40</td>
+                  <td>FW8+FM42</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-40BT-cpt-MixedFW8FM42" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>40</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-40BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>40</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-40BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>40</td>
+                  <td>FM10</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-40BT-cpt-FM10BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>40</td>
+                  <td>FM30</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-40BT-cpt-FM30BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>40</td>
+                  <td>FM50</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-40BT-cpt-FM50BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>80</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-80BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>80</td>
+                  <td>/</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-80BT-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>80</td>
+                  <td>FW8+FM42</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-80BT-cpt-MixedFW8FM42" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>80</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-80BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>80</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-80BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>80</td>
+                  <td>FM10</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-80BT-cpt-FM10BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>80</td>
+                  <td>FM30</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-80BT-cpt-FM30BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>80</td>
+                  <td>FM50</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-80BT-cpt-FM50BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>/</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>/</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM2</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM2" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM2</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM2-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM2</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM2-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM12</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM12" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM12</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM12-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM12</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM12-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM22</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM22" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM22</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM22-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM22</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM22-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM32</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM32" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM32</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM32-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM32</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM32-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep1 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep1-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep2 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep2-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep4 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep4-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep16 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep16-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 200k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last200k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 300k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last300k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 400k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last400k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep32 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep32-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 200k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first200k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 200k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first200k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 300k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first300k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 300k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first300k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 400k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first400k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 400k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first400k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep2 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep2-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep2 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep2-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep4 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep4-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep4 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep4-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep8 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep8-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep8 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep8-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep16 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep16-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep16 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep16-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep32 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep32-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep32 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep32-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW1.6+FM48.4</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW1_6FM48_4" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FW16+FM34</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW16FM34" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FM10</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM10BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FM20</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM20BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FM30</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM30BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FM40</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM40BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>160</td>
+                  <td>FM50</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM50BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>320</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-320BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>320</td>
+                  <td>/</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-320BT-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>320</td>
+                  <td>FW8+FM42</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-320BT-cpt-MixedFW8FM42" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>320</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-320BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>1B</td>
+                  <td>320</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-1B-320BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>2B</td>
+                  <td>40</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>coming soon...</td>
+                </tr>
+                <tr>
+                  <td>2B</td>
+                  <td>80</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>coming soon...</td>
+                </tr>
+                <tr>
+                  <td>2B</td>
+                  <td>160</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>coming soon...</td>
+                </tr>
+                <tr>
+                  <td>2B</td>
+                  <td>320</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>coming soon...</td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>80</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-80BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>80</td>
+                  <td>FW8+FM42</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-80BT-cpt-MixedFW8FM42" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>80</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-80BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>80</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-80BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>/</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>/</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM2</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td>coming soon...</td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM12</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td>coming soon...</td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM22</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td>coming soon...</td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM32</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td>coming soon...</td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep1 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep1-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep2 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep2-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep4 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep4-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep16 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep16-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 200k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last200k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 300k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last300k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 400k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last400k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep32 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep32-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 200k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first200k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 200k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first200k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 300k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first300k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 300k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first300k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 400k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first400k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 400k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first400k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep2 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep2-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep2 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep2-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep4 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep4-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep4 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep4-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep8 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep8-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep8 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep8-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep16 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep16-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep16 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep16-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep32 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep32-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>160</td>
+                  <td>FW8+FM42</td>
+                  <td>ep32 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep32-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>320</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-320BT" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>320</td>
+                  <td>FW8+FM42</td>
+                  <td>/</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-320BT-cpt-MixedFW8FM42" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>320</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>/</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-320BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+                <tr>
+                  <td>4B</td>
+                  <td>320</td>
+                  <td>FW8+FM42</td>
+                  <td>ep1 100k</td>
+                  <td>ep8 100k</td>
+                  <td><a href="https://huggingface.co/zhenting/myllama-4B-320BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k" class="button is-small is-link is-light" target="_blank">Model</a></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </section>
 
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th>Size</th>
-      <th>Pre-training</th>
-      <th>CPT</th>
-      <th>SFT</th>
-      <th>RL</th>
-      <th>Link</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>0.5B</td>
-      <td>10B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-0.5B-10BT</td>
-    </tr>
-    <tr>
-      <td>0.5B</td>
-      <td>20B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-0.5B-20BT</td>
-    </tr>
-    <tr>
-      <td>0.5B</td>
-      <td>40B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-0.5B-40BT</td>
-    </tr>
-    <tr>
-      <td>0.5B</td>
-      <td>80B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-0.5B-80BT</td>
-    </tr>
-    <tr>
-      <td>0.5B</td>
-      <td>160B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-0.5B-160BT</td>
-    </tr>
-    <tr>
-      <td>0.5B</td>
-      <td>320B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-0.5B-320BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>20</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-20BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>20</td>
-      <td>/</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-20BT-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>20</td>
-      <td>FW8+FM42</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-20BT-cpt-MixedFW8FM42</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>20</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-20BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>20</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-20BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>20</td>
-      <td>FM10</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-20BT-cpt-FM10BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>20</td>
-      <td>FM30</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-20BT-cpt-FM30BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>20</td>
-      <td>FM50</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-20BT-cpt-FM50BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>40</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-40BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>40</td>
-      <td>/</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-40BT-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>40</td>
-      <td>FW8+FM42</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-40BT-cpt-MixedFW8FM42</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>40</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-40BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>40</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-40BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>40</td>
-      <td>FM10</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-40BT-cpt-FM10BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>40</td>
-      <td>FM30</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-40BT-cpt-FM30BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>40</td>
-      <td>FM50</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-40BT-cpt-FM50BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>80</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-80BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>80</td>
-      <td>/</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-80BT-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>80</td>
-      <td>FW8+FM42</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-80BT-cpt-MixedFW8FM42</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>80</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-80BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>80</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-80BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>80</td>
-      <td>FM10</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-80BT-cpt-FM10BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>80</td>
-      <td>FM30</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-80BT-cpt-FM30BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>80</td>
-      <td>FM50</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-80BT-cpt-FM50BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>/</td>
-      <td>ep1 100k</td>
-      <td>NaN</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>/</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM2</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM2</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM2</td>
-      <td>ep1 100k</td>
-      <td>NaN</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM2-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM2</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM2-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM12</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM12</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM12</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM12-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM12</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM12-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM22</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM22</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM22</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM22-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM22</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM22-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM32</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM32</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM32</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM32-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM32</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM32-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep1 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep1-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep2 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep2-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep4 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep4-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep16 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep16-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 200k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last200k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 300k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last300k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 400k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last400k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep32 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep32-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 200k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first200k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 200k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first200k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 300k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first300k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 300k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first300k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 400k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first400k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 400k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first400k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep2 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep2-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep2 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep2-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep4 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep4-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep4 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep4-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep8 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep8-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep8 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep8-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep16 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep16-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep16 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep16-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep32 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep32-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep32 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW8FM42-sftep32-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW1.6+FM48.4</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW1_6FM48_4</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FW16+FM34</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-MixedFW16FM34</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FM10</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM10BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FM20</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM20BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FM30</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM30BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FM40</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM40BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>160</td>
-      <td>FM50</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-160BT-cpt-FM50BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>320</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-320BT</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>320</td>
-      <td>/</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-320BT-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>320</td>
-      <td>FW8+FM42</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-320BT-cpt-MixedFW8FM42</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>320</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-320BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>1B</td>
-      <td>320</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-1B-320BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>2B</td>
-      <td>40B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>coming soon...</td>
-    </tr>
-    <tr>
-      <td>2B</td>
-      <td>80B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>coming soon...</td>
-    </tr>
-    <tr>
-      <td>2B</td>
-      <td>160B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>coming soon...</td>
-    </tr>
-    <tr>
-      <td>2B</td>
-      <td>320B</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>coming soon...</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>80</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-80BT</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>80</td>
-      <td>FW8+FM42</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-80BT-cpt-MixedFW8FM42</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>80</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-80BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>80</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-80BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>/</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>/</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM2</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>coming soon...</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM12</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>coming soon...</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM22</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>coming soon...</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM32</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>coming soon...</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep1 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep1-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep2 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep2-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep4 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep4-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep16 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep16-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 200k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last200k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 300k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last300k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 400k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last400k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep32 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep32-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 200k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first200k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 200k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first200k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 300k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first300k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 300k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first300k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 400k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first400k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep1 400k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep1-sampled500k_first400k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep2 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep2-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep2 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep2-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep4 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep4-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep4 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep4-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep8 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep8-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep8 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep8-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep16 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep16-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep16 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep16-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep32 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep32-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>160</td>
-      <td>FW8+FM42</td>
-      <td>ep32 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-160BT-cpt-MixedFW8FM42-sftep32-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>320</td>
-      <td>/</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-320BT</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>320</td>
-      <td>FW8+FM42</td>
-      <td>/</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-320BT-cpt-MixedFW8FM42</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>320</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>/</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-320BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b</td>
-    </tr>
-    <tr>
-      <td>4B</td>
-      <td>320</td>
-      <td>FW8+FM42</td>
-      <td>ep1 100k</td>
-      <td>ep8 100k</td>
-      <td>https://huggingface.co/zhenting/myllama-4B-320BT-cpt-MixedFW8FM42-sftep1-sampled500k_first100k_qwen7b-rlep8-last100k</td>
-    </tr>
-  </tbody>
-</table>
 
 <section class="section">
   <div class="container is-max-desktop">
     <div class="columns is-centered has-text-centered">
       <div class="column is-four-fifths">
-        <h2 class="title is-3">Key Findings</h2>
+        <h2 class="title is-3" id="key-findings">Key Findings</h2>
         <div class="content has-text-justified">
-          <ul>
-            <li>Diminishing returns from excessive pre-training and post-training.</li>
-            <li>Mitigating forgetting during domain-specific continued pre-training is essential.</li>
-            <li>Continued pre-training bridges the gap between pre-training and post-training phases.</li>
-            <li>Supervised fine-tuning and reinforcement learning involve intricate trade-offs.</li>
-          </ul>
+
+          <h3 class="toggle-header" data-target="pretraining-content" style="cursor:pointer;">Pre-training <span style="font-size:0.8em;">&#x25BC;</span></h3>
+          <div class="toggle-content" id="pretraining-content">
+            <h4 id="scaling-pretraining-up">Where Do Returns Diminish?</h4>
+            <p>
+              We rigorously benchmarked LMs of different sizes, increasing pre-training tokens far beyond traditional recipes (Chinchilla optimal ratio of 20x model size). As visualized in Figure 1, we tracked accuracy improvements at every token budget. While adding more tokens at first yields clear improvements, after a certain threshold, extra pre-training becomes less cost-effective.
+            </p>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/scaling_pretraining_up.png" alt="Diminishing returns illustration">
+            </figure>
+            <div class="callout">
+              <strong>Takeaway 1.</strong> Excessive general-domain pre-training improves upstream performance but with diminishing returns (saturation happens around 80x to 160x model size in our study).
+            </div>
+
+            <h4 id="scaling-pretraining-down">When More Isn't Better: Downstream Surprises</h4>
+            <p>
+              Does endlessly scaling pre-training always help with downstream tasks? In Figure 2, we evaluated how different pre-training regimes affect real-world downstream performance, both for tasks similar to the mid-training and post-training data and for novel (OOD) tasks. Remarkably, overly pre-training does not always improve or can even harm downstream reasoning.
+            </p>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/scaling_pretraining_down.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <div class="callout">
+              <strong>Takeaway 2.</strong> Excessive general-domain pre-training does not always improve domain-specific post-training and might even cause performance degradation on some downstream tasks (saturation happens around 80x to 160x model size in our study).
+            </div>
+
+            <h4 id="model-size-scaling">Small vs. Large Models: The Budget-Compute Tradeoff</h4>
+            <p>
+              A common assumption is that larger models will always outperform their smaller counterparts. We study whether this assumption holds under limited pre-training resources. We directly compared 1B and 4B models at fixed compute and data limits (Table 2), examining their downstream results. For limited resources, a well-tuned small model may be more effective, while larger models perform better only after a certain data threshold is met.
+            </p>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/model_size.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <div class="callout">
+              <strong>Takeaway 3.</strong> Under limited pre-training budgets, smaller post-trained models can even outperform larger counterparts. Conversely, once pre-training tokens reach the saturation regime, increasing model size enables clear improvements in both in-domain performance and OOD generalization.
+            </div>
+          </div>
+
+          <h3 class="toggle-header" data-target="midtraining-content" style="cursor:pointer;">Mid-training <span style="font-size:0.8em;">&#x25BC;</span></h3>
+          <div class="toggle-content" id="midtraining-content">
+            <h4 id="cpt-forgetting">The Double-Edged Sword of Continued Pre-training</h4>
+            <p>
+              How do models adapt to new domains without forgetting old knowledge? We investigated continued pre-training (CPT) with and without "replay" of general-domain data, tracking upstream performance in Figure 3 and downstream performance in Table 1. A small percentage of general replay (just 5%) proved critical for balancing new skills with retention of broad knowledge—an easy but powerful trick for practical domain adaptation.
+            </p>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/scaling_cpt_up.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/cpt_config.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <div class="callout">
+              <strong>Takeaway 4.</strong> Continued pre-training on domain-specific data induces catastrophic forgetting of pre-trained knowledge which could harm both upstream and downstream performance, while incorporating a small replay budget (e.g. 5%) could effectively mitigate this degradation.
+            </div>
+  
+            <h4 id="cpt-data">Importance of Continued Pre-training for Post-training</h4>
+            <p>
+              We tested the effect of varying CPT data volume on downstream results, showing results in Figure 4.
+            </p>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/scaling_cpt_down.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <p>
+              Inadequate domain data risks leaving the model poorly adapted, even after SFT or RL. Investing in rich domain datasets, on the other hand, is essential for strong post-training results.
+            </p>
+            <div class="callout">
+              <strong>Takeaway 5.</strong> Domain-specific post-training should be supported by adequate domain-specific CPT data: without it, SFT performance remains suboptimal and RL can even degrade such performance.
+            </div>
+            <p>
+              Our study, reveals the upward trend in in-domain accuracy as more CPT tokens are used. This sustained improvement justifies larger domain-specific datasets, especially when downstream reasoning or RL enhancement is desired.
+            </p>
+            <div class="callout">
+              <strong>Takeaway 6.</strong> As domain-specific CPT data increase, in-domain downstream performance steadily improves and the SFT models could benefit more from RL finetuning.
+            </div>
+            <p>
+              We analyzed the effect of high-volume CPT on both in-domain and OOD tasks. Well-designed domain adaptation can create more flexible models—not just specialists—by strengthening transferable reasoning abilities to OOD tasks.
+            </p>
+            <div class="callout">
+              <strong>Takeaway 7.</strong> With sufficient domain-specific CPT data, post-training on in-domain tasks not only improves in-domain performance but also generalizes effectively to OOD tasks.
+            </div>
+          </div>
+
+          <h3 class="toggle-header" data-target="posttraining-content" style="cursor:pointer;">Post-training <span style="font-size:0.8em;">&#x25BC;</span></h3>
+          <div class="toggle-content" id="posttraining-content">
+            <h4 id="sft-diminishing">SFT: Diminishing Returns and Overfitting Risks</h4>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/scaling_sft_ep_down.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/scaling_sft_ex_down.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <p>
+              We varied both SFT epochs and dataset size, charting downstream metrics in Figures 5 and 6, and show that more SFT is not always better. Overfitting is real, and can hurt generalization—fine-tuning should be done with care and strong validation.
+            </p>
+            <div class="callout">
+              <strong>Takeaway 8.</strong> Excessive SFT improves ID performance with diminishing returns but does not necessarily improve and can even degrade OOD performance.
+            </div>
+            <p>
+              By systematically increasing SFT before RL, we measured the headroom left for further RL gains. When a model is already over-specialized from SFT, RL has little left to improve. Keeping SFT at a balanced level leaves more opportunity for RL to make a difference.
+            </p>
+            <div class="callout">
+              <strong>Takeaway 9.</strong> Excessive SFT, especially overly large epochs, could limit further RL improvements.
+            </div>
+  
+            <h4 id="rl-compute">RL: Diminishing Returns and Practical Solutions</h4>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/scaling_rl_down.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <p>
+              We scaled RL epochs and data size (see Figure 7), documenting how performance changes across different regimes. For both ID and OOD tasks, most of RL's benefit comes early. Targeting 4–8 epochs or ~100K examples gives a practical balance between results and cost in our study on 1B models.
+            </p>
+            <div class="callout">
+              <strong>Takeaway 10.</strong> RL with excessive epochs or examples improves downstream performance on both ID and OOD tasks but with diminishing returns (saturation happens at 4-8 epochs or 50-100K examples in our study).
+            </div>
+            <p>
+              Does RL make the model reason better, or just sample more confidently? We delved into RL's effect on solution diversity and quality. We show that after saturation, RL mainly sharpens the output distribution—helping you sample correct answers more often, but does not fundamentally improve reasoning skill—solving problems that cannot be solved.
+            </p>
+            <div class="callout">
+              <strong>Takeaway 11.</strong> Beyond saturation regime, RL primarily increases the probability of sampling high-quality rollouts but does not necessarily improve models' fundamental reasoning capabilities.
+            </div>
+  
+            <h4 id="sft-rl-allocation">SFT/RL Allocation Under Data Constraints</h4>
+            <p>
+              Given a limited downstream budget, should you spend it on SFT or RL? We experimented with different SFT/RL splits (see Figure 8) on 1B and 4B models to quantify the trade-off between in-domain and OOD performance. Choose the allocation based on goals: favor SFT for specialists, or RL for generalists. This helps tailor the LM for the tasks that matter most.
+            </p>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/sft_rl.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <div class="callout">
+              <strong>Takeaway 12.</strong> Under a constrained downstream data budget, allocating more examples to SFT maximizes in-domain gains at the expense of weaker OOD generalization, while allocating more to RL improves OOD performance.
+            </div>
+          </div>
+
+          <h3 class="toggle-header" data-target="validation-content" style="cursor:pointer;">Validation <span style="font-size:0.8em;">&#x25BC;</span></h3>
+          <div class="toggle-content" id="validation-content">
+            <h4 id="orm-score">ORM Score as a Reliable Unsupervised Metric</h4>
+            <p>
+              We assess ORM (Outcome Reward Model) scores on their ability to predict success on downstream tasks. ORM scoring gives a true picture of reasoning quality post-training. This can help researchers and engineers more reliably monitor and optimize their models during post-training, especially when validation set (with ground truth labels) is not available or too expensive to collect.
+            </p>
+            <figure class="image" style="margin: 1em auto;">
+              <img src="./static/images/orm.png" alt="Forgetting mitigation illustration">
+            </figure>
+            <div class="callout">
+              <strong>Takeaway 13.</strong> ORM score could be a more reliable unsupervised validation metric that helps predict downstream task performance during post-training, compared to validation loss. Notably, ORM scores from an 8B reward model correlate well with problem-solving accuracies of 1B models on many downstream reasoning tasks.
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
   </div>
 </section>
 
+
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
+    <h2 class="title" id="bibtex">BibTeX</h2>
     <pre><code>@article{park2021nerfies,
   author    = {Park, Keunhong and Sinha, Utkarsh and Barron, Jonathan T. and Bouaziz, Sofien and Goldman, Dan B and Seitz, Steven M. and Martin-Brualla, Ricardo},
   title     = {Nerfies: Deformable Neural Radiance Fields},
@@ -1347,6 +1616,246 @@
     </div>
   </div>
 </footer>
+
+<!-- Back to Top Button -->
+<button onclick="topFunction()" id="backToTopBtn" title="Back to top">
+  <span class="icon is-medium">
+    <i class="fas fa-arrow-up"></i>
+  </span>
+</button>
+
+<style>
+#backToTopBtn {
+  display: none; /* Hidden by default */
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  z-index: 99;
+  border: 2px solid #3273dc;
+  outline: none;
+  background-color: #fff;
+  color: #3273dc;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 50%;
+  font-size: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  transition: background 0.2s, box-shadow 0.2s, color 0.2s;
+}
+#backToTopBtn:hover {
+  background-color: #f1f8ff;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  color: #2759a5;
+}
+#backToTopBtn .icon.is-medium {
+  color: #3273dc;
+}
+#backToTopBtn:hover .icon.is-medium {
+  color: #2759a5;
+}
+#toc-sidebar {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  width: 200px;
+  background: #fafdff;
+  border: 1px solid #d0d7e0;
+  border-left: none;
+  padding: 28px 12px 28px 20px;
+  z-index: 100;
+  height: 70vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 0 14px 14px 0;
+  box-shadow: 2px 0 12px rgba(0,0,0,0.04);
+  font-family: 'Noto Sans', sans-serif;
+  transition: transform 0.3s ease;
+}
+
+#toc-sidebar.folded {
+  transform: translateX(-160px);
+}
+
+#toc-toggle {
+  position: absolute;
+  top: 10px;
+  right: -30px;
+  width: 25px;
+  height: 30px;
+  background: #3273dc;
+  color: white;
+  border: none;
+  border-radius: 0 6px 6px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  transition: background 0.2s;
+  box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+}
+
+#toc-toggle:hover {
+  background: #2759a5;
+}
+
+#toc-toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+#toc-sidebar.folded #toc-toggle-icon {
+  transform: rotate(180deg);
+}
+
+#toc-sidebar .toc-title {
+  font-weight: bold;
+  margin-bottom: 1.2em;
+  font-size: 1.15em;
+  color: #3273dc;
+  letter-spacing: 0.5px;
+}
+
+#toc-sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+#toc-sidebar li {
+  margin-bottom: 0.3em;
+  position: relative;
+}
+
+#toc-sidebar > ul > li > a {
+  font-weight: 600;
+  color: #2759a5;
+  font-size: 1.05em;
+  padding: 3px 0 3px 0;
+  display: block;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+#toc-sidebar ul ul {
+  border-left: 2px solid #e0e6f0;
+  margin-left: 0.7em;
+  padding-left: 1.1em;
+  margin-top: 0.2em;
+}
+
+#toc-sidebar ul ul li a:before {
+  content: '•';
+  color: #b3c6e0;
+  margin-right: 0.5em;
+  font-size: 1.1em;
+  vertical-align: middle;
+}
+
+#toc-sidebar ul ul a {
+  font-size: 0.97em;
+  font-weight: 400;
+  color: #3a4a6b;
+  padding: 2px 0 2px 0;
+  border-radius: 4px;
+  display: block;
+}
+
+#toc-sidebar ul ul ul a {
+  font-size: 0.94em;
+  color: #6b7a99;
+}
+
+#toc-sidebar a {
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+#toc-sidebar a:hover, #toc-sidebar a:focus {
+  background: #e8f4fd;
+  color: #1a3a7a;
+}
+
+.main-content {
+  transition: margin-left 0.3s ease;
+}
+
+@media (max-width: 900px) {
+  #toc-sidebar {
+    display: none;
+  }
+  .main-content {
+    margin-left: 0 !important;
+  }
+}
+
+@media (min-width: 900px) {
+  .main-content {
+    margin-left: 220px;
+  }
+  .main-content.toc-folded {
+    margin-left: 0;
+  }
+}
+
+body {
+  scroll-behavior: smooth;
+}
+</style>
+
+<script>
+// Get the button
+var backToTopBtn = document.getElementById("backToTopBtn");
+
+// When the user scrolls down 200px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    backToTopBtn.style.display = "block";
+  } else {
+    backToTopBtn.style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function topFunction() {
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Toggle TOC functionality
+  const tocSidebar = document.getElementById('toc-sidebar');
+  const tocToggle = document.getElementById('toc-toggle');
+  const mainContent = document.querySelector('.main-content') || document.body;
+  
+  // Add main-content class to body if it doesn't exist
+  if (!document.querySelector('.main-content')) {
+    document.body.classList.add('main-content');
+  }
+  
+  tocToggle.addEventListener('click', function() {
+    tocSidebar.classList.toggle('folded');
+    document.body.classList.toggle('toc-folded');
+  });
+
+  // Existing toggle-header functionality
+  document.querySelectorAll('.toggle-header').forEach(function(header) {
+    header.addEventListener('click', function() {
+      var targetId = header.getAttribute('data-target');
+      var content = document.getElementById(targetId);
+      if (content.classList.contains('folded')) {
+        content.classList.remove('folded');
+        header.querySelector('span').innerHTML = '\u25BC'; // Down arrow
+      } else {
+        content.classList.add('folded');
+        header.querySelector('span').innerHTML = '\u25B2'; // Up arrow
+      }
+    });
+  });
+});
+</script>
 
 </body>
 </html>
