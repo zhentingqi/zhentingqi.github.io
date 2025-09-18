@@ -28,6 +28,7 @@ latest_posts:
 Welcome! I am a 1st year Computer Science Ph.D. student at [Harvard University](https://www.harvard.edu/), where I am honored to be co-advised by Prof. [Yilun Du](https://yilundu.github.io/) and Prof. [Hima Lakkaraju](https://himalakkaraju.github.io/). My research centers around developing intelligent and reliable AI systems that benefit human society. Motivated by this, I am generally interested in the following topics (w/o particular order):
 
 - **Reasoning**
+
   - Understanding and enhancing reasoning capabilities in foundation models
   - Developing AI systems that generalize effectively to OOD scenarios
   - Training (multi-)agents for compositional reasoning tasks

@@ -1415,7 +1415,7 @@ figure.cover {
       display: block;
       width: 100%;
     }
-    
+
     tr {
       display: flex;
       flex-direction: column;
@@ -1430,7 +1430,8 @@ figure.cover {
       padding-bottom: 0;
     }
 
-    th, td {
+    th,
+    td {
       display: block;
       width: 100%;
       text-align: left;

@@ -2,7 +2,7 @@
 layout: page
 permalink: /services/
 title: Services
-description: 
+description:
 nav: True
 nav_order: 9
 ---
