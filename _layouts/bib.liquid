@@ -184,6 +184,11 @@
     <div class="periodical">
       {{ entry.note | strip }}
     </div>
+    {% if entry.award_type %}
+      <div class="periodical">
+        <span style="color: red; font-weight: bold;">{{ entry.award_type }}</span>
+      </div>
+    {% endif %}
 
     <!-- Links/Buttons -->
     <div class="links">
