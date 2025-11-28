@@ -231,7 +231,7 @@ export default function PublicationsList({ config, publications, embedded = fals
                                     <p className={`${embedded ? "text-sm" : "text-base"} text-neutral-600 dark:text-neutral-400 mb-2`}>
                                         {pub.authors.map((author, idx) => (
                                             <span key={idx}>
-                                                <span className={author.isHighlighted ? 'font-semibold text-accent' : ''}>
+                                                <span className={author.isHighlighted ? 'font-semibold text-accent underline' : ''}>
                                                     {author.name}
                                                 </span>
                                                 {author.isCorresponding && (

@@ -148,8 +148,10 @@ function parseAuthors(authorsStr: string): Array<{ name: string; isHighlighted?:
         name = `${parts[1]} ${parts[0]}`;
       }
       
-      // Check if this is Jiale Liu (to highlight)
-      const isHighlighted = name.toLowerCase().includes('jiale liu') || 
+      // Check if this is Zhenting Qi or Jiale Liu (to highlight)
+      const isHighlighted = name.toLowerCase().includes('zhenting qi') || 
+                          name.toLowerCase().includes('qi zhenting') ||
+                          name.toLowerCase().includes('jiale liu') || 
                           name.toLowerCase().includes('liu jiale');
       
       return {
