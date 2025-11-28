@@ -11,19 +11,19 @@ interface ThemeStore {
 
 export const useThemeStore = create<ThemeStore>()(
   persist(
-    (set, get) => ({
-      // Default to system preference
-      theme: 'system',
-      setTheme: (theme: Theme) => {
-        set({ theme });
-        updateTheme(theme);
+    (set) => ({
+      // Always use light theme
+      theme: 'light',
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      setTheme: (_theme: Theme) => {
+        // Force light theme regardless of input
+        set({ theme: 'light' });
+        updateTheme('light');
       },
       toggleTheme: () => {
-        const current = get().theme;
-        // When in system mode, first toggle explicitly to light
-        const newTheme = current === 'dark' ? 'light' : 'dark';
-        set({ theme: newTheme });
-        updateTheme(newTheme);
+        // Always stay on light theme
+        set({ theme: 'light' });
+        updateTheme('light');
       },
     }),
     {
@@ -42,16 +42,10 @@ export const useThemeStore = create<ThemeStore>()(
   )
 );
 
-function getSystemPrefersDark(): boolean {
-  if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return false;
-  return window.matchMedia('(prefers-color-scheme: dark)').matches;
-}
-
-export function resolveTheme(theme: Theme): 'light' | 'dark' {
-  if (theme === 'system') {
-    return getSystemPrefersDark() ? 'dark' : 'light';
-  }
-  return theme;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function resolveTheme(_theme: Theme): 'light' | 'dark' {
+  // Always return light theme
+  return 'light';
 }
 
 function updateTheme(theme: Theme) {

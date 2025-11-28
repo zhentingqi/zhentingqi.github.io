@@ -3,6 +3,7 @@ import "./globals.css";
 import Navigation from "@/components/layout/Navigation";
 import Footer from "@/components/layout/Footer";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import FontLoader from "@/components/layout/FontLoader";
 import { getConfig } from "@/lib/config";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -56,19 +57,6 @@ export default function RootLayout({
           href="https://google-fonts.jialeliu.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap"
           media="print"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(){
-                var l = document.getElementById('gfonts-css');
-                if (!l) return;
-                if (l.media !== 'all') {
-                  l.addEventListener('load', function(){ try { l.media = 'all'; } catch(e){} });
-                }
-              })();
-            `,
-          }}
-        />
         <noscript>
           {/* Fallback for no-JS environments */}
           <link
@@ -79,25 +67,17 @@ export default function RootLayout({
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              try {
-                const theme = localStorage.getItem('theme-storage');
-                const parsed = theme ? JSON.parse(theme) : null;
-                const setting = parsed?.state?.theme || 'system';
-                const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const effective = setting === 'dark' ? 'dark' : (setting === 'light' ? 'light' : (prefersDark ? 'dark' : 'light'));
-                var root = document.documentElement;
-                root.classList.add(effective);
-                root.setAttribute('data-theme', effective);
-              } catch (e) {
-                var root = document.documentElement;
-                root.classList.add('light');
-                root.setAttribute('data-theme', 'light');
-              }
+              // Always use light theme
+              var root = document.documentElement;
+              root.classList.remove('dark');
+              root.classList.add('light');
+              root.setAttribute('data-theme', 'light');
             `,
           }}
         />
       </head>
       <body className={`font-sans antialiased`}>
+        <FontLoader />
         <ThemeProvider>
           <Navigation
             items={config.navigation}

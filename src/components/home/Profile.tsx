@@ -9,7 +9,7 @@ import {
     MapPinIcon
 } from '@heroicons/react/24/outline';
 import { MapPinIcon as MapPinSolidIcon, EnvelopeIcon as EnvelopeSolidIcon } from '@heroicons/react/24/solid';
-import { Github, Linkedin, Pin } from 'lucide-react';
+import { Github, Linkedin, Pin, Instagram } from 'lucide-react';
 import { SiteConfig } from '@/lib/config';
 
 // Custom ORCID icon component
@@ -30,7 +30,14 @@ interface ProfileProps {
     researchInterests?: string[];
 }
 
-export default function Profile({ author, social, researchInterests }: ProfileProps) {
+// Helper function to normalize href values (handle string | string[] | undefined)
+const normalizeHref = (href: string | string[] | undefined): string => {
+    if (!href) return '#';
+    if (Array.isArray(href)) return href[0] || '#';
+    return href;
+};
+
+export default function Profile({ author, social }: ProfileProps) {
 
     const [showAddress, setShowAddress] = useState(false);
     const [isAddressPinned, setIsAddressPinned] = useState(false);
@@ -74,23 +81,28 @@ export default function Profile({ author, social, researchInterests }: ProfilePr
         }] : []),
         ...(social.google_scholar ? [{
             name: 'Google Scholar',
-            href: social.google_scholar,
+            href: normalizeHref(social.google_scholar),
             icon: AcademicCapIcon,
         }] : []),
         ...(social.orcid ? [{
             name: 'ORCID',
-            href: social.orcid,
+            href: normalizeHref(social.orcid),
             icon: OrcidIcon,
         }] : []),
         ...(social.github ? [{
             name: 'GitHub',
-            href: social.github,
+            href: normalizeHref(social.github),
             icon: Github,
         }] : []),
         ...(social.linkedin ? [{
             name: 'LinkedIn',
-            href: social.linkedin,
+            href: normalizeHref(social.linkedin),
             icon: Linkedin,
+        }] : []),
+        ...(social.instagram ? [{
+            name: 'Instagram',
+            href: normalizeHref(social.instagram),
+            icon: Instagram,
         }] : []),
     ];
 
@@ -292,18 +304,6 @@ export default function Profile({ author, social, researchInterests }: ProfilePr
                     );
                 })}
             </div>
-
-            {/* Research Interests */}
-            {researchInterests && researchInterests.length > 0 && (
-                <div className="bg-neutral-100 dark:bg-neutral-800 rounded-lg p-4 mb-6 hover:shadow-lg transition-all duration-200 hover:scale-[1.02]">
-                    <h3 className="font-semibold text-primary mb-3">Research Interests</h3>
-                    <div className="space-y-2 text-sm text-neutral-700 dark:text-neutral-500">
-                        {researchInterests.map((interest, index) => (
-                            <div key={index}>{interest}</div>
-                        ))}
-                    </div>
-                </div>
-            )}
 
             {/* World Map */}
             <div className="w-full overflow-hidden flex justify-center mt-6">

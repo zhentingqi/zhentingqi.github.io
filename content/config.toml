@@ -24,6 +24,7 @@ google_scholar = "https://scholar.google.com/citations?hl=en&user=WZ00HCUAAAAJ"
 orcid = ""
 github = "https://github.com/zhentingqi"
 linkedin = "https://www.linkedin.com/in/zhentingqi"
+instagram = "https://instagram.com/heptacol"
 
 [features]
 # Show a like button on the about page

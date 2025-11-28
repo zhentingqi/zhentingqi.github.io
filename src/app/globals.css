@@ -130,7 +130,7 @@
 
 /* Dark mode styles */
 .dark {
-  --background: #0f172a;
+  --background: #2d2d2d;
   --foreground: #f8fafc;
   
   /* Adjust colors for dark mode */
@@ -142,7 +142,7 @@
   --accent-dark: #8B1628;
   
   /* Dark mode glass effect */
-  --glass-bg: rgba(15, 23, 42, 0.8);
+  --glass-bg: rgba(45, 45, 45, 0.8);
   --glass-border: rgba(255, 255, 255, 0.1);
   --glass-shadow: rgba(0, 0, 0, 0.5);
   

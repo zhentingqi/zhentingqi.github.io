@@ -54,7 +54,9 @@ export function parseBibTeX(bibtexContent: string): Publication[] {
     const keywords = tags.keywords?.split(',').map((k: string) => k.trim()) || [];
     
     // Parse selected field (convert string to boolean)
-    const selected = tags.selected === 'true' || tags.selected === 'yes';
+    // Handles: true, yes, 1 (case-insensitive)
+    const selectedValue = tags.selected?.toLowerCase()?.trim();
+    const selected = selectedValue === 'true' || selectedValue === 'yes' || selectedValue === '1';
     
     // Parse preview field (remove braces if present)
     const preview = tags.preview?.replace(/[{}]/g, '');
