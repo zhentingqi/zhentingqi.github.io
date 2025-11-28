@@ -20,6 +20,14 @@ if [ "$CURRENT_BRANCH" != "main" ]; then
     fi
 fi
 
+# Check for uncommitted changes
+if ! git diff-index --quiet HEAD --; then
+    echo "📝 Uncommitted changes detected. Committing them first..."
+    git add -A
+    git commit -m "Auto-commit before deployment - $(date +'%Y-%m-%d %H:%M:%S')"
+    echo "✅ Changes committed successfully"
+fi
+
 # Step 1: Build the project
 echo "📦 Building the project..."
 npm run build
