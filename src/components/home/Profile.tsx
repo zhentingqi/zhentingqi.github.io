@@ -27,11 +27,10 @@ const OrcidIcon = ({ className }: { className?: string }) => (
 interface ProfileProps {
     author: SiteConfig['author'];
     social: SiteConfig['social'];
-    features: SiteConfig['features'];
     researchInterests?: string[];
 }
 
-export default function Profile({ author, social, features, researchInterests }: ProfileProps) {
+export default function Profile({ author, social, researchInterests }: ProfileProps) {
 
     const [showAddress, setShowAddress] = useState(false);
     const [isAddressPinned, setIsAddressPinned] = useState(false);
