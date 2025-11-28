@@ -1,0 +1,23 @@
+[[news]]
+date = "2025-11"
+content = "Will be joining **Meta FAIR** (Menlo Park office) as a Research Intern."
+
+[[news]]
+date = "2025-09"
+content = "Our paper [_EvoLM: In Search of Lost Language Model Training Dynamics_](https://arxiv.org/abs/2506.16029) has been accepted to NeurIPS 2025 (oral)."
+
+[[news]]
+date = "2025-05"
+content = "Our paper [_Satori: Reinforcement Learning with Chain-of-Action-Thought Enhances LLM Reasoning via Autoregressive Search_](https://arxiv.org/abs/2502.02508) has been accepted to ICML 2025."
+
+[[news]]
+date = "2025-05"
+content = "Will be joining **Google DeepMind** (Mountain View office) as a Student Researcher."
+
+[[news]]
+date = "2025-04"
+content = "I will continue my research journey at **Harvard** as a PhD student!"
+
+[[news]]
+date = "2025-01"
+content = "Our papers [_Mutual Reasoning Makes Smaller LLMs Stronger Problem-Solvers_](https://arxiv.org/abs/2408.06195), [_Quantifying Generalization Complexity for Large Language Models_](https://arxiv.org/abs/2410.01769), [_Follow My Instruction and Spill the Beans: Scalable Data Extraction from Retrieval-Augmented Generation Systems_](https://arxiv.org/abs/2402.17840) have been accepted to ICLR 2025."

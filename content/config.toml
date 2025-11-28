@@ -1,0 +1,45 @@
+[site]
+title = "Zhenting Qi"
+description = "Computer Science Ph.D. student at Harvard University, researching intelligent and reliable AI systems"
+favicon = "/favicon.svg"
+last_updated = "December 1, 2025"
+
+[author]
+name = "Zhenting Qi"
+title = "Ph.D. Student in Computer Science"
+institution = "Harvard University"
+avatar = "/bio.jpg"
+
+[social]
+# Contact information (leave blank or delete to hide)
+
+email = "zhentingqi@g.harvard.edu"
+location = "Cambridge, MA, USA"
+location_url = "https://maps.google.com"
+location_details = [
+  "Harvard University",
+  "Cambridge, MA, USA"
+]
+google_scholar = "https://scholar.google.com/citations?hl=en&user=WZ00HCUAAAAJ"
+orcid = ""
+github = "https://github.com/zhentingqi"
+linkedin = "https://www.linkedin.com/in/zhentingqi"
+
+[features]
+# Show a like button on the about page
+enable_likes = true
+
+# Display all subpages on a single page
+enable_one_page_mode = false
+
+[[navigation]]
+title = "About"
+type = "page"
+target = "about"
+href = "/"
+
+[[navigation]]
+title = "Publications"
+type = "page"
+target = "publications"
+href = "/publications"
