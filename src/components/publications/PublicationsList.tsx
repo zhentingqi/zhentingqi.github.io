@@ -211,9 +211,23 @@ export default function PublicationsList({ config, publications, embedded = fals
                                     </div>
                                 )}
                                 <div className="flex-grow">
-                                    <h3 className={`${embedded ? "text-lg" : "text-xl"} font-semibold text-primary mb-2 leading-tight`}>
-                                        {pub.title}
-                                    </h3>
+                                    <div className="flex items-start justify-between gap-2 mb-2">
+                                        <h3 className={`${embedded ? "text-lg" : "text-xl"} font-semibold text-primary leading-tight flex-1`}>
+                                            {pub.title}
+                                        </h3>
+                                        {pub.awards && pub.awards.length > 0 && (
+                                            <div className="flex flex-wrap gap-1 flex-shrink-0">
+                                                {pub.awards.map((award, idx) => (
+                                                    <span
+                                                        key={idx}
+                                                        className="inline-block px-2 py-1 rounded border-2 border-accent bg-accent/10 text-accent text-xs font-semibold whitespace-nowrap"
+                                                    >
+                                                        🏆 {award}
+                                                    </span>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
                                     <p className={`${embedded ? "text-sm" : "text-base"} text-neutral-600 dark:text-neutral-400 mb-2`}>
                                         {pub.authors.map((author, idx) => (
                                             <span key={idx}>
@@ -238,6 +252,26 @@ export default function PublicationsList({ config, publications, embedded = fals
                                     )}
 
                                     <div className="flex flex-wrap gap-2 mt-auto">
+                                        {(pub.arxivId || (pub.url && pub.url.includes('arxiv.org'))) && (
+                                            <a
+                                                href={pub.url && pub.url.includes('arxiv.org') ? pub.url : `https://arxiv.org/abs/${pub.arxivId}`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white transition-colors"
+                                            >
+                                                arXiv
+                                            </a>
+                                        )}
+                                        {(pub.pdfUrl || (pub.url && pub.url.includes('arxiv.org'))) && (
+                                            <a
+                                                href={pub.pdfUrl || (pub.url ? convertArxivToPdf(pub.url) : undefined) || `https://arxiv.org/pdf/${pub.arxivId}.pdf`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="inline-flex items-center px-3 py-1 rounded-md text-xs font-medium bg-neutral-100 dark:bg-neutral-800 text-neutral-700 dark:text-neutral-300 hover:bg-accent hover:text-white transition-colors"
+                                            >
+                                                PDF
+                                            </a>
+                                        )}
                                         {pub.doi && (
                                             <a
                                                 href={`https://doi.org/${pub.doi}`}
@@ -338,4 +372,12 @@ export default function PublicationsList({ config, publications, embedded = fals
             </div>
         </motion.div>
     );
+}
+
+function convertArxivToPdf(url: string): string | undefined {
+    if (!url) return undefined;
+    if (url.includes('/pdf/')) return url;
+    const match = url.match(/\/abs\/(\d{4}\.\d{4,5})/);
+    if (match) return `https://arxiv.org/pdf/${match[1]}.pdf`;
+    return undefined;
 }

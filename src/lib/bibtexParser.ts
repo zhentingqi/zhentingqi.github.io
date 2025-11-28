@@ -79,15 +79,23 @@ export function parseBibTeX(bibtexContent: string): Publication[] {
       issue: tags.number,
       pages: tags.pages,
       doi: tags.doi,
-      url: tags.url,
       code: tags.code,
       abstract: cleanBibTeXString(tags.abstract),
       description: cleanBibTeXString(tags.description || tags.note),
       selected,
       preview,
       
+      // Parse awards (can be comma-separated or single value)
+      awards: tags.award ? (tags.award.includes(',') ? tags.award.split(',').map((a: string) => cleanBibTeXString(a.trim())) : [cleanBibTeXString(tags.award)]) : undefined,
+      
+      // Extract arXiv and PDF links
+      arxivId: extractArxivId(tags.arxiv || tags.url || ''),
+      // Store URL - prefer regular URL, otherwise use arxiv URL
+      url: tags.url || (tags.arxiv ? (tags.arxiv.startsWith('http') ? tags.arxiv : `https://arxiv.org/abs/${extractArxivId(tags.arxiv)}`) : undefined),
+      pdfUrl: tags.pdf || (tags.arxiv ? convertArxivToPdf(tags.arxiv) : (tags.url && tags.url.includes('arxiv.org') ? convertArxivToPdf(tags.url) : undefined)),
+      
       // Store original BibTeX (excluding custom fields)
-      bibtex: reconstructBibTeX(entry, ['selected', 'preview', 'description', 'keywords', 'code']),
+      bibtex: reconstructBibTeX(entry, ['selected', 'preview', 'description', 'keywords', 'code', 'award']),
     };
     
     // Clean up undefined fields
@@ -188,6 +196,51 @@ function cleanBibTeXString(str?: string): string {
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
   
   return cleaned;
+}
+
+function extractArxivId(url: string): string | undefined {
+  if (!url) return undefined;
+  
+  // Extract arXiv ID from various formats
+  // https://arxiv.org/abs/2506.16029
+  // https://arxiv.org/pdf/2506.16029.pdf
+  // arxiv:2506.16029
+  const arxivMatch = url.match(/(?:arxiv\.org\/(?:abs|pdf)\/|arxiv:)(\d{4}\.\d{4,5})/);
+  if (arxivMatch) {
+    return arxivMatch[1];
+  }
+  
+  // Check if it's already just an ID
+  if (/^\d{4}\.\d{4,5}$/.test(url.trim())) {
+    return url.trim();
+  }
+  
+  return undefined;
+}
+
+function convertArxivToPdf(arxivUrl: string): string | undefined {
+  if (!arxivUrl) return undefined;
+  
+  // If it's already a PDF URL, return it
+  if (arxivUrl.includes('/pdf/')) {
+    return arxivUrl;
+  }
+  
+  // Extract arXiv ID and convert to PDF URL
+  const arxivId = extractArxivId(arxivUrl);
+  if (arxivId) {
+    return `https://arxiv.org/pdf/${arxivId}.pdf`;
+  }
+  
+  // If it's a full abs URL, convert to PDF
+  if (arxivUrl.includes('/abs/')) {
+    const id = arxivUrl.match(/\/abs\/(\d{4}\.\d{4,5})/);
+    if (id) {
+      return `https://arxiv.org/pdf/${id[1]}.pdf`;
+    }
+  }
+  
+  return undefined;
 }
 
 function detectResearchArea(title: string, keywords: string[]): ResearchArea {

@@ -23,9 +23,16 @@ export default function About({ content, title = 'About' }: AboutProps) {
                         h2: ({ children }) => <h2 className="text-2xl font-serif font-bold text-primary mt-8 mb-4 border-b border-neutral-200 dark:border-neutral-800 pb-2">{children}</h2>,
                         h3: ({ children }) => <h3 className="text-xl font-semibold text-primary mt-6 mb-3">{children}</h3>,
                         p: ({ children }) => <p className="mb-4 last:mb-0">{children}</p>,
-                        ul: ({ children }) => <ul className="list-disc list-inside mb-4 space-y-1 ml-4">{children}</ul>,
-                        ol: ({ children }) => <ol className="list-decimal list-inside mb-4 space-y-1 ml-4">{children}</ol>,
-                        li: ({ children }) => <li className="mb-1">{children}</li>,
+                        ul: ({ children, ...props }) => {
+                            // Use list-outside for better alignment, especially with nested lists
+                            return <ul className="list-disc mb-2 space-y-1 ml-6 pl-0 list-outside [&_ul]:ml-6 [&_ul]:mt-1" {...props}>{children}</ul>;
+                        },
+                        ol: ({ children, ...props }) => {
+                            return <ol className="list-decimal mb-2 space-y-1 ml-6 pl-0 list-outside [&_ol]:ml-6 [&_ol]:mt-1" {...props}>{children}</ol>;
+                        },
+                        li: ({ children }) => {
+                            return <li className="mb-1 pl-0 [&>ul]:ml-4 [&>ul]:mt-1">{children}</li>;
+                        },
                         a: ({ ...props }) => (
                             <a
                                 {...props}
