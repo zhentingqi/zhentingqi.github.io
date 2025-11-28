@@ -106,13 +106,15 @@ export default function Navigation({ items, siteTitle, enableOnePageMode }: Navi
                     href="/"
                     className="flex items-center space-x-3 text-xl lg:text-2xl font-serif font-semibold text-primary hover:text-accent transition-colors duration-200"
                   >
-                    <Image
-                      src="/harvard.jpg"
-                      alt="Harvard University"
-                      width={100}
-                      height={100}
-                      className="object-contain"
-                    />
+                    <div className="bg-white dark:bg-white p-1 rounded-md shadow-[0_0_15px_rgba(100,100,100,0.5)] hover:shadow-[0_0_25px_rgba(100,100,100,0.8)] dark:shadow-[0_0_15px_rgba(255,255,255,0.6)] dark:hover:shadow-[0_0_25px_rgba(255,255,255,0.9)] transition-shadow duration-300">
+                      <Image
+                        src="/harvard.jpg"
+                        alt="Harvard University"
+                        width={100}
+                        height={100}
+                        className="object-contain"
+                      />
+                    </div>
                     <span className="text-neutral-300 dark:text-neutral-600">|</span>
                     <span>{siteTitle}</span>
                   </Link>
