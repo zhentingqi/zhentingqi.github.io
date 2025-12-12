@@ -4,7 +4,8 @@ My research centers around developing intelligent and reliable AI systems that b
 
 - **Reasoning**
     - Understanding and enhancing reasoning capabilities in foundation models
-    - Developing AI systems that generalize effectively to OOD scenarios
+    - Developing effective verification systems
+    - Developing AI systems that generalize well to out-of-distribution tasks
     - Training (multi-)agents for compositional reasoning tasks
 
 - **Reliability**
