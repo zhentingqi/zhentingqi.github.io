@@ -25,6 +25,7 @@ export interface SiteConfig {
         github?: string;
         linkedin?: string;
         instagram?: string;
+        twitter?: string;
         [key: string]: string | string[] | undefined;
     };
     features: {

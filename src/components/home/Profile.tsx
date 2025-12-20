@@ -9,7 +9,7 @@ import {
     MapPinIcon
 } from '@heroicons/react/24/outline';
 import { MapPinIcon as MapPinSolidIcon, EnvelopeIcon as EnvelopeSolidIcon } from '@heroicons/react/24/solid';
-import { Github, Linkedin, Instagram, Pin } from 'lucide-react';
+import { Github, Linkedin, Instagram, Pin, Twitter } from 'lucide-react';
 import { SiteConfig } from '@/lib/config';
 
 // Custom ORCID icon component
@@ -95,6 +95,11 @@ export default function Profile({ author, social }: ProfileProps) {
             name: 'Instagram',
             href: social.instagram,
             icon: Instagram,
+        }] : []),
+        ...(social.twitter ? [{
+            name: 'X',
+            href: social.twitter,
+            icon: Twitter,
         }] : []),
     ];
 
