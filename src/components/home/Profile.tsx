@@ -9,7 +9,7 @@ import {
     MapPinIcon
 } from '@heroicons/react/24/outline';
 import { MapPinIcon as MapPinSolidIcon, EnvelopeIcon as EnvelopeSolidIcon } from '@heroicons/react/24/solid';
-import { Github, Linkedin, Instagram, Pin, Twitter } from 'lucide-react';
+import { Github, Linkedin, Instagram, Pin } from 'lucide-react';
 import { SiteConfig } from '@/lib/config';
 
 // Custom ORCID icon component
@@ -21,6 +21,18 @@ const OrcidIcon = ({ className }: { className?: string }) => (
         xmlns="http://www.w3.org/2000/svg"
     >
         <path d="M12 0C5.372 0 0 5.372 0 12s5.372 12 12 12 12-5.372 12-12S18.628 0 12 0zM7.369 4.378c.525 0 .947.431.947.947s-.422.947-.947.947a.95.95 0 0 1-.947-.947c0-.525.422-.947.947-.947zm-.722 3.038h1.444v10.041H6.647V7.416zm3.562 0h3.9c3.712 0 5.344 2.653 5.344 5.025 0 2.578-2.016 5.025-5.325 5.025h-3.919V7.416zm1.444 1.303v7.444h2.297c3.272 0 4.022-2.484 4.022-3.722 0-2.016-1.284-3.722-4.097-3.722h-2.222z" />
+    </svg>
+);
+
+// Custom X (Twitter) icon component
+const XIcon = ({ className }: { className?: string }) => (
+    <svg
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        className={className}
+        xmlns="http://www.w3.org/2000/svg"
+    >
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
     </svg>
 );
 
@@ -65,11 +77,10 @@ export default function Profile({ author, social }: ProfileProps) {
             icon: EnvelopeIcon,
             isEmail: true,
         }] : []),
-        ...(social.location || social.location_details ? [{
-            name: 'Location',
-            href: social.location_url || '#',
-            icon: MapPinIcon,
-            isLocation: true,
+        ...(social.twitter ? [{
+            name: 'X',
+            href: social.twitter,
+            icon: XIcon,
         }] : []),
         ...(social.google_scholar ? [{
             name: 'Google Scholar',
@@ -95,11 +106,6 @@ export default function Profile({ author, social }: ProfileProps) {
             name: 'Instagram',
             href: social.instagram,
             icon: Instagram,
-        }] : []),
-        ...(social.twitter ? [{
-            name: 'X',
-            href: social.twitter,
-            icon: Twitter,
         }] : []),
     ];
 
