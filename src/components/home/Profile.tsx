@@ -50,7 +50,7 @@ export default function Profile({ author, social }: ProfileProps) {
         const script = document.createElement('script');
         script.type = 'text/javascript';
         script.id = 'mapmyvisitors';
-        script.src = '//mapmyvisitors.com/map.js?d=aUWgqlLukNdkqD5ONy1lQa5A39c1n1lQ1LlDjdGlGog&cl=ffffff&w=a';
+        script.src = '//mapmyvisitors.com/map.js?d=aUWgqlLukNdkqD5ONy1lQa5A39c1n1lQ1LlDjdGlGog&cl=ffffff&w=a&t=n';
         script.async = true;
         
         const mapContainer = document.getElementById('map-container');

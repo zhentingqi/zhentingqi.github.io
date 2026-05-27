@@ -20,8 +20,8 @@ if [ "$CURRENT_BRANCH" != "main" ]; then
     fi
 fi
 
-# Check for uncommitted changes
-if ! git diff-index --quiet HEAD --; then
+# Check for uncommitted changes, including untracked files
+if [ -n "$(git status --porcelain)" ]; then
     echo "📝 Uncommitted changes detected. Committing them first..."
     git add -A
     git commit -m "Auto-commit before deployment - $(date +'%Y-%m-%d %H:%M:%S')"
