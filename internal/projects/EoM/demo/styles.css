@@ -149,6 +149,21 @@ body {
   pointer-events: none;
 }
 .stage.stepping .tier-tag { opacity: 1; }
+.intro-head {
+  position: absolute;
+  top: 27%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: clamp(24px, 3.4vw, 38px);
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+.stage.intro .intro-head { opacity: 1; }
 .winner-tag { top: 17%; }
 .bid-tag-label { top: 50%; }
 .idle-tag { top: 82%; }
@@ -590,6 +605,29 @@ body {
 .payamt.out { color: #b22a3c; background: #fdeef0; }
 .payamt.in { color: #0a7d5a; background: #e7f8f1; }
 .paynote { margin: 5px 0 0; font-size: 11px; color: var(--muted); }
+.payflow.self { color: var(--ink-soft); }
+.pf-self { display: inline-flex; align-items: center; gap: 5px; }
+.pf-loop { width: 15px; height: 15px; fill: none; stroke: var(--faint); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex: none; }
+.pf-self-lbl { color: var(--muted); font-weight: 700; }
+.pf-void { color: var(--faint); font-weight: 700; letter-spacing: 0.02em; }
+.selfpay-tag {
+  position: absolute;
+  transform: translate(0, -50%);
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-sm);
+  font-size: 12px; font-weight: 700; color: var(--ink-soft);
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.55s ease;
+}
+.selfpay-tag.show { opacity: 1; }
+.selfpay-tag svg { width: 14px; height: 14px; fill: none; stroke: var(--muted); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .thought.clamp { margin: 8px 0 0; font-size: 12px; line-height: 1.5; color: var(--ink-soft); background: #fbfbfa; border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 
 .ledger-title { margin-top: 14px; }
