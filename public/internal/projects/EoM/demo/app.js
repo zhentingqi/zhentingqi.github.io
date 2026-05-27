@@ -19,7 +19,8 @@ const fmtMoney = (v) => (v == null || Number.isNaN(+v) ? "—" : `$${(+v).toFixe
 const roleColor = (r) => ROLE_COLOR[r] || "#8a8a8e";
 const roleLabel = (r) => (r ? r[0].toUpperCase() + r.slice(1) : "Agent");
 
-const state = { ep: 0, step: 0, phase: 0, playing: false, timer: null, selectedId: null };
+const state = { ep: 0, step: 0, phase: 0, playing: false, timer: null, selectedId: null, intro: true };
+const isIntro = () => state.intro;
 const LAST_PHASE = 3;                    // beats are 0..3 within a real step
 const BEAT_MS = [0, 1200, 2600, 4000];   // cumulative beat offsets (auto-play)
 const STEP_MS = 5500;                    // play() interval — must stay > BEAT_MS[3]
@@ -37,6 +38,7 @@ const bidVal = (step, id) => (step.bids.find((b) => b.id === id) || {}).bid;
 function castAgents() {
   const t = task();
   const step = curStep();
+  if (isIntro()) return DATA.tasks[0].agents; // starting population
   if (!step) return t.agents;
   const map = new Map((t.participantAgents || t.agents).map((a) => [a.id, a]));
   for (const a of t.agents) map.set(a.id, a);
@@ -79,7 +81,7 @@ function computeLayout(agents) {
   const W = Math.max(stage.clientWidth, 360);
   const H = Math.max(stage.clientHeight, 380);
   const step = curStep();
-  if (!step) { // settle / checkout -> all surviving agents in a single row
+  if (isIntro() || !step) { // intro / settle / checkout -> all agents in a single row
     const ordered = agents.slice().sort((a, b) =>
       ROLE_ORDER.indexOf(a.role) - ROLE_ORDER.indexOf(b.role) || (a.generation || 0) - (b.generation || 0));
     const pos = new Map();
@@ -116,8 +118,10 @@ function renderStage(animateDeltas = false) {
   const bornIds = new Set((t.births || []).map((b) => b.id));
   const bidOrder = step ? [...step.bids].sort((a, b) => (b.bid || 0) - (a.bid || 0)).map((b) => b.id) : [];
 
-  $("stage").classList.toggle("stepping", !!step && state.phase >= 1);
-  $("stage").classList.toggle("checkout", !step);
+  const intro = isIntro();
+  $("stage").classList.toggle("stepping", !intro && !!step && state.phase >= 1);
+  $("stage").classList.toggle("checkout", !intro && !step);
+  $("stage").classList.toggle("intro", intro);
 
   // remove gone nodes
   for (const [id, el] of nodes) {
@@ -185,7 +189,15 @@ function renderStage(animateDeltas = false) {
   if (step && state.phase >= 3 && step.payment) {
     const key = `${state.ep}:${step.step}`;
     if (key !== lastPaidKey) { lastPaidKey = key; flyPayment(step.payment, pos); }
+  } else if (step && state.phase >= 3 && !step.payment && step.step === 1 && step.winner) {
+    // First action: no recipient — the winning bid is paid to the void (loss on the winner only).
+    const key = `${state.ep}:${step.step}`;
+    if (key !== lastPaidKey) { lastPaidKey = key; flyVoidLoss(step.winner.id, bidVal(step, step.winner.id) || 0, pos); }
   }
+
+  // Persistent "Pays to self" tag beside the winner during a self-pay pay beat — stays visible when paused/scrubbed.
+  const selfPayId = step && state.phase >= 3 && !step.payment && step.step !== 1 && step.winner ? step.winner.id : null;
+  renderSelfPayTag(selfPayId, pos);
 
   if (animateDeltas && !step) {
     for (const a of agents) {
@@ -238,6 +250,32 @@ function flyPayment(payment, pos) {
     stage.appendChild(pop);
     setTimeout(() => pop.remove(), 1300);
   }, 760);
+}
+
+// First action: show the winning bid as a red loss floating up from the winner — no coin, no recipient.
+function flyVoidLoss(winnerId, amount, pos) {
+  const p = pos.get(winnerId);
+  if (!p || amount <= 0) return;
+  const lose = document.createElement("span");
+  lose.className = "delta loss";
+  lose.style.left = `${p.x}px`;
+  lose.style.top = `${p.y - 42}px`;
+  lose.textContent = `−$${(+amount).toFixed(3)}`;
+  $("stage").appendChild(lose);
+  setTimeout(() => lose.remove(), 1400);
+}
+
+// Same agent won again — keep a "Pays to self" tag beside the winner for the whole pay beat.
+function renderSelfPayTag(winnerId, pos) {
+  const tag = $("selfpayTag");
+  if (!tag) return;
+  const p = winnerId == null ? null : pos.get(winnerId);
+  if (!p) { tag.classList.remove("show"); return; } // fade out in place
+  const el = nodes.get(winnerId);
+  const r = el ? el.offsetWidth / 2 : 55;
+  tag.style.left = `${p.x + r + 14}px`;
+  tag.style.top = `${p.y}px`;
+  tag.classList.add("show");
 }
 
 function sparkSvg(series) {
@@ -306,17 +344,44 @@ function renderDetail() {
     state.selectedId = null;
   }
 
+  if (isIntro()) {
+    d.innerHTML =
+      `<div><p class="d-eyebrow">Setup</p><h3>Initial agents</h3>` +
+      `<p class="d-narration">The starting population, before any auction. Press play, or use the › control to open the first auction.</p></div>` +
+      ledgerHtml();
+    for (const r of d.querySelectorAll(".lrow[data-id]"))
+      r.addEventListener("click", () => selectAgent(+r.dataset.id));
+    return;
+  }
+
   let header;
   if (step) {
     const pay = step.payment;
     let payHtml = "";
     if (state.phase >= 3) {
-      payHtml = pay
-        ? `<div class="payflow"><span class="pf-a"><span class="cdot" style="background:${roleColor(pay.fromRole)}"></span>${esc(shortName2(pay.fromName))} <span class="payamt out">−$${(+pay.amount).toFixed(3)}</span></span>` +
+      if (pay) {
+        payHtml = `<div class="payflow"><span class="pf-a"><span class="cdot" style="background:${roleColor(pay.fromRole)}"></span>${esc(shortName2(pay.fromName))} <span class="payamt out">−$${(+pay.amount).toFixed(3)}</span></span>` +
           `<span class="pf-arrow">$ →</span>` +
           `<span class="pf-b"><span class="cdot" style="background:${roleColor(pay.toRole)}"></span>${esc(shortName2(pay.toName))} <span class="payamt in">+$${(+pay.amount).toFixed(3)}</span></span></div>` +
-          `<p class="paynote">bucket brigade · the winner pays its bid to the previous actor</p>`
-        : `<div class="payflow muted">${step.step === 1 ? "first action — bid voided (no previous actor)" : "same agent acted again — no payment this step"}</div>`;
+          `<p class="paynote">bucket brigade · the winner pays its bid to the previous actor</p>`;
+      } else {
+        const w = step.winner;
+        const wn = esc(w ? shortName2(w.name) : "winner");
+        const wc = roleColor(w ? w.role : "implementer");
+        if (step.step === 1) {
+          // First action: no previous actor — the winning bid is paid to the void (no flow).
+          const bid = (w && bidVal(step, w.id)) || 0;
+          payHtml = `<div class="payflow"><span class="pf-a"><span class="cdot" style="background:${wc}"></span>${wn} <span class="payamt out">−$${(+bid).toFixed(3)}</span></span>` +
+            `<span class="pf-void">→ void</span></div>` +
+            `<p class="paynote">first action — no previous actor, so the winning bid is paid to the void</p>`;
+        } else {
+          // Same agent won again — the bid loops back to itself.
+          payHtml = `<div class="payflow self"><span class="pf-self"><span class="cdot" style="background:${wc}"></span>${wn}</span>` +
+            `<svg class="pf-loop" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 1 2.3 5.6"/><path d="M4 20v-5h5"/></svg>` +
+            `<span class="pf-self-lbl">Pays to self</span></div>` +
+            `<p class="paynote">same agent won again — the bid loops back to itself, so no value changes hands</p>`;
+        }
+      }
     }
     const title = state.phase === 0 ? "Auction opens"
       : state.phase === 1 ? "Bidding…"
@@ -352,8 +417,8 @@ function beatNarration(step, phase) {
     default: return step.payment
       ? `Bucket brigade — ${win} pays its winning bid to ${shortName2(step.payment.toName)}, the previous actor. Credit flows backward to whoever set up this move.`
       : (step.step === 1
-          ? "First action of the episode — the bid is voided (no previous actor to pay)."
-          : "Same agent acted again — no payment changes hands this beat.");
+          ? "First action of the episode — no previous actor, so the winning bid is paid to the void."
+          : "Same agent won again, so it pays to self — the bid loops back and no value changes hands.");
   }
 }
 
@@ -429,10 +494,11 @@ let lastBestEp = -1;
 function renderStageHead() {
   const t = task();
   const step = curStep();
-  $("epTitle").textContent = `Episode ${t.index}`;
+  const intro = isIntro();
+  $("epTitle").textContent = intro ? "Setup" : `Episode ${t.index}`;
 
   // phase stepper: idle -> bid -> win -> pay (active dot colored by the eventual winner)
-  const ph = step ? state.phase : 4;
+  const ph = intro ? -1 : step ? state.phase : 4;
   const stepperEl = $("phase");
   stepperEl.style.setProperty("--c", roleColor(step && step.winner ? step.winner.role : "implementer"));
   const labels = ["idle", "bid", "win", "pay", "checkout"];
@@ -444,10 +510,16 @@ function renderStageHead() {
     .join("");
 
   // performance hero: best-so-far, with a delta when this episode set a new best
+  const num = $("perfNum");
+  if (intro) {
+    num.textContent = "—";
+    num.classList.add("flat");
+    $("perfSub").innerHTML = "ready to start";
+    return;
+  }
   const best = t.bestScoreEver || 0;
   const prevBest = state.ep > 0 ? (DATA.tasks[state.ep - 1].bestScoreEver || 0) : 0;
   const improved = best > prevBest + 1e-6;
-  const num = $("perfNum");
   num.textContent = fmtPct(best);
   num.classList.toggle("flat", best <= 0);
   if (improved && state.ep !== lastBestEp) {
@@ -464,8 +536,8 @@ function renderDock() {
   const t = task();
   const total = DATA.tasks.length;
   const step = curStep();
-  $("progressText").textContent = `Episode ${state.ep + 1} / ${total}`;
-  $("stepText").textContent = step ? `step ${step.step} / ${step.maxSteps}` : "settled";
+  $("progressText").textContent = isIntro() ? "Setup" : `Episode ${state.ep + 1} / ${total}`;
+  $("stepText").textContent = isIntro() ? "initial agents" : step ? `step ${step.step} / ${step.maxSteps}` : "settled";
   $("playLabel").textContent = state.playing ? "Pause" : "Play";
   $("playIcon").innerHTML = state.playing ? `<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>` : `<path d="M8 5l11 7-11 7z"/>`;
 
@@ -496,7 +568,7 @@ function renderTimeline() {
     })
     .join("");
   for (const b of tl.querySelectorAll("button")) {
-    b.addEventListener("click", () => { stop(); state.ep = +b.dataset.ep; state.step = 0; state.selectedId = null; gotoPhase(0); });
+    b.addEventListener("click", () => { stop(); state.intro = false; state.ep = +b.dataset.ep; state.step = 0; state.selectedId = null; gotoPhase(0); });
   }
 }
 
@@ -638,6 +710,7 @@ function gotoPhase(p, animateDeltas = false) {
 // Auto-play one step in four beats: idle -> bidding -> winner acts -> winner pays.
 function animateStep() {
   clearPhaseTimers();
+  state.intro = false; // playing leaves the initial-agents screen
   const step = curStep();
   if (!step) { applyPhase(0, true); return; } // settle -> wealth deltas
   applyPhase(0);
@@ -647,6 +720,7 @@ function animateStep() {
 /* ---------- navigation ---------- */
 // One beat forward: within a step 0->1->2->3, then across to the next step / episode.
 function nextBeat() {
+  if (isIntro()) { state.intro = false; gotoPhase(0); return; } // open the first auction
   const step = curStep();
   if (step && state.phase < LAST_PHASE) { gotoPhase(state.phase + 1); return; }
   const t = task();
@@ -656,11 +730,12 @@ function nextBeat() {
 }
 // One beat back, symmetric.
 function prevBeat() {
+  if (isIntro()) return; // already at the very beginning
   const step = curStep();
   if (step && state.phase > 0) { gotoPhase(state.phase - 1); return; }
   if (state.step > 0) { state.step -= 1; gotoPhase(LAST_PHASE); }
   else if (state.ep > 0) { state.ep -= 1; state.step = task().steps.length; gotoPhase(LAST_PHASE); }
-  else gotoPhase(0);
+  else { state.intro = true; gotoPhase(0); } // back into the initial-agents screen
 }
 // Whole-step advance used by auto-play.
 function advanceStep() {
@@ -672,7 +747,7 @@ function advanceStep() {
 function reset() {
   stop();
   clearPhaseTimers();
-  state.ep = 0; state.step = 0; state.selectedId = null;
+  state.ep = 0; state.step = 0; state.selectedId = null; state.intro = true;
   lastBestEp = -1; lastPaidKey = null;
   gotoPhase(0);
 }
