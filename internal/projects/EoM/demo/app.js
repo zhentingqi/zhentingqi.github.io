@@ -20,6 +20,9 @@ const roleColor = (r) => ROLE_COLOR[r] || "#8a8a8e";
 const roleLabel = (r) => (r ? r[0].toUpperCase() + r.slice(1) : "Agent");
 
 const state = { ep: 0, step: 0, phase: 0, playing: false, timer: null, selectedId: null };
+const LAST_PHASE = 3;                    // beats are 0..3 within a real step
+const BEAT_MS = [0, 1200, 2600, 4000];   // cumulative beat offsets (auto-play)
+const STEP_MS = 5500;                    // play() interval — must stay > BEAT_MS[3]
 const nodes = new Map();
 let phaseTimers = [];
 let lastPaidKey = null;
@@ -319,7 +322,8 @@ function renderDetail() {
       : state.phase === 1 ? "Bidding…"
       : state.phase === 2 ? (step.winner ? esc(step.winner.name) + " wins & acts" : "Auction")
       : (step.winner ? esc(step.winner.name) + " pays the bid" : "Payment");
-    header = `<div><p class="d-eyebrow">${esc(t.taskId)} · step ${step.step} / ${step.maxSteps}</p><h3>${title}</h3></div>` +
+    header = `<div><p class="d-eyebrow">${esc(t.taskId)} · step ${step.step} / ${step.maxSteps}</p><h3>${title}</h3>` +
+      `<p class="d-narration">${esc(beatNarration(step, state.phase))}</p></div>` +
       (state.phase >= 2 && step.tool ? `<span class="tool-pill">${esc(step.tool)}()</span>` : "") +
       payHtml +
       (state.phase >= 2 ? `<p class="thought clamp">${esc(step.actionText || step.actionSummary || "—")}</p>` : "");
@@ -328,12 +332,29 @@ function renderDetail() {
       .map((e) => `<div class="event ${esc(e.type)}"><span class="tag">${esc(e.type)}</span><span>${esc(e.text)}</span></div>`)
       .join("");
     header = `<div><p class="d-eyebrow">${esc(t.taskId)} · settled</p>` +
-      `<h3>${t.costNow != null ? fmtPct((t.pctNow || 0) / 100) + " vs seed" : "rolled back"}</h3></div>` +
+      `<h3>${t.costNow != null ? fmtPct((t.pctNow || 0) / 100) + " vs seed" : "rolled back"}</h3>` +
+      `<p class="d-narration">${esc(beatNarration(null))}</p></div>` +
       (evHtml ? `<div class="events">${evHtml}</div>` : "");
   }
   d.innerHTML = header + ledgerHtml();
   for (const r of d.querySelectorAll(".lrow[data-id]"))
     r.addEventListener("click", () => selectAgent(+r.dataset.id));
+}
+
+// Plain-language description of what each beat means — the agent-to-agent communication.
+function beatNarration(step, phase) {
+  if (!step) return "Episode settled — wealth and population update; survivors carry their credit forward.";
+  const win = step.winner ? shortName2(step.winner.name) : "the winner";
+  switch (phase) {
+    case 0: return "Auction opens — every solvent agent may bid for the right to act on this step.";
+    case 1: return "Bidding — agents stake their own wealth on acting; higher confidence, higher bid.";
+    case 2: return `${win} wins the auction and takes the action${step.tool ? ` via ${step.tool}()` : ""}.`;
+    default: return step.payment
+      ? `Bucket brigade — ${win} pays its winning bid to ${shortName2(step.payment.toName)}, the previous actor. Credit flows backward to whoever set up this move.`
+      : (step.step === 1
+          ? "First action of the episode — the bid is voided (no previous actor to pay)."
+          : "Same agent acted again — no payment changes hands this beat.");
+  }
 }
 
 function shortName2(n) {
@@ -475,7 +496,7 @@ function renderTimeline() {
     })
     .join("");
   for (const b of tl.querySelectorAll("button")) {
-    b.addEventListener("click", () => { stop(); state.ep = +b.dataset.ep; state.step = 0; state.selectedId = null; enterStep(true); });
+    b.addEventListener("click", () => { stop(); state.ep = +b.dataset.ep; state.step = 0; state.selectedId = null; gotoPhase(0); });
   }
 }
 
@@ -602,51 +623,79 @@ function render(animateDeltas = false) {
   renderTimeline();
 }
 
-// Play out a step in four beats: idle -> bidding -> winner acts -> winner pays.
-function enterStep(animate = true) {
+// Set phase `p` of the current step and render — does NOT touch the beat timers,
+// so it is safe to call from the scheduled auto-play sequence.
+function applyPhase(p, animateDeltas = false) {
+  const step = curStep();
+  state.phase = step ? Math.max(0, Math.min(LAST_PHASE, p)) : 0;
+  render(step ? false : animateDeltas);
+}
+// Park on phase `p`, cancelling any pending auto-play beats — for manual stepping.
+function gotoPhase(p, animateDeltas = false) {
+  clearPhaseTimers();
+  applyPhase(p, animateDeltas);
+}
+// Auto-play one step in four beats: idle -> bidding -> winner acts -> winner pays.
+function animateStep() {
   clearPhaseTimers();
   const step = curStep();
-  if (!step) { state.phase = 0; render(true); return; } // settle -> wealth deltas
-  if (!animate) { state.phase = 3; render(false); return; }
-  state.phase = 0;
-  render(false);
-  phaseTimers.push(setTimeout(() => { state.phase = 1; paint(false); }, 900));
-  phaseTimers.push(setTimeout(() => { state.phase = 2; paint(false); }, 1800));
-  phaseTimers.push(setTimeout(() => { state.phase = 3; paint(false); }, 2700));
+  if (!step) { applyPhase(0, true); return; } // settle -> wealth deltas
+  applyPhase(0);
+  for (let p = 1; p <= LAST_PHASE; p++)
+    phaseTimers.push(setTimeout(() => applyPhase(p), BEAT_MS[p]));
 }
-
 /* ---------- navigation ---------- */
-function next() {
+// One beat forward: within a step 0->1->2->3, then across to the next step / episode.
+function nextBeat() {
+  const step = curStep();
+  if (step && state.phase < LAST_PHASE) { gotoPhase(state.phase + 1); return; }
   const t = task();
-  if (state.step < t.steps.length) { state.step += 1; enterStep(true); }
-  else if (state.ep < DATA.tasks.length - 1) { state.ep += 1; state.step = 0; enterStep(true); }
+  if (state.step < t.steps.length) { state.step += 1; gotoPhase(0); }
+  else if (state.ep < DATA.tasks.length - 1) { state.ep += 1; state.step = 0; gotoPhase(0); }
   else stop();
 }
-function prev() {
-  if (state.step > 0) state.step -= 1;
-  else if (state.ep > 0) { state.ep -= 1; state.step = task().steps.length; }
-  else return;
-  enterStep(false);
+// One beat back, symmetric.
+function prevBeat() {
+  const step = curStep();
+  if (step && state.phase > 0) { gotoPhase(state.phase - 1); return; }
+  if (state.step > 0) { state.step -= 1; gotoPhase(LAST_PHASE); }
+  else if (state.ep > 0) { state.ep -= 1; state.step = task().steps.length; gotoPhase(LAST_PHASE); }
+  else gotoPhase(0);
 }
-function reset() { stop(); state.ep = 0; state.step = 0; state.selectedId = null; lastBestEp = -1; lastPaidKey = null; enterStep(true); }
+// Whole-step advance used by auto-play.
+function advanceStep() {
+  const t = task();
+  if (state.step < t.steps.length) { state.step += 1; animateStep(); }
+  else if (state.ep < DATA.tasks.length - 1) { state.ep += 1; state.step = 0; animateStep(); }
+  else stop();
+}
+function reset() {
+  stop();
+  clearPhaseTimers();
+  state.ep = 0; state.step = 0; state.selectedId = null;
+  lastBestEp = -1; lastPaidKey = null;
+  gotoPhase(0);
+}
 function stop() {
   if (state.timer) clearInterval(state.timer);
+  clearPhaseTimers(); // freeze on the current beat instead of running out the step
   state.timer = null; state.playing = false; renderDock();
 }
 function play() {
   if (state.playing) return stop();
   state.playing = true; renderDock();
+  animateStep();
   state.timer = setInterval(() => {
     const last = state.ep >= DATA.tasks.length - 1 && state.step >= task().steps.length;
     if (last) return stop();
-    next();
-  }, 3800);
+    advanceStep();
+  }, STEP_MS);
 }
 
 /* ---------- wire ---------- */
 $("playBtn").addEventListener("click", play);
-$("prevBtn").addEventListener("click", () => { stop(); prev(); });
-$("nextBtn").addEventListener("click", () => { stop(); next(); });
+$("prevBtn").addEventListener("click", () => { stop(); prevBeat(); });
+$("nextBtn").addEventListener("click", () => { stop(); nextBeat(); });
 $("resetBtn").addEventListener("click", reset);
 $("progBtn").addEventListener("click", openProgram);
 $("progClose").addEventListener("click", closeProgram);
@@ -656,10 +705,10 @@ window.addEventListener("resize", () => renderStage());
 window.addEventListener("keydown", (e) => {
   if (e.key === "Escape") { closeProgram(); return; }
   if (!$("progModal").hidden) return;
-  if (e.key === "ArrowRight") { stop(); next(); }
-  else if (e.key === "ArrowLeft") { stop(); prev(); }
+  if (e.key === "ArrowRight") { stop(); nextBeat(); }
+  else if (e.key === "ArrowLeft") { stop(); prevBeat(); }
   else if (e.key === " ") { e.preventDefault(); play(); }
 });
 
-enterStep(true);
-setTimeout(play, 1900);
+gotoPhase(0);
+setTimeout(play, 2400);

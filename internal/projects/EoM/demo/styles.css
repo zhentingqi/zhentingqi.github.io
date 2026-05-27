@@ -337,6 +337,7 @@ body {
 }
 .detail .d-eyebrow { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin: 0; }
 .detail h3 { margin: 2px 0 0; font-size: 17px; font-weight: 700; letter-spacing: -0.02em; }
+.detail .d-narration { margin: 6px 0 0; font-size: 12.5px; line-height: 1.5; color: var(--ink-soft); }
 
 .kv { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 .kv .cell {
@@ -418,6 +419,8 @@ body {
 }
 .transport .icon { width: 40px; }
 .transport .icon .i { width: 18px; height: 18px; }
+.transport #resetBtn { width: auto; gap: 7px; padding: 0 14px; font-size: 13px; font-weight: 600; }
+.transport #resetBtn .i { width: 16px; height: 16px; }
 .transport .play { gap: 8px; padding: 0 18px; font-size: 14px; font-weight: 700; background: var(--ink); color: #fff; border-color: var(--ink); }
 .transport .play .i { width: 16px; height: 16px; }
 .transport button:hover { box-shadow: var(--shadow); }
