@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import {
@@ -44,27 +44,6 @@ export default function Profile({ author, social }: ProfileProps) {
 
     const [showEmail, setShowEmail] = useState(false);
     const [isEmailPinned, setIsEmailPinned] = useState(false);
-
-    // Load the world map script
-    useEffect(() => {
-        const script = document.createElement('script');
-        script.type = 'text/javascript';
-        script.id = 'mapmyvisitors';
-        script.src = '//mapmyvisitors.com/map.js?d=aUWgqlLukNdkqD5ONy1lQa5A39c1n1lQ1LlDjdGlGog&cl=ffffff&w=a&t=n';
-        script.async = true;
-        
-        const mapContainer = document.getElementById('map-container');
-        if (mapContainer && !document.getElementById('mapmyvisitors')) {
-            mapContainer.appendChild(script);
-        }
-
-        return () => {
-            const existingScript = document.getElementById('mapmyvisitors');
-            if (existingScript) {
-                existingScript.remove();
-            }
-        };
-    }, []);
 
     const socialLinks = [
         ...(social.email ? [{
@@ -223,63 +202,6 @@ export default function Profile({ author, social }: ProfileProps) {
                 })}
             </div>
 
-            {/* World Map */}
-            <div className="w-full overflow-hidden flex justify-center mt-6">
-                <div id="map-container" className="w-full">
-                    <style dangerouslySetInnerHTML={{
-                        __html: `
-                          #map-container {
-                            width: 100%;
-                            max-width: 100%;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                          }
-                          #mapmyvisitors,
-                          #mapmyvisitors iframe,
-                          #mapmyvisitors canvas,
-                          #mapmyvisitors > div,
-                          #mapmyvisitors > *,
-                          #map-container > * {
-                            max-width: 100% !important;
-                            width: 100% !important;
-                            box-sizing: border-box !important;
-                            margin: 0 auto !important;
-                          }
-                          @media (max-width: 640px) {
-                            #map-container {
-                              transform: scale(0.65);
-                              transform-origin: center center;
-                              width: 100%;
-                              height: auto;
-                            }
-                            #mapmyvisitors,
-                            #mapmyvisitors iframe,
-                            #mapmyvisitors canvas,
-                            #mapmyvisitors > div,
-                            #mapmyvisitors > * {
-                              max-width: none !important;
-                              width: auto !important;
-                              display: block !important;
-                              margin: 0 auto !important;
-                            }
-                          }
-                          @media (max-width: 480px) {
-                            #map-container {
-                              transform: scale(0.5);
-                              transform-origin: center center;
-                            }
-                          }
-                          @media (max-width: 360px) {
-                            #map-container {
-                              transform: scale(0.4);
-                              transform-origin: center center;
-                            }
-                          }
-                        `
-                    }} />
-                </div>
-            </div>
         </motion.div>
     );
 }
