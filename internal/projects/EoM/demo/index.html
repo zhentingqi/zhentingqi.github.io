@@ -11,14 +11,23 @@
   <body>
     <main class="app">
       <header class="bar">
-        <div class="brand">
-          <span class="logo" aria-hidden="true">
-            <svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.5A4 4 0 0 1 18 18H7Z"/></svg>
-          </span>
-          <div class="brand-txt">
-            <h1 id="runTitle">CloudCast</h1>
-            <p id="runSubtitle" class="sub"></p>
-          </div>
+        <div class="transport">
+          <button id="resetBtn" class="icon" title="Reset to Episode 1">
+            <svg viewBox="0 0 24 24" class="i"><path d="M4 12a8 8 0 1 1 2.3 5.6"/><path d="M4 20v-5h5"/></svg>
+            <span>Reset</span>
+          </button>
+          <button id="prevBtn" class="icon" title="previous frame">
+            <svg viewBox="0 0 24 24" class="i"><path d="M15 6l-6 6 6 6"/></svg>
+            <span>Prev. frame</span>
+          </button>
+          <button id="playBtn" class="play" title="play / pause">
+            <svg viewBox="0 0 24 24" class="i" id="playIcon"><path d="M8 5l11 7-11 7z"/></svg>
+            <span id="playLabel">Play</span>
+          </button>
+          <button id="nextBtn" class="icon" title="next frame">
+            <span>Next frame</span>
+            <svg viewBox="0 0 24 24" class="i"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
         </div>
         <div class="metrics">
           <div class="m"><strong id="mBest">—</strong><label>best vs seed</label></div>
@@ -61,22 +70,6 @@
       <aside class="detail" id="detail"></aside>
 
       <footer class="dock">
-        <div class="transport">
-          <button id="resetBtn" class="icon" title="Reset to Episode 1">
-            <svg viewBox="0 0 24 24" class="i"><path d="M4 12a8 8 0 1 1 2.3 5.6"/><path d="M4 20v-5h5"/></svg>
-            <span>Reset</span>
-          </button>
-          <button id="prevBtn" class="icon" title="previous beat">
-            <svg viewBox="0 0 24 24" class="i"><path d="M15 6l-6 6 6 6"/></svg>
-          </button>
-          <button id="playBtn" class="play" title="play / pause">
-            <svg viewBox="0 0 24 24" class="i" id="playIcon"><path d="M8 5l11 7-11 7z"/></svg>
-            <span id="playLabel">Play</span>
-          </button>
-          <button id="nextBtn" class="icon" title="next beat">
-            <svg viewBox="0 0 24 24" class="i"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
-        </div>
         <div class="track">
           <div class="track-top">
             <span class="track-label" id="progressText">Episode 0 / 30</span>

@@ -479,8 +479,8 @@ function ledgerHtml() {
 
 /* ---------- header / metrics / dock ---------- */
 function renderHeader() {
-  $("runTitle").textContent = "CloudCast";
-  $("runSubtitle").textContent = DATA.run.subtitle;
+  if ($("runTitle")) $("runTitle").textContent = "CloudCast";
+  if ($("runSubtitle")) $("runSubtitle").textContent = DATA.run.subtitle;
   const t = task();
   $("mBest").textContent = fmtPct(t.bestScoreEver || 0);
   let muts = 0;
@@ -500,7 +500,7 @@ function renderStageHead() {
   // phase stepper: idle -> bid -> win -> pay (active dot colored by the eventual winner)
   const ph = intro ? -1 : step ? state.phase : 4;
   const stepperEl = $("phase");
-  stepperEl.style.setProperty("--c", roleColor(step && step.winner ? step.winner.role : "implementer"));
+  stepperEl.style.setProperty("--c", "var(--pos)"); // active phase always green
   const labels = ["idle", "bid", "win", "pay", "checkout"];
   stepperEl.innerHTML = labels
     .map((lb, i) => {
@@ -785,5 +785,4 @@ window.addEventListener("keydown", (e) => {
   else if (e.key === " ") { e.preventDefault(); play(); }
 });
 
-gotoPhase(0);
-setTimeout(play, 2400);
+gotoPhase(0); // start paused on the initial-agents screen
