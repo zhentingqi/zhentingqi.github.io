@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CloudCast · agent society</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./demo_run.js" defer></script>
+    <script src="./app.js" defer></script>
+  </head>
+  <body>
+    <main class="app">
+      <header class="bar">
+        <div class="brand">
+          <span class="logo" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1 0-8 5 5 0 0 1 9.6-1.5A4 4 0 0 1 18 18H7Z"/></svg>
+          </span>
+          <div class="brand-txt">
+            <h1 id="runTitle">CloudCast</h1>
+            <p id="runSubtitle" class="sub"></p>
+          </div>
+        </div>
+        <div class="metrics">
+          <div class="m"><strong id="mBest">—</strong><label>best vs seed</label></div>
+          <div class="m"><strong id="mMut">—</strong><label>mutations</label></div>
+          <div class="m"><strong id="mPop">—</strong><label>agents</label></div>
+          <div class="m"><strong id="mRoll">—</strong><label>rollbacks</label></div>
+        </div>
+      </header>
+
+      <section class="stagewrap">
+        <div class="stagehead">
+          <div class="stagehead-left">
+            <h2 id="epTitle">Episode 0</h2>
+            <div class="stepper" id="phase" aria-label="auction phase"></div>
+          </div>
+          <div class="stagehead-right">
+            <button class="progbtn" id="progBtn" title="program, what changed, and the resulting topology">
+              <svg viewBox="0 0 24 24" class="i"><path d="M8 8l-4 4 4 4"/><path d="M16 8l4 4-4 4"/></svg>
+              <span>program &amp; topology</span>
+            </button>
+            <div class="perf">
+              <div class="perf-num" id="perfNum">—</div>
+              <div class="perf-sub" id="perfSub"></div>
+            </div>
+          </div>
+        </div>
+        <div id="stage" class="stage" aria-label="agent auction stage">
+          <span class="tier-tag winner-tag">winner</span>
+          <span class="tier-tag bid-tag-label">bidders</span>
+          <span class="tier-tag idle-tag">idle</span>
+        </div>
+        <div class="legend">
+          <span><i class="dot d-new"></i>mutated</span>
+          <span class="legend-hint">click an agent for its prompt, economics & lineage</span>
+        </div>
+      </section>
+
+      <aside class="detail" id="detail"></aside>
+
+      <footer class="dock">
+        <div class="transport">
+          <button id="resetBtn" class="icon" title="restart">
+            <svg viewBox="0 0 24 24" class="i"><path d="M4 12a8 8 0 1 1 2.3 5.6"/><path d="M4 20v-5h5"/></svg>
+          </button>
+          <button id="prevBtn" class="icon" title="previous">
+            <svg viewBox="0 0 24 24" class="i"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <button id="playBtn" class="play" title="play / pause">
+            <svg viewBox="0 0 24 24" class="i" id="playIcon"><path d="M8 5l11 7-11 7z"/></svg>
+            <span id="playLabel">Play</span>
+          </button>
+          <button id="nextBtn" class="icon" title="next">
+            <svg viewBox="0 0 24 24" class="i"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+        <div class="track">
+          <div class="track-top">
+            <span class="track-label" id="progressText">Episode 0 / 30</span>
+            <span class="track-label muted" id="stepText">ready</span>
+          </div>
+          <svg id="curve" class="curve" viewBox="0 0 600 44" preserveAspectRatio="none" aria-hidden="true"></svg>
+          <div id="timeline" class="timeline" aria-label="episodes"></div>
+        </div>
+      </footer>
+    </main>
+    <div id="tooltip" class="tooltip" hidden></div>
+    <div class="modal" id="progModal" hidden>
+      <div class="modal-card">
+        <div class="modal-head">
+          <div>
+            <p class="d-eyebrow" id="progEyebrow">program</p>
+            <h3 id="progTitle">EVOLVE block</h3>
+          </div>
+          <button class="modal-close" id="progClose" title="close">
+            <svg viewBox="0 0 24 24" class="i"><path d="M6 6l12 12M18 6L6 18"/></svg>
+          </button>
+        </div>
+        <div class="modal-topo">
+          <p class="section-label">Resulting broadcast topology <span class="topo-meta" id="topoMeta"></span></p>
+          <div class="modal-topo-stage" id="modalTopo"></div>
+          <div class="modal-topo-legend" id="modalTopoLegend"></div>
+        </div>
+        <div class="diffstat" id="progStat"></div>
+        <pre class="diff" id="progDiff"></pre>
+      </div>
+    </div>
+  </body>
+</html>
