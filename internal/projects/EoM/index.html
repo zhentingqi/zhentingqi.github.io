@@ -159,6 +159,11 @@ h1.title em { font-style: normal; color: var(--blue-deep); }
   background: #0b0d12;
 }
 .hero-media video, .hero-media img { width: 100%; height: auto; display: block; }
+/* videos are muted (no audio track) — hide the volume/mute control */
+video::-webkit-media-controls-mute-button,
+video::-webkit-media-controls-volume-control-container,
+video::-webkit-media-controls-volume-slider,
+video::-webkit-media-controls-volume-slider-container { display: none !important; }
 .hero-media .cap { font-size: 14px; color: var(--muted); margin-top: 14px; line-height: 1.55; }
 .hero-media .cap b { color: var(--ink); font-weight: 600; }
 
@@ -412,8 +417,8 @@ footer a:hover { text-decoration: underline; }
     <a class="brand" href="#top"><span class="dot"></span> Economy of Minds</a>
     <div class="navlinks">
       <a href="#tldr">TL;DR</a>
-      <a href="#method">Method</a>
       <a href="#demo">Demo</a>
+      <a href="#method">Method</a>
       <a href="#results">Experiments</a>
       <a class="nav-cta" href="#cite">Citation</a>
     </div>
@@ -449,7 +454,7 @@ footer a:hover { text-decoration: underline; }
 
   <div class="hero-media" id="fig-teaser">
     <div class="frame">
-      <video autoplay muted loop playsinline>
+      <video autoplay muted loop playsinline controls controlslist="nodownload">
         <source src="assets/teaser.mp4" type="video/mp4" />
       </video>
     </div>
@@ -507,6 +512,26 @@ footer a:hover { text-decoration: underline; }
       distributed-system optimization. Specialization, teamwork, and skill transfer all emerge on their own. The lesson:
       design the incentives, and the coordination takes care of itself.
     </p>
+  </section>
+
+  <!-- ───────────── Live Demo ───────────── -->
+  <section id="demo" class="read">
+    <div class="kicker">Live Demo</div>
+    <h2>Watch the economy evolve</h2>
+    <p>
+      An interactive replay of a real <b>CloudCast</b> run: a population of partial agents bid in auctions, win the
+      right to edit a multi-cloud broadcast program, and are mutated or bankrupted across 30 episodes. Press play, or
+      use the <b>‹ ›</b> controls to step through each beat — <em>bid → win → pay</em> — and watch credit flow
+      backward between agents. Scrub the timeline, click any agent for its prompt, economics, and lineage, or open
+      <em>current program &amp; topology</em> to see what each accepted mutation changed.
+    </p>
+    <div class="demo-frame">
+      <div class="demo-bar">
+        <div class="dots"><i></i><i></i><i></i></div>
+        <span class="lbl">CloudCast · agent society</span>
+      </div>
+      <iframe src="demo/index.html" title="Economy of Minds live demo" loading="lazy"></iframe>
+    </div>
   </section>
 
   <!-- ───────────── Method ───────────── -->
@@ -653,26 +678,6 @@ footer a:hover { text-decoration: underline; }
       market selection decides whether it survives. Evolution is governed entirely by economic signals (wealth gain and
       loss), with no centralized supervision or global performance labels.
     </p>
-  </section>
-
-  <!-- ───────────── Live Demo ───────────── -->
-  <section id="demo" class="read">
-    <div class="kicker">Live Demo</div>
-    <h2>Watch the economy evolve</h2>
-    <p>
-      An interactive replay of a real <b>CloudCast</b> run: a population of partial agents bid in auctions, win the
-      right to edit a multi-cloud broadcast program, and are mutated or bankrupted across 30 episodes. Press play, or
-      use the <b>‹ ›</b> controls to step through each beat — <em>bid → win → pay</em> — and watch credit flow
-      backward between agents. Scrub the timeline, click any agent for its prompt, economics, and lineage, or open
-      <em>current program &amp; topology</em> to see what each accepted mutation changed.
-    </p>
-    <div class="demo-frame">
-      <div class="demo-bar">
-        <div class="dots"><i></i><i></i><i></i></div>
-        <span class="lbl">CloudCast · agent society</span>
-      </div>
-      <iframe src="demo/index.html" title="Economy of Minds live demo" loading="lazy"></iframe>
-    </div>
   </section>
 
   <!-- ───────────── Experiments ───────────── -->
@@ -859,7 +864,7 @@ footer a:hover { text-decoration: underline; }
     </p>
 
     <figure id="fig-dse-dynamics">
-      <video autoplay muted loop playsinline poster="assets/dse_dynamics.png">
+      <video autoplay muted loop playsinline controls controlslist="nodownload" poster="assets/dse_dynamics.png">
         <source src="assets/wealth_composite.mp4" type="video/mp4" />
         <img src="assets/dse_dynamics.png" alt="Per-agent wealth trajectories on accelerator design" />
       </video>
