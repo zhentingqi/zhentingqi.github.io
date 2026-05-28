@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Agent transcripts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- load data BEFORE the logic script (no defer: inline script runs synchronously) -->
+<script src="./data.js"></script>
+<style>
+:root{
+  --bg:#f7f7f5; --surface:#f0f0ee; --ink:#1f1f23; --ink-body:#3c4043;
+  --muted:#6b7177; --line:#e6e8eb; --line-soft:#eef0f2;
+  --blue:#1a73e8; --blue-deep:#0b57d0; --blue-tint:#e8f0fe;
+  --code-bg:#1b1c20; --code-ink:#e8eaed;
+  --pos:#0ca678; --neg:#e8384f; --panel:#ffffff;
+  --shadow-sm:0 1px 2px rgba(17,24,39,0.04), 0 1px 1px rgba(17,24,39,0.03);
+  --shadow:0 6px 24px rgba(17,24,39,0.06), 0 1px 2px rgba(17,24,39,0.04);
+  --shadow-lg:0 24px 60px -20px rgba(20,40,80,0.35);
+  /* agent colors — identical to the teaser video (seaborn "Set2") */
+  --r-Edgar:#66c2a5; --r-Tavily:#fc8d62; --r-ParseHtml:#8da0cb;
+  --r-RetrieveInfo:#e78ac3; --r-Answer:#a6d854;
+}
+*{box-sizing:border-box;}
+.i{width:1em; height:1em; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
+html,body{margin:0; height:100%;}
+body{
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg); color:var(--ink-body); height:100%;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+/* window chrome — matches the demo's title bar with traffic-light dots */
+.win{height:100%; display:flex; flex-direction:column; background:var(--bg);}
+.winbar{flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; gap:11px; padding:10px 16px; background:#fff; border-bottom:1px solid var(--line);}
+.dots{display:flex; gap:7px;}
+.dots i{width:11px; height:11px; border-radius:50%; background:#e2e4e7; display:inline-block;}
+.dots i:nth-child(1){background:#ff5f57;}
+.dots i:nth-child(2){background:#febc2e;}
+.dots i:nth-child(3){background:#28c840;}
+.wintitle{font-size:12.5px; color:var(--muted); font-weight:600;}
+.app{flex:1 1 auto; min-height:0; display:flex; flex-direction:column; padding:14px 16px 14px; gap:10px;}
+
+/* ── control panel ── */
+.controls{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+.transport{display:flex; align-items:center; gap:8px;}
+.transport .icon, .transport .play{
+  height:38px; border-radius:11px; border:1px solid var(--line); background:var(--panel);
+  color:var(--ink); cursor:pointer; box-shadow:var(--shadow-sm);
+  display:inline-flex; align-items:center; justify-content:center; font-family:inherit;
+  transition:transform .1s, box-shadow .18s, background .18s, border-color .18s;
+}
+.transport .icon{width:auto; gap:7px; padding:0 13px; font-size:13px; font-weight:600;}
+.transport .icon .i{width:16px; height:16px;}
+.transport .play{gap:8px; padding:0 17px; font-size:14px; font-weight:700; background:var(--ink); color:#fff; border-color:var(--ink);}
+.transport .play .i{width:16px; height:16px;}
+.transport button:hover{box-shadow:var(--shadow);}
+.transport button:active{transform:scale(.95);}
+.transport button:disabled{opacity:.4; cursor:default; box-shadow:var(--shadow-sm); transform:none;}
+.counter{font-size:12.5px; color:var(--muted); white-space:nowrap;}
+.taskline{display:flex; align-items:center; gap:9px; min-width:0;}
+.vdot{width:10px; height:10px; border-radius:50%; flex:0 0 auto;}
+.vdot.ok{background:var(--pos);} .vdot.no{background:var(--neg);}
+.tnum{font-size:12.5px; font-weight:700; color:var(--ink); white-space:nowrap; flex:0 0 auto;}
+.qtext{font-size:12.5px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; flex:1 1 auto; min-width:0;}
+
+/* stream scrubber */
+.streamrow{display:flex; align-items:center; gap:10px;}
+.streamlbl{font-size:11px; letter-spacing:.04em; color:var(--muted); white-space:nowrap; font-weight:600;}
+.ribbon{display:flex; gap:6px; flex-wrap:wrap;}
+.cell{flex:0 0 auto; height:24px; padding:0 9px; border-radius:7px; border:1px solid var(--line); background:#fff; cursor:pointer;
+  font-size:11.5px; font-weight:700; color:var(--muted); display:flex; align-items:center; gap:5px; transition:transform .12s, box-shadow .12s;}
+.cell .cdot{width:7px; height:7px; border-radius:50%;}
+.cell.ok .cdot{background:var(--pos);} .cell.no .cdot{background:var(--neg);}
+.cell:hover{transform:translateY(-1px); box-shadow:var(--shadow);}
+.cell.cur{border-color:var(--blue); color:var(--blue-deep); box-shadow:0 0 0 2px var(--blue-tint);}
+
+/* ── chain stage ── */
+.stage{flex:1 1 auto; min-height:0; border:1px solid var(--line); border-radius:14px;
+  background:#fff; padding:14px 26px; overflow:auto; display:flex; align-items:center; justify-content:safe center;}
+.chain{display:flex; align-items:flex-start; justify-content:center; min-width:min-content;}
+.node{display:flex; flex-direction:column; align-items:center; gap:8px; flex:0 0 auto; width:128px; cursor:pointer; user-select:none;}
+
+/* speech bubble (对话框) above each agent */
+.bubble{
+  position:relative; width:128px; height:66px; background:#fff; border:1px solid var(--line);
+  border-radius:10px; padding:7px 9px;
+  font-size:10.5px; line-height:1.35; color:var(--ink-body); box-shadow:var(--shadow-sm);
+  overflow:hidden; opacity:1; transition:opacity .25s, box-shadow .18s, transform .12s;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
+}
+.bubble.mono{font-family:"JetBrains Mono",monospace; font-size:9.5px;}
+.bubble.empty{display:flex; align-items:center; justify-content:center; text-align:center; -webkit-line-clamp:none; color:var(--muted); font-style:italic;}
+.bubble::after{content:""; position:absolute; left:50%; bottom:-7px; transform:translateX(-50%);
+  width:0; height:0; border-left:7px solid transparent; border-right:7px solid transparent; border-top:7px solid #fff;
+  filter:drop-shadow(0 1px 0 var(--line));}
+.node:hover .bubble{box-shadow:var(--shadow); transform:translateY(-1px);}
+.node.off .bubble{opacity:0;}
+.node.cur .bubble{box-shadow:0 0 0 2px color-mix(in srgb, var(--c) 45%, #fff), var(--shadow);}
+
+.disc{
+  width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:10.5px; font-weight:800; color:#1f2937; letter-spacing:.02em; position:relative;
+  background:var(--c); box-shadow:0 6px 16px -8px var(--c);
+  opacity:.26; filter:saturate(.55); transform:scale(.9);
+  transition:opacity .25s, transform .25s, filter .25s, box-shadow .25s;
+}
+.node.on .disc{opacity:1; filter:none; transform:scale(1);}
+.node.cur .disc{box-shadow:0 0 0 5px color-mix(in srgb, var(--c) 30%, #fff), 0 8px 22px -8px var(--c);}
+.disc .sn{position:absolute; top:-6px; left:-6px; width:19px; height:19px; border-radius:50%;
+  background:#fff; color:var(--ink); border:1px solid var(--line); font-size:10px; display:flex; align-items:center; justify-content:center; font-weight:700;}
+.nlabel{font-size:11px; font-weight:600; color:var(--ink); max-width:120px; text-align:center; line-height:1.2; overflow-wrap:anywhere;}
+.node.off .nlabel{color:var(--muted);}
+
+.arrow{flex:0 0 auto; width:30px; height:58px; margin-top:77px; display:flex; align-items:center; justify-content:center; color:var(--line);}
+.arrow.on{color:var(--blue);}
+.arrow svg{width:28px; height:13px;}
+
+/* ── popup (full output) ── */
+.modal{position:absolute; inset:0; z-index:60; display:flex; align-items:center; justify-content:center; padding:18px;}
+.modal[hidden]{display:none;}
+.backdrop{position:absolute; inset:0; background:rgba(20,28,45,.34); backdrop-filter:blur(2px);}
+.card{position:relative; z-index:1; width:min(760px,100%); max-height:100%; background:#fff; border:1px solid var(--line);
+  border-radius:16px; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; overflow:hidden;}
+.phead{display:flex; align-items:center; gap:9px; padding:12px 16px; border-bottom:1px solid var(--line); background:var(--surface); flex:0 0 auto;}
+.phead .dot{width:13px; height:13px; border-radius:50%; flex:0 0 auto;}
+.phead .who{font-size:14px; font-weight:700; color:var(--ink);}
+.phead .role{font-size:12.5px; color:var(--muted);}
+.phead .tool{font-size:11px; color:#fff; background:var(--ink); border-radius:6px; padding:2px 8px; font-family:"JetBrains Mono",monospace;}
+.modal-close{margin-left:6px; width:30px; height:30px; flex:0 0 auto; border-radius:8px; border:1px solid var(--line); background:#fff;
+  color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; justify-content:center;}
+.modal-close:hover{background:var(--surface);}
+.modal-close .i{width:16px; height:16px;}
+.pbody{flex:1 1 auto; min-height:0; overflow:auto; padding:15px 16px 17px;}
+.block-label{font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:700; margin:0 0 6px;}
+.thought{font-size:13.5px; line-height:1.6; color:var(--ink-body); background:#fbfbfc; border-left:3px solid var(--line); padding:10px 12px; border-radius:0 8px 8px 0; white-space:pre-wrap; margin:0 0 14px;}
+.thought.muted-note{color:var(--muted); font-style:italic;}
+.code{background:var(--code-bg); color:var(--code-ink); border-radius:10px; padding:13px 14px; font-family:"JetBrains Mono",monospace; font-size:12.5px; line-height:1.55; white-space:pre-wrap; overflow-wrap:anywhere; margin:0;}
+.code.final{box-shadow:0 0 0 2px color-mix(in srgb, var(--pos) 45%, transparent);}
+.empty{font-size:13px; color:var(--muted); font-style:italic;}
+.verdict-box{margin-top:14px; border-top:1px solid var(--line-soft); padding-top:12px;}
+.verdict-box .vrow{display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:6px;}
+.badge{font-size:10.5px; font-weight:700; border-radius:999px; padding:3px 9px;}
+.badge.ok{color:#0a6b4d; background:#e6f6ef;} .badge.no{color:#9a1c2c; background:#fdecee;}
+.verdict-box .judge{font-size:12px; color:var(--muted); line-height:1.55;}
+.verdict-box .judge b{color:var(--ink-body);}
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="winbar">
+    <div class="dots"><i></i><i></i><i></i></div>
+    <span class="wintitle">Financial Research · agent transcripts</span>
+  </div>
+  <div class="app">
+    <div class="controls">
+    <div class="transport">
+      <button class="icon" id="prevTask" title="Previous task">
+        <svg viewBox="0 0 24 24" class="i"><path d="M18 6l-6 6 6 6"/><path d="M11 6l-6 6 6 6"/></svg><span>Task</span>
+      </button>
+      <button class="icon" id="prevStep" title="Previous step">
+        <svg viewBox="0 0 24 24" class="i"><path d="M15 6l-6 6 6 6"/></svg><span>Prev</span>
+      </button>
+      <button class="play" id="play" title="play / pause">
+        <svg viewBox="0 0 24 24" class="i" id="playIcon"><path d="M8 5l11 7-11 7z"/></svg><span id="playLabel">Play</span>
+      </button>
+      <button class="icon" id="nextStep" title="Next step">
+        <span>Next</span><svg viewBox="0 0 24 24" class="i"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <button class="icon" id="nextTask" title="Next task">
+        <span>Task</span><svg viewBox="0 0 24 24" class="i"><path d="M6 6l6 6-6 6"/><path d="M13 6l6 6-6 6"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="streamrow">
+    <span class="streamlbl" id="streamlbl"></span>
+    <div class="ribbon" id="ribbon"></div>
+  </div>
+
+  <div class="taskline">
+    <span class="vdot" id="vdot"></span>
+    <span class="tnum" id="tnum"></span>
+    <span class="qtext" id="qtext"></span>
+  </div>
+  <div class="counter" id="counter"></div>
+
+    <div class="stage"><div class="chain" id="chain"></div></div>
+  </div>
+</div>
+
+<!-- full-output popup -->
+<div class="modal" id="modal" hidden>
+  <div class="backdrop" id="backdrop"></div>
+  <div class="card">
+    <div class="phead">
+      <span class="dot" id="pdot"></span>
+      <span class="who" id="pwho"></span>
+      <span class="role" id="prole"></span>
+      <span class="tool" id="ptool" style="margin-left:auto"></span>
+      <button class="modal-close" id="modalClose" title="Close"><svg viewBox="0 0 24 24" class="i"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="pbody" id="pbody"></div>
+  </div>
+</div>
+
+<script>
+const ROLE = {
+  Edgar:        {label:"EDGAR",  tool:"edgar_search"},
+  Tavily:       {label:"WEB",    tool:"web_search"},
+  ParseHtml:    {label:"HTML",   tool:"parse_html_page"},
+  RetrieveInfo: {label:"RECALL", tool:"retrieve_information"},
+  Answer:       {label:"ANSWER", tool:"final_answer"},
+};
+const roleColor = r => getComputedStyle(document.documentElement).getPropertyValue("--r-"+r).trim() || "#888";
+const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const info = r => ROLE[r] || {label:r.toUpperCase().slice(0,6), tool:""};
+const preview = st => (st.thought && !st.final) ? st.thought : (st.code || st.thought || "");
+
+const DATA = window.TRANSCRIPT_DATA;
+const TASKS = DATA.tasks;
+const STREAM_TOTAL = DATA.stream_total || TASKS.length;
+const state = {t:0, s:0, playing:false, timer:null, modal:false};
+const PLAY_MS = 1700;
+
+/* ribbon */
+function buildRibbon(){
+  document.getElementById("streamlbl").textContent =
+    `${TASKS.length} tasks sampled from a ${STREAM_TOTAL}-task stream · early → late`;
+  const el = document.getElementById("ribbon");
+  el.innerHTML = TASKS.map((t,i)=>
+    `<div class="cell ${t.success?"ok":"no"}" data-i="${i}" title="Task #${t.n} — ${t.success?"solved":"failed"} · ${t.steps.length} agents"><span class="cdot"></span>#${t.n}</div>`
+  ).join("");
+  el.querySelectorAll(".cell").forEach(c=>c.addEventListener("click",()=>{ pause(); closeModal(); selectTask(+c.dataset.i); }));
+}
+function updateRibbon(){
+  document.querySelectorAll("#ribbon .cell").forEach((c,i)=>c.classList.toggle("cur", i===state.t));
+}
+
+/* chain + bubbles */
+function buildChain(){
+  const t = TASKS[state.t];
+  const el = document.getElementById("chain");
+  let html = "";
+  t.steps.forEach((st,i)=>{
+    const c = roleColor(st.role), inf = info(st.role);
+    const pv = preview(st);
+    const empty = !pv.trim();
+    const mono = !empty && !(st.thought && !st.final);
+    const bcls = ["bubble", empty?"empty":"", mono?"mono":""].filter(Boolean).join(" ");
+    const btext = empty ? "(empty response)" : esc(pv);
+    if(i>0) html += `<div class="arrow" data-a="${i}"><svg viewBox="0 0 30 14"><path d="M0 7h24M19 2l6 5-6 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+    html += `<div class="node" data-i="${i}" style="--c:${c}">
+        <div class="${bcls}">${btext}</div>
+        <div class="disc"><span class="sn">${st.step}</span>${inf.label}</div>
+        <div class="nlabel">${esc(st.agent)}</div>
+      </div>`;
+  });
+  el.innerHTML = html;
+  el.querySelectorAll(".node").forEach(n=>n.addEventListener("click",()=>{ pause(); openModal(+n.dataset.i); }));
+}
+function updateChain(){
+  document.querySelectorAll("#chain .node").forEach((n,i)=>{
+    n.classList.toggle("on", i<=state.s);
+    n.classList.toggle("off", i>state.s);
+    n.classList.toggle("cur", i===state.s);
+  });
+  document.querySelectorAll("#chain .arrow").forEach(a=>a.classList.toggle("on",(+a.dataset.a)<=state.s));
+}
+
+/* task line */
+function renderTaskHead(){
+  const t = TASKS[state.t];
+  document.getElementById("vdot").className = "vdot " + (t.success?"ok":"no");
+  document.getElementById("tnum").textContent = `Task #${t.n} · ${state.t+1}/${TASKS.length} shown`;
+  const q = document.getElementById("qtext");
+  q.textContent = t.question; q.title = t.question;
+}
+
+/* popup */
+function renderModal(){
+  const t = TASKS[state.t], st = t.steps[state.s], inf = info(st.role), c = roleColor(st.role);
+  document.getElementById("pdot").style.background = c;
+  document.getElementById("pwho").textContent = st.agent;
+  document.getElementById("prole").textContent = "· " + st.role;
+  const tool = document.getElementById("ptool");
+  tool.textContent = inf.tool || ""; tool.style.display = inf.tool ? "" : "none";
+
+  const body = document.getElementById("pbody");
+  let html = "";
+  if(!st.thought && !st.code){
+    html += `<div class="empty">This agent won the turn but returned an empty response — no reasoning or action.</div>`;
+  } else {
+    // always show reasoning + action
+    html += `<div class="block-label">Reasoning</div>`;
+    html += st.thought
+      ? `<div class="thought">${esc(st.thought)}</div>`
+      : `<div class="thought muted-note">No explicit reasoning recorded for this turn.</div>`;
+    html += `<div class="block-label">${st.final?"Final answer":"Action"}</div>`;
+    html += st.code
+      ? `<pre class="code${st.final?" final":""}">${esc(st.code)}</pre>`
+      : `<div class="empty">No action recorded for this turn.</div>`;
+  }
+  // result, only for the final agent in the chain
+  if(state.s >= t.steps.length-1){
+    html += `<div class="verdict-box">
+      <div class="vrow">Result <span class="badge ${t.success?"ok":"no"}">${t.success?"judged correct":"judged wrong"}</span></div>
+      <div class="judge"><b>Expected:</b> ${esc(t.expected)||"—"}${t.judge?`<br><b>Judge:</b> ${esc(t.judge)}`:""}</div>
+    </div>`;
+  }
+  body.innerHTML = html; body.scrollTop = 0;
+}
+function openModal(i){ selectStep(i); state.modal=true; document.getElementById("modal").hidden=false; renderModal(); }
+function closeModal(){ state.modal=false; document.getElementById("modal").hidden=true; }
+
+/* transport state */
+function renderTransport(){
+  const t = TASKS[state.t];
+  document.getElementById("counter").textContent = `step ${state.s+1}/${t.steps.length}`;
+  const first = state.t===0 && state.s===0;
+  const last  = state.t===TASKS.length-1 && state.s===t.steps.length-1;
+  document.getElementById("prevStep").disabled = first;
+  document.getElementById("nextStep").disabled = last;
+  document.getElementById("prevTask").disabled = state.t===0;
+  document.getElementById("nextTask").disabled = state.t===TASKS.length-1;
+}
+
+function render(){ updateRibbon(); updateChain(); renderTransport(); if(state.modal) renderModal(); }
+
+function selectTask(ti, step){
+  ti = Math.max(0, Math.min(TASKS.length-1, ti));
+  state.t = ti; state.s = (step===undefined)?0:step;
+  renderTaskHead(); buildChain(); render();
+}
+function selectStep(si){
+  const t = TASKS[state.t];
+  state.s = Math.max(0, Math.min(t.steps.length-1, si)); render();
+}
+function nextStep(){
+  const t = TASKS[state.t];
+  if(state.s < t.steps.length-1){ state.s++; render(); }
+  else if(state.t < TASKS.length-1){ selectTask(state.t+1, 0); }
+  else pause();
+}
+function prevStep(){
+  if(state.s > 0){ state.s--; render(); }
+  else if(state.t > 0){ const pt=TASKS[state.t-1]; selectTask(state.t-1, pt.steps.length-1); }
+}
+
+function setPlayIcon(){
+  document.getElementById("playIcon").innerHTML = state.playing
+    ? '<path d="M7 5h3v14H7zM14 5h3v14h-3z"/>' : '<path d="M8 5l11 7-11 7z"/>';
+  document.getElementById("playLabel").textContent = state.playing ? "Pause" : "Play";
+}
+function tick(){
+  const last = state.t===TASKS.length-1 && state.s===TASKS[state.t].steps.length-1;
+  if(last){ pause(); return; } nextStep();
+}
+function play(){
+  closeModal();
+  if(state.t===TASKS.length-1 && state.s===TASKS[state.t].steps.length-1) selectTask(0,0);
+  state.playing=true; setPlayIcon(); state.timer=setInterval(tick, PLAY_MS);
+}
+function pause(){ state.playing=false; setPlayIcon(); if(state.timer){clearInterval(state.timer); state.timer=null;} }
+function togglePlay(){ state.playing ? pause() : play(); }
+
+buildRibbon();
+selectTask(0, 0);
+document.getElementById("prevStep").addEventListener("click", ()=>{ pause(); prevStep(); });
+document.getElementById("nextStep").addEventListener("click", ()=>{ pause(); nextStep(); });
+document.getElementById("prevTask").addEventListener("click", ()=>{ pause(); closeModal(); selectTask(state.t-1,0); });
+document.getElementById("nextTask").addEventListener("click", ()=>{ pause(); closeModal(); selectTask(state.t+1,0); });
+document.getElementById("play").addEventListener("click", togglePlay);
+document.getElementById("modalClose").addEventListener("click", closeModal);
+document.getElementById("backdrop").addEventListener("click", closeModal);
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape"){ closeModal(); }
+  else if(e.key==="ArrowRight"){ pause(); nextStep(); }
+  else if(e.key==="ArrowLeft"){ pause(); prevStep(); }
+  else if(e.key===" "){ e.preventDefault(); togglePlay(); }
+});
+</script>
+</body>
+</html>

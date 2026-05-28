@@ -159,6 +159,10 @@ h1.title em { font-style: normal; color: var(--blue-deep); }
   background: #0b0d12;
 }
 .hero-media video, .hero-media img { width: 100%; height: auto; display: block; }
+/* transcripts demo window — matches teaser width, sits on the hero banner */
+.frame.tdemo { background: #f7f7f5; }
+.frame.tdemo iframe { width: 100%; height: 500px; border: 0; display: block; }
+@media (max-width: 760px) { .frame.tdemo iframe { height: 600px; } }
 /* videos are muted (no audio track) — hide the volume/mute control */
 video::-webkit-media-controls-mute-button,
 video::-webkit-media-controls-volume-control-container,
@@ -417,6 +421,7 @@ footer a:hover { text-decoration: underline; }
     <a class="brand" href="#top"><span class="dot"></span> Economy of Minds</a>
     <div class="navlinks">
       <a href="#tldr">TL;DR</a>
+      <a href="#transcripts">Transcripts</a>
       <a href="#demo">Demo</a>
       <a href="#method">Method</a>
       <a href="#results">Experiments</a>
@@ -459,7 +464,16 @@ footer a:hover { text-decoration: underline; }
       </video>
     </div>
     <div class="cap">
-      <b>Figure 1 · Evolution of an agent society over a stream of Financial Research tasks.</b> Five agents are initially created as "ancestors": Edgar, Tavily, ParseHTML, RetrieveInfo, and Answer, each with a different tool. Agents are continuously created and eliminated through economy. As the society encounters more tasks, poor agents are removed and corrected while wealthy ones persist and diversify, yielding an alive and increasingly structured population.
+      <b>Figure 1.1 · Evolution of an agent society over a stream of Financial Research tasks.</b> Five agents are initially created as "ancestors": Edgar, Tavily, ParseHTML, RetrieveInfo, and Answer, each with a different tool. Agents are continuously created and eliminated through economy. As the society encounters more tasks, poor agents are removed and corrected while wealthy ones persist and diversify, yielding an alive and increasingly structured population.
+    </div>
+  </div>
+
+  <div class="hero-media" id="transcripts">
+    <div class="frame tdemo">
+      <iframe src="transcripts/index.html" title="Agent transcripts" loading="lazy"></iframe>
+    </div>
+    <div class="cap">
+      <b>Figure 1.2 · The team gradually learns to coordinate.</b> A few tasks sampled across one training run: early chains are long and redundant, with agents redoing each other's work; over the run they learn to divide the labor and hand off cleanly. Step through any task, or click an agent to read its full output.
     </div>
   </div>
 </header>
