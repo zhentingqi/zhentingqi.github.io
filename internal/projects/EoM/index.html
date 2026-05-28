@@ -9,7 +9,6 @@
 <meta property="og:title" content="Economy of Minds: Emerging Multi-Agent Intelligence with Economic Interactions" />
 <meta property="og:description" content="Design the incentives, not the coordination. Prompted LLM agents self-organize into stronger collective intelligence through a price system." />
 <meta property="og:type" content="article" />
-<meta property="og:image" content="assets/Teaser.png" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -343,7 +342,7 @@ figcaption b { color: var(--ink); font-weight: 600; }
 #fig-transaction { max-width: 860px; margin-left: auto; margin-right: auto; }
 
 /* three-panel main-result figure: column tracks ∝ aspect ratio ⇒ equal image heights, one row.
-   finance 0.935 · frontierscience 1.084 · cloudcast 1.576 (w/h). */
+   finance 0.935 · frontierscience 1.084 · CloudCast 1.576 (w/h). */
 .three-panel {
   display: grid;
   grid-template-columns: 0.935fr 1.084fr 1.576fr;
@@ -421,7 +420,6 @@ footer a:hover { text-decoration: underline; }
     <a class="brand" href="#top"><span class="dot"></span> Economy of Minds</a>
     <div class="navlinks">
       <a href="#tldr">TL;DR</a>
-      <a href="#transcripts">Transcripts</a>
       <a href="#demo">Demo</a>
       <a href="#method">Method</a>
       <a href="#results">Experiments</a>
@@ -435,7 +433,7 @@ footer a:hover { text-decoration: underline; }
     <em>Economy of Minds</em>: Emerging Multi-Agent Intelligence with Economic Interactions
   </h1>
   <p class="dek">
-    A population of agents compete via auctions for the right to act, exchange payments peer-to-peer, and evolve through economic selection, yielding decentralized credit assignment and self-organizing collective intelligence without central orchestrator.
+    A population of agents compete via auctions for the right to act, exchange payments peer-to-peer, and evolve through economic selection, yielding decentralized credit assignment and self-organizing collective intelligence without a central orchestrator.
   </p>
 
   <div class="cta">
@@ -494,7 +492,7 @@ footer a:hover { text-decoration: underline; }
     <p>
       The usual fix is a <span class="hl">central controller</span> that creates the agents, hands out roles, and routes
       every decision. But this hurts in two ways. Planning is forced through one gate, so the
-      controller is both a bottleneck and a single point of failure. Moreover, learning and adaptation gets harder
+      controller is both a bottleneck and a single point of failure. Moreover, learning and adaptation get harder
       as the system grows, since the controller must reason about an ever-larger set of agents.
     </p>
     <p>
@@ -712,7 +710,7 @@ footer a:hover { text-decoration: underline; }
       We instantiate EoM on five domains: <b>math</b> (MATH, easy-to-hard Levels 1–5, planner/executor/verifier capped at
       ~128 tokens), <b>finance</b> (Finance-Agent-Bench, four tools with each partial agent holding only one), <b>science</b>
       (FrontierScience-Research, literature/planner/executor/verifier roles), <b>accelerator design</b> (Gemmini suite, 24
-      ResNet-50 kernels, EDP minimization with Historian/Planner/Executor roles), and <b>distributed systems</b> (Cloudcast
+      ResNet-50 kernels, EDP minimization with Historian/Planner/Executor roles), and <b>distributed systems</b> (CloudCast
       from ADRS, iteratively improving a program to minimize transfer cost). Baselines include <b>ReAct</b>, <b>GEA</b>,
       <b>OpenEvolve</b>, <b>Multi-Agent Debate</b>, and the domain-specific <b>DOSA</b>.
     </p>
@@ -731,7 +729,7 @@ footer a:hover { text-decoration: underline; }
       versus 43.1 for the same-backbone complete ReAct agent and 80.2 for the domain-specific DOSA baseline
       (<a class="inline" href="#tab-main">Table&nbsp;1</a>). The same advantage holds on financial research, scientific
       research, and distributed-system optimization (<a class="inline" href="#fig-performance">Figure&nbsp;4</a>): EoM
-      reaches 60.0% on Finance-Agent-Bench, 20.0% best-run accuracy on FrontierScience, and a best Cloudcast cost of 657.
+      reaches 60.0% on Finance-Agent-Bench, 20.0% best-run accuracy on FrontierScience, and a best CloudCast cost of 657.
     </p>
   </section>
 
@@ -789,9 +787,9 @@ footer a:hover { text-decoration: underline; }
         </figcaption>
       </figure>
       <figure>
-        <img src="assets/comparison_hayek_vs_openevolve.png" alt="Cloudcast cost vs OpenEvolve" />
+        <img src="assets/comparison_hayek_vs_openevolve.png" alt="CloudCast cost vs OpenEvolve" />
         <figcaption>
-          <b>(c) Cloudcast.</b> Average cost 673 over three attempts (best 657) vs. 930 for OpenEvolve, a 28% reduction
+          <b>(c) CloudCast.</b> Average cost 673 over three attempts (best 657) vs. 930 for OpenEvolve, a 29% reduction
           in best cost with fewer episodes.
         </figcaption>
       </figure>
@@ -820,7 +818,7 @@ footer a:hover { text-decoration: underline; }
       propagate the successful, not on merely having multiple agents. Weakening these dynamics consistently reduces
       performance (<a class="inline" href="#tab-ablation">Table&nbsp;2</a>). On MATH, the original system is strongest (43.9 mean / 57.0 best); changing rent
       or rewards lowers it. On Finance, removing exploration causes a large drop (26.0 mean / 40.0 best) and removing
-      exploitation lowers the mean to 33.5. On Cloudcast, a best-of-<i>N</i> multi-agent baseline reaches only 999, so
+      exploitation lowers the mean to 33.5. On CloudCast, a best-of-<i>N</i> multi-agent baseline reaches only 999, so
       repeated multi-agent sampling alone is insufficient.
     </p>
   </section>
