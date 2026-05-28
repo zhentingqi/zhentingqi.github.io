@@ -158,10 +158,6 @@ h1.title em { font-style: normal; color: var(--blue-deep); }
   background: #0b0d12;
 }
 .hero-media video, .hero-media img { width: 100%; height: auto; display: block; }
-/* transcripts demo window — matches teaser width, sits on the hero banner */
-.frame.tdemo { background: #f7f7f5; }
-.frame.tdemo iframe { width: 100%; height: 500px; border: 0; display: block; }
-@media (max-width: 760px) { .frame.tdemo iframe { height: 600px; } }
 /* videos are muted (no audio track) — hide the volume/mute control */
 video::-webkit-media-controls-mute-button,
 video::-webkit-media-controls-volume-control-container,
@@ -406,6 +402,18 @@ hr.soft { border: none; border-top: 1px solid var(--line); margin: 28px 0; }
 .demo-bar a { font-size: 13.5px; font-weight: 600; color: var(--blue-deep); text-decoration: none; }
 .demo-bar a:hover { text-decoration: underline; }
 
+/* cloudcast transcripts — same breakout width as the live demo; height auto-fits content via postMessage */
+.cc-frame {
+  position: relative;
+  width: min(1600px, 96vw);
+  margin: 22px 0 0; margin-left: 50%;
+  transform: translateX(-50%);
+  border: 1px solid var(--line); border-radius: 20px;
+  overflow: hidden; background: #f7f7f5;
+  box-shadow: 0 24px 60px -30px rgba(20,40,80,0.30);
+}
+.cc-frame iframe { width: 100%; height: 900px; border: 0; display: block; }
+
 /* footer */
 footer { border-top: 1px solid var(--line); margin-top: 48px; padding: 34px 0 60px; }
 .footer-inner { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; color: var(--muted); font-size: 14px; }
@@ -516,14 +524,6 @@ footer a:hover { text-decoration: underline; }
       </div>
     </div>
 
-    <div class="hero-media" id="transcripts">
-      <div class="frame tdemo">
-        <iframe src="transcripts/index.html" title="Agent transcripts" loading="lazy"></iframe>
-      </div>
-      <div class="cap">
-        <b>Figure 1.2 · The team gradually learns to coordinate.</b> A few tasks sampled across one training run: early chains are long and redundant, with agents redoing each other's work; over the run they learn to divide the labor and hand off cleanly. Step through any task, or click an agent to read its full output.
-      </div>
-    </div>
   </section>
 
   <!-- ───────────── Live Demo ───────────── -->
@@ -537,12 +537,25 @@ footer a:hover { text-decoration: underline; }
       backward between agents. Scrub the timeline, click any agent for its prompt, economics, and lineage, or open
       <em>current program &amp; topology</em> to see what each accepted mutation changed.
     </p>
+
+    <p>
+      The transcripts below open that up: for six episodes
+      spanning the same run (earliest at the top), they lay out every step the winning agent took, in order. Watch
+      how the chains change. Early on they are long and disorganized, with agents thrashing — redoing edits,
+      builds, and evaluations out of order and even regressing the program. By the end the same population has
+      learned to divide the labor into a shorter and more structured pipeline. Read top to bottom to see that structure emerge, and click any agent for its full action.
+    </p>
+
     <div class="demo-frame">
       <div class="demo-bar">
         <div class="dots"><i></i><i></i><i></i></div>
         <span class="lbl">CloudCast · agent society</span>
       </div>
       <iframe src="demo/index.html" title="Economy of Minds live demo" loading="lazy"></iframe>
+    </div>
+
+    <div class="cc-frame" id="cc-transcripts">
+      <iframe src="transcripts_cloudcast/index.html" title="CloudCast agent transcripts" loading="lazy"></iframe>
     </div>
   </section>
 
@@ -990,6 +1003,19 @@ footer a:hover { text-decoration: underline; }
   <button class="lightbox-close" aria-label="close">&times;</button>
   <img alt="" />
 </div>
+
+<script>
+/* size the CloudCast transcripts iframe to its content so the whole
+   top→bottom time axis is visible */
+(function () {
+  var frame = document.querySelector("#cc-transcripts iframe");
+  if (!frame) return;
+  window.addEventListener("message", function (e) {
+    if (!(e.data && e.data.type === "transcriptHeight" && e.data.h > 0)) return;
+    if (e.source === frame.contentWindow) frame.style.height = e.data.h + "px";
+  });
+})();
+</script>
 
 <script>
 (function () {
