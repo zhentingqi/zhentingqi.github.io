@@ -601,7 +601,7 @@ function renderModalTopo(epIdx) {
   const ep = TOPO.episodes[epIdx];
   if (!ep) { $("modalTopo").innerHTML = ""; return; }
   const SRC = TOPO.scenario.src, DSTS = new Set(TOPO.scenario.dsts);
-  const W = 716, H = 232, padX = 74, padY = 26;
+  const W = 300, H = 470, padX = 46, padY = 34;
   const nodes = new Set(ep.nodes); nodes.add(SRC);
   const list = [...nodes];
   const adj = new Map(list.map((n) => [n, []])), indeg = new Map(list.map((n) => [n, 0]));
@@ -615,8 +615,8 @@ function renderModalTopo(epIdx) {
   const pos = new Map();
   for (const [d, g] of cols) {
     g.sort((a, b) => regionProv(a).localeCompare(regionProv(b)) || a.localeCompare(b));
-    const x = padX + (d / maxD) * (W - 2 * padX);
-    g.forEach((n, i) => pos.set(n, { x, y: g.length === 1 ? H / 2 : padY + (i / (g.length - 1)) * (H - 2 * padY) }));
+    const y = padY + (d / maxD) * (H - 2 * padY);
+    g.forEach((n, i) => pos.set(n, { x: g.length === 1 ? W / 2 : padX + (i / (g.length - 1)) * (W - 2 * padX), y, row: i }));
   }
   const provC = (n) => (PROV[regionProv(n)] || { c: "#888" }).c;
   const ecol = (c) => (c >= 0.08 ? "#e3675f" : c <= 0.025 ? "#34b27a" : "#e0a43a");
@@ -627,10 +627,14 @@ function renderModalTopo(epIdx) {
     svg += `<path d="M${a.x.toFixed(1)} ${a.y.toFixed(1)} Q${(mx - (dy / len) * cv).toFixed(1)} ${(my + (dx / len) * cv).toFixed(1)} ${b.x.toFixed(1)} ${b.y.toFixed(1)}" fill="none" stroke="${ecol(e.cost)}" stroke-width="1.6" marker-end="url(#mtarrow)" opacity="0.9"/>`;
   }
   for (const n of list) {
-    const p = pos.get(n), isSrc = n === SRC, isDst = DSTS.has(n), r = isSrc ? 9 : 7;
+    const p = pos.get(n), isSrc = n === SRC, isDst = DSTS.has(n), r = isSrc ? 9 : 7, tagged = isSrc || isDst;
     svg += `<circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${r}" fill="${provC(n)}" stroke="#fff" stroke-width="2"/>`;
-    if (isSrc || isDst) svg += `<text x="${p.x.toFixed(1)}" y="${(p.y - 12).toFixed(1)}" class="mt-tag">${isSrc ? "SRC" : "DST"}</text>`;
-    svg += `<text x="${p.x.toFixed(1)}" y="${(p.y + (isSrc ? 21 : 19)).toFixed(1)}" class="mt-label">${esc(regionLab(n))}</text>`;
+    // alternate text above/below the dot per layer row so neighbouring labels don't overlap
+    const below = isSrc ? true : (p.row % 2 === 0);
+    const tagY = below ? p.y + r + 9 : p.y - r - 8;
+    const labY = below ? p.y + r + (tagged ? 20 : 11) : p.y - r - (tagged ? 19 : 8);
+    if (tagged) svg += `<text x="${p.x.toFixed(1)}" y="${tagY.toFixed(1)}" class="mt-tag">${isSrc ? "SRC" : "DST"}</text>`;
+    svg += `<text x="${p.x.toFixed(1)}" y="${labY.toFixed(1)}" class="mt-label">${esc(regionLab(n))}</text>`;
   }
   svg += `</svg>`;
   $("modalTopo").innerHTML = svg;

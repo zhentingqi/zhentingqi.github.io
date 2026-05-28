@@ -92,13 +92,17 @@
             <svg viewBox="0 0 24 24" class="i"><path d="M6 6l12 12M18 6L6 18"/></svg>
           </button>
         </div>
-        <div class="modal-topo">
-          <p class="section-label">Resulting broadcast topology <span class="topo-meta" id="topoMeta"></span></p>
-          <div class="modal-topo-stage" id="modalTopo"></div>
-          <div class="modal-topo-legend" id="modalTopoLegend"></div>
+        <div class="modal-body">
+          <div class="modal-topo">
+            <p class="section-label">Resulting broadcast topology <span class="topo-meta" id="topoMeta"></span></p>
+            <div class="modal-topo-stage" id="modalTopo"></div>
+            <div class="modal-topo-legend" id="modalTopoLegend"></div>
+          </div>
+          <div class="modal-prog">
+            <div class="diffstat" id="progStat"></div>
+            <pre class="diff" id="progDiff"></pre>
+          </div>
         </div>
-        <div class="diffstat" id="progStat"></div>
-        <pre class="diff" id="progDiff"></pre>
       </div>
     </div>
   </body>
