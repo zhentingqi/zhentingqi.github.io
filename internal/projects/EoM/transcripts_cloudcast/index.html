@@ -77,8 +77,9 @@ body{
 .card-t{flex:1 1 auto; min-width:0;}
 .thead{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
 .tnum{font-size:13.5px; font-weight:800; color:var(--ink); white-space:nowrap;}
-.tbadge{font-size:10px; font-weight:800; letter-spacing:.03em; border-radius:999px; padding:2px 9px; text-transform:uppercase;}
-.tbadge.ok{color:#0a6b4d; background:#e6f6ef;} .tbadge.no{color:#9a1c2c; background:#fdecee;}
+.pct{font-size:12px; font-weight:800; border-radius:6px; padding:2px 8px; letter-spacing:.01em;}
+.pct.up{color:#0a6b4d; background:#e6f6ef;}
+.pct.flat{color:var(--muted); background:#eef0f2;}
 .tmeta{font-size:11.5px; color:var(--muted); white-space:nowrap;}
 .tq{flex:1 1 100%; font-size:12.5px; color:var(--ink-body); line-height:1.5; margin:0;}
 .tq b{color:var(--muted); font-weight:600;}
@@ -114,8 +115,6 @@ body{
   transition:transform .18s, box-shadow .18s;
 }
 .node:hover .disc{transform:scale(1.05); box-shadow:0 0 0 5px color-mix(in srgb, var(--c) 24%, #fff), 0 8px 22px -8px var(--c);}
-.disc .sn{position:absolute; top:-6px; left:-6px; width:19px; height:19px; border-radius:50%;
-  background:#fff; color:var(--ink); border:1px solid var(--line); font-size:10px; display:flex; align-items:center; justify-content:center; font-weight:700;}
 .nlabel{font-size:11px; font-weight:600; color:var(--ink); max-width:120px; text-align:center; line-height:1.2; overflow-wrap:anywhere;}
 
 .arrow{flex:0 0 auto; width:30px; height:58px; margin-top:52px; display:flex; align-items:center; justify-content:center; color:var(--blue);}
@@ -218,7 +217,7 @@ function chainHtml(t, ti){
     if(i>0) html += `<div class="arrow"><svg viewBox="0 0 30 14"><path d="M0 7h24M19 2l6 5-6 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
     html += `<div class="node" data-t="${ti}" data-i="${i}" style="--c:${c}">
         <div class="${bcls}">${btext}</div>
-        <div class="disc"><span class="sn">${st.step}</span>${inf.label}</div>
+        <div class="disc">${inf.label}</div>
         <div class="nlabel">${esc((st.agent||st.role).replace(/Agent/,""))}</div>
       </div>`;
   });
@@ -229,15 +228,15 @@ function chainHtml(t, ti){
 function buildTimeline(){
   const track = document.getElementById("track");
   track.innerHTML = TASKS.map((t,ti)=>{
-    const cls = t.success ? "ok" : "no";
-    const costNote = (t.cost!=null) ? ` · cost $${t.cost}${t.pct!=null?` (${t.pct>0?"+":""}${t.pct}%)`:""}` : "";
+    const pct  = (t.pct!=null)  ? t.pct  : 0;
+    const pctCls = pct>0 ? "up" : "flat";
     return `<div class="row">
         <div class="rail"><div class="marker"></div></div>
         <div class="card-t">
           <div class="thead">
             <span class="tnum">Episode #${t.n}</span>
-            <span class="tbadge ${cls}">${t.success?"improved":"not improved"}</span>
-            <span class="tmeta">${t.steps.length} steps in the chain${costNote}</span>
+            <span class="tmeta">${t.steps.length} steps in the chain</span>
+            <span class="pct ${pctCls}">Performance +${pct.toFixed(2)}%</span>
           </div>
           <div class="chain-wrap"><div class="chain">${chainHtml(t,ti)}</div></div>
         </div>
