@@ -69,12 +69,9 @@ body{
 .row{position:relative; display:flex; align-items:flex-start; gap:14px; padding:18px 0;}
 .rail{width:var(--rail); flex:0 0 auto; display:flex; justify-content:center;}
 .marker{
-  position:relative; z-index:1; margin-top:4px; width:20px; height:20px; border-radius:50%;
-  border:3px solid #fff; box-shadow:0 0 0 1px var(--line), var(--shadow-sm);
-  display:flex; align-items:center; justify-content:center;
+  position:relative; z-index:1; margin-top:7px; width:14px; height:14px; border-radius:50%;
+  background:var(--blue); border:3px solid #fff; box-shadow:0 0 0 1px var(--line), 0 0 0 4px var(--blue-tint);
 }
-.marker.ok{background:var(--pos);} .marker.no{background:var(--neg);}
-.marker .i{width:11px; height:11px; color:#fff; stroke-width:3;}
 
 /* episode card to the right of the marker */
 .card-t{flex:1 1 auto; min-width:0;}
@@ -96,13 +93,13 @@ body{
 .chain{display:flex; align-items:flex-start; justify-content:flex-start; min-width:min-content; padding:8px 16px;}
 .node{display:flex; flex-direction:column; align-items:center; gap:8px; flex:0 0 auto; width:128px; cursor:pointer; user-select:none;}
 
-/* speech bubble (对话框) above each agent */
+/* speech bubble (对话框) above each agent — just the gist; click for the full action */
 .bubble{
-  position:relative; width:128px; height:66px; background:#fff; border:1px solid var(--line);
-  border-radius:10px; padding:7px 9px;
-  font-size:10.5px; line-height:1.35; color:var(--ink-body); box-shadow:var(--shadow-sm);
+  position:relative; width:128px; height:44px; background:#fff; border:1px solid var(--line);
+  border-radius:10px; padding:6px 9px;
+  font-size:11px; line-height:1.3; color:var(--ink-body); box-shadow:var(--shadow-sm);
   overflow:hidden; transition:box-shadow .18s, transform .12s;
-  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
 }
 .bubble.empty{display:flex; align-items:center; justify-content:center; text-align:center; -webkit-line-clamp:none; color:var(--muted); font-style:italic;}
 .bubble::after{content:""; position:absolute; left:50%; bottom:-7px; transform:translateX(-50%);
@@ -121,7 +118,7 @@ body{
   background:#fff; color:var(--ink); border:1px solid var(--line); font-size:10px; display:flex; align-items:center; justify-content:center; font-weight:700;}
 .nlabel{font-size:11px; font-weight:600; color:var(--ink); max-width:120px; text-align:center; line-height:1.2; overflow-wrap:anywhere;}
 
-.arrow{flex:0 0 auto; width:30px; height:58px; margin-top:77px; display:flex; align-items:center; justify-content:center; color:var(--blue);}
+.arrow{flex:0 0 auto; width:30px; height:58px; margin-top:52px; display:flex; align-items:center; justify-content:center; color:var(--blue);}
 .arrow svg{width:28px; height:13px;}
 
 /* ── popup (full output) ── anchored near the clicked agent so it stays in
@@ -202,7 +199,7 @@ const ROLE = {
 const roleColor = r => getComputedStyle(document.documentElement).getPropertyValue("--r-"+r).trim() || "#888";
 const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
 const info = r => ROLE[r] || {label:r.toUpperCase().slice(0,6), tool:""};
-const preview = st => st.summary || st.thought || "";
+const preview = st => st.gist || st.summary || st.thought || "";
 
 const DATA = window.TRANSCRIPT_DATA;
 const TASKS = DATA.tasks;
@@ -233,16 +230,13 @@ function buildTimeline(){
   const track = document.getElementById("track");
   track.innerHTML = TASKS.map((t,ti)=>{
     const cls = t.success ? "ok" : "no";
-    const icon = t.success
-      ? `<svg viewBox="0 0 24 24" class="i"><path d="M5 13l4 4L19 7"/></svg>`
-      : `<svg viewBox="0 0 24 24" class="i"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
-    const costNote = (t.cost!=null) ? ` · cost $${t.cost}${t.pct!=null?` (${t.pct>0?"+":""}${t.pct}% vs seed)`:""}` : "";
+    const costNote = (t.cost!=null) ? ` · cost $${t.cost}${t.pct!=null?` (${t.pct>0?"+":""}${t.pct}%)`:""}` : "";
     return `<div class="row">
-        <div class="rail"><div class="marker ${cls}">${icon}</div></div>
+        <div class="rail"><div class="marker"></div></div>
         <div class="card-t">
           <div class="thead">
             <span class="tnum">Episode #${t.n}</span>
-            <span class="tbadge ${cls}">${t.success?"improved":"rolled back"}</span>
+            <span class="tbadge ${cls}">${t.success?"improved":"not improved"}</span>
             <span class="tmeta">${t.steps.length} steps in the chain${costNote}</span>
           </div>
           <div class="chain-wrap"><div class="chain">${chainHtml(t,ti)}</div></div>
@@ -275,7 +269,7 @@ function renderModal(){
   if(modal.s >= t.steps.length-1){
     const outcome = t.modelAnswer ? `<br><b>Outcome:</b> ${esc(t.modelAnswer)}` : "";
     html += `<div class="verdict-box">
-      <div class="vrow">Result <span class="badge ${t.success?"ok":"no"}">${t.success?"mutation accepted":"rolled back"}</span></div>
+      <div class="vrow">Result <span class="badge ${t.success?"ok":"no"}">${t.success?"mutation accepted":"not improved"}</span></div>
       <div class="judge"><b>Goal:</b> ${esc(t.expected)||"—"}${outcome}${t.judge?`<br><b>Score:</b> ${esc(t.judge)}`:""}</div>
     </div>`;
   }
