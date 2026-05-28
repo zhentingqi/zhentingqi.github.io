@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CloudCast agent transcripts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- load data BEFORE the logic script (no defer: inline script runs synchronously) -->
+<script src="./data.js"></script>
+<style>
+:root{
+  --bg:#f7f7f5; --surface:#f0f0ee; --ink:#1f1f23; --ink-body:#3c4043;
+  --muted:#6b7177; --line:#e6e8eb; --line-soft:#eef0f2;
+  --blue:#1a73e8; --blue-deep:#0b57d0; --blue-tint:#e8f0fe;
+  --code-bg:#1b1c20; --code-ink:#e8eaed;
+  --pos:#0ca678; --neg:#e8384f; --panel:#ffffff;
+  --shadow-sm:0 1px 2px rgba(17,24,39,0.04), 0 1px 1px rgba(17,24,39,0.03);
+  --shadow:0 6px 24px rgba(17,24,39,0.06), 0 1px 2px rgba(17,24,39,0.04);
+  --shadow-lg:0 24px 60px -20px rgba(20,40,80,0.35);
+  /* agent colors — identical to the CloudCast live demo */
+  --r-planner:#6366f1; --r-reader:#2563eb; --r-implementer:#0ca678;
+  --r-builder:#f08c00; --r-evaluator:#7c3aed; --r-finalizer:#e8384f;
+  /* time-axis geometry */
+  --rail:64px;            /* width of the left time-axis gutter */
+  --axis-x:32px;          /* x-offset of the vertical line within the rail */
+}
+*{box-sizing:border-box;}
+.i{width:1em; height:1em; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
+html,body{margin:0; height:100%;}
+body{
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg); color:var(--ink-body); min-height:100%;
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+/* window chrome — matches the demo's title bar with traffic-light dots */
+.win{min-height:100%; display:flex; flex-direction:column; background:var(--bg);}
+.winbar{position:sticky; top:0; z-index:30; flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; gap:11px; padding:10px 16px; background:#fff; border-bottom:1px solid var(--line);}
+.dots{display:flex; gap:7px;}
+.dots i{width:11px; height:11px; border-radius:50%; background:#e2e4e7; display:inline-block;}
+.dots i:nth-child(1){background:#ff5f57;}
+.dots i:nth-child(2){background:#febc2e;}
+.dots i:nth-child(3){background:#28c840;}
+.wintitle{font-size:12.5px; color:var(--muted); font-weight:600;}
+.app{flex:1 1 auto; padding:16px 22px 36px; width:100%;}
+
+/* ── vertical time axis ── */
+.timeline{position:relative; margin-top:4px;}
+/* the continuous axis line, drawn behind every row */
+.track{position:relative;}
+.track::before{
+  content:""; position:absolute; left:var(--axis-x); top:0; bottom:0; width:2px;
+  transform:translateX(-50%);
+  background:linear-gradient(to bottom, #d7dbe2 0%, #aebfd6 32%, var(--blue) 100%);
+  border-radius:2px;
+}
+/* end caps: EARLY (top) / LATE (bottom) */
+.cap{position:relative; display:flex; align-items:center; min-height:30px;}
+.cap .pin{width:var(--rail); flex:0 0 auto; display:flex; justify-content:center;}
+.cap .pin::before{content:""; width:9px; height:9px; border-radius:50%; background:var(--blue); box-shadow:0 0 0 4px var(--blue-tint);}
+.cap.top .pin::before{background:#c2ccd9; box-shadow:0 0 0 4px #eef1f5;}
+.cap .lbl{display:flex; align-items:center; gap:6px; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--muted);}
+.cap .lbl b{color:var(--ink); font-size:16px;}
+.cap .lbl .tarr{width:16px; height:16px; color:var(--muted);}
+.cap.top{margin-bottom:2px;}
+
+/* one episode = one row on the axis */
+.row{position:relative; display:flex; align-items:flex-start; gap:14px; padding:18px 0;}
+.rail{width:var(--rail); flex:0 0 auto; display:flex; justify-content:center;}
+.marker{
+  position:relative; z-index:1; margin-top:4px; width:20px; height:20px; border-radius:50%;
+  border:3px solid #fff; box-shadow:0 0 0 1px var(--line), var(--shadow-sm);
+  display:flex; align-items:center; justify-content:center;
+}
+.marker.ok{background:var(--pos);} .marker.no{background:var(--neg);}
+.marker .i{width:11px; height:11px; color:#fff; stroke-width:3;}
+
+/* episode card to the right of the marker */
+.card-t{flex:1 1 auto; min-width:0;}
+.thead{display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:10px;}
+.tnum{font-size:13.5px; font-weight:800; color:var(--ink); white-space:nowrap;}
+.tbadge{font-size:10px; font-weight:800; letter-spacing:.03em; border-radius:999px; padding:2px 9px; text-transform:uppercase;}
+.tbadge.ok{color:#0a6b4d; background:#e6f6ef;} .tbadge.no{color:#9a1c2c; background:#fdecee;}
+.tmeta{font-size:11.5px; color:var(--muted); white-space:nowrap;}
+.tq{flex:1 1 100%; font-size:12.5px; color:var(--ink-body); line-height:1.5; margin:0;}
+.tq b{color:var(--muted); font-weight:600;}
+
+/* horizontally-scrollable chain (early episodes are long) */
+.chain-wrap{
+  overflow-x:auto; overflow-y:hidden; padding:6px 2px 10px;
+  border:1px solid var(--line); border-radius:14px; background:#fff;
+}
+.chain-wrap::-webkit-scrollbar{height:8px;}
+.chain-wrap::-webkit-scrollbar-thumb{background:#d7dade; border-radius:8px;}
+.chain{display:flex; align-items:flex-start; justify-content:flex-start; min-width:min-content; padding:8px 16px;}
+.node{display:flex; flex-direction:column; align-items:center; gap:8px; flex:0 0 auto; width:128px; cursor:pointer; user-select:none;}
+
+/* speech bubble (对话框) above each agent */
+.bubble{
+  position:relative; width:128px; height:66px; background:#fff; border:1px solid var(--line);
+  border-radius:10px; padding:7px 9px;
+  font-size:10.5px; line-height:1.35; color:var(--ink-body); box-shadow:var(--shadow-sm);
+  overflow:hidden; transition:box-shadow .18s, transform .12s;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical;
+}
+.bubble.empty{display:flex; align-items:center; justify-content:center; text-align:center; -webkit-line-clamp:none; color:var(--muted); font-style:italic;}
+.bubble::after{content:""; position:absolute; left:50%; bottom:-7px; transform:translateX(-50%);
+  width:0; height:0; border-left:7px solid transparent; border-right:7px solid transparent; border-top:7px solid #fff;
+  filter:drop-shadow(0 1px 0 var(--line));}
+.node:hover .bubble{box-shadow:var(--shadow); transform:translateY(-1px);}
+
+.disc{
+  width:58px; height:58px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+  font-size:10px; font-weight:800; color:#fff; letter-spacing:.02em; position:relative;
+  background:var(--c); box-shadow:0 6px 16px -8px var(--c);
+  transition:transform .18s, box-shadow .18s;
+}
+.node:hover .disc{transform:scale(1.05); box-shadow:0 0 0 5px color-mix(in srgb, var(--c) 24%, #fff), 0 8px 22px -8px var(--c);}
+.disc .sn{position:absolute; top:-6px; left:-6px; width:19px; height:19px; border-radius:50%;
+  background:#fff; color:var(--ink); border:1px solid var(--line); font-size:10px; display:flex; align-items:center; justify-content:center; font-weight:700;}
+.nlabel{font-size:11px; font-weight:600; color:var(--ink); max-width:120px; text-align:center; line-height:1.2; overflow-wrap:anywhere;}
+
+.arrow{flex:0 0 auto; width:30px; height:58px; margin-top:77px; display:flex; align-items:center; justify-content:center; color:var(--blue);}
+.arrow svg{width:28px; height:13px;}
+
+/* ── popup (full output) ── anchored near the clicked agent so it stays in
+   view even when this page is embedded as a tall, auto-sized iframe ── */
+.modal{position:absolute; left:0; top:0; width:100%; z-index:60;}
+.modal[hidden]{display:none;}
+.backdrop{position:fixed; inset:0; background:rgba(20,28,45,.34); backdrop-filter:blur(2px);}
+.card{position:absolute; left:50%; transform:translateX(-50%); z-index:1; width:min(760px,calc(100% - 32px)); max-height:560px; background:#fff; border:1px solid var(--line);
+  border-radius:16px; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; overflow:hidden;}
+.phead{display:flex; align-items:center; gap:9px; padding:12px 16px; border-bottom:1px solid var(--line); background:var(--surface); flex:0 0 auto;}
+.phead .dot{width:13px; height:13px; border-radius:50%; flex:0 0 auto;}
+.phead .who{font-size:14px; font-weight:700; color:var(--ink);}
+.phead .role{font-size:12.5px; color:var(--muted);}
+.phead .tool{font-size:11px; color:#fff; background:var(--ink); border-radius:6px; padding:2px 8px; font-family:"JetBrains Mono",monospace;}
+.modal-close{margin-left:6px; width:30px; height:30px; flex:0 0 auto; border-radius:8px; border:1px solid var(--line); background:#fff;
+  color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; justify-content:center;}
+.modal-close:hover{background:var(--surface);}
+.modal-close .i{width:16px; height:16px;}
+.pbody{flex:1 1 auto; min-height:0; overflow:auto; padding:15px 16px 17px;}
+.block-label{font-size:10.5px; letter-spacing:.07em; text-transform:uppercase; color:var(--muted); font-weight:700; margin:0 0 6px;}
+.thought{font-size:13px; line-height:1.6; color:var(--ink-body); background:#fbfbfc; border-left:3px solid var(--line); padding:10px 12px; border-radius:0 8px 8px 0; white-space:pre-wrap; margin:0 0 14px; font-family:"JetBrains Mono",monospace; font-size:12px;}
+.thought.muted-note{color:var(--muted); font-style:italic; font-family:inherit; font-size:13px;}
+.empty{font-size:13px; color:var(--muted); font-style:italic;}
+.verdict-box{margin-top:4px; border-top:1px solid var(--line-soft); padding-top:12px;}
+.verdict-box .vrow{display:flex; align-items:center; gap:8px; font-size:12.5px; font-weight:700; color:var(--ink); margin-bottom:6px;}
+.badge{font-size:10.5px; font-weight:700; border-radius:999px; padding:3px 9px;}
+.badge.ok{color:#0a6b4d; background:#e6f6ef;} .badge.no{color:#9a1c2c; background:#fdecee;}
+.verdict-box .judge{font-size:12px; color:var(--muted); line-height:1.55;}
+.verdict-box .judge b{color:var(--ink-body);}
+
+@media (max-width:640px){
+  :root{ --rail:44px; --axis-x:22px; }
+  .app{padding:14px 12px 32px;}
+}
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="winbar">
+    <div class="dots"><i></i><i></i><i></i></div>
+    <span class="wintitle">CloudCast · agent transcripts</span>
+  </div>
+  <div class="app">
+    <div class="timeline">
+      <div class="cap top">
+        <div class="pin"></div>
+        <div class="lbl"><b>Time</b><svg viewBox="0 0 24 24" class="i tarr"><path d="M12 5v14M6 13l6 6 6-6"/></svg></div>
+      </div>
+      <div class="track" id="track"></div>
+    </div>
+  </div>
+</div>
+
+<!-- full-output popup -->
+<div class="modal" id="modal" hidden>
+  <div class="backdrop" id="backdrop"></div>
+  <div class="card">
+    <div class="phead">
+      <span class="dot" id="pdot"></span>
+      <span class="who" id="pwho"></span>
+      <span class="role" id="prole"></span>
+      <span class="tool" id="ptool" style="margin-left:auto"></span>
+      <button class="modal-close" id="modalClose" title="Close"><svg viewBox="0 0 24 24" class="i"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="pbody" id="pbody"></div>
+  </div>
+</div>
+
+<script>
+const ROLE = {
+  planner:     {label:"PLAN",  tool:"plan"},
+  reader:      {label:"READ",  tool:"read_file"},
+  implementer: {label:"EDIT",  tool:"write_file"},
+  builder:     {label:"BUILD", tool:"py_compile"},
+  evaluator:   {label:"EVAL",  tool:"request_eval"},
+  finalizer:   {label:"FINAL", tool:"final_answer"},
+};
+const roleColor = r => getComputedStyle(document.documentElement).getPropertyValue("--r-"+r).trim() || "#888";
+const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const info = r => ROLE[r] || {label:r.toUpperCase().slice(0,6), tool:""};
+const preview = st => st.summary || st.thought || "";
+
+const DATA = window.TRANSCRIPT_DATA;
+const TASKS = DATA.tasks;
+const STREAM_TOTAL = DATA.stream_total || TASKS.length;
+const modal = {t:0, s:0, open:false};
+
+/* ── build one chain (topology) for an episode ── */
+function chainHtml(t, ti){
+  let html = "";
+  t.steps.forEach((st,i)=>{
+    const c = roleColor(st.role), inf = info(st.role);
+    const pv = preview(st);
+    const empty = !pv.trim();
+    const bcls = ["bubble", empty?"empty":""].filter(Boolean).join(" ");
+    const btext = empty ? "(no text)" : esc(pv);
+    if(i>0) html += `<div class="arrow"><svg viewBox="0 0 30 14"><path d="M0 7h24M19 2l6 5-6 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>`;
+    html += `<div class="node" data-t="${ti}" data-i="${i}" style="--c:${c}">
+        <div class="${bcls}">${btext}</div>
+        <div class="disc"><span class="sn">${st.step}</span>${inf.label}</div>
+        <div class="nlabel">${esc((st.agent||st.role).replace(/Agent/,""))}</div>
+      </div>`;
+  });
+  return html;
+}
+
+/* ── build the full vertical timeline (all episodes at once) ── */
+function buildTimeline(){
+  const track = document.getElementById("track");
+  track.innerHTML = TASKS.map((t,ti)=>{
+    const cls = t.success ? "ok" : "no";
+    const icon = t.success
+      ? `<svg viewBox="0 0 24 24" class="i"><path d="M5 13l4 4L19 7"/></svg>`
+      : `<svg viewBox="0 0 24 24" class="i"><path d="M6 6l12 12M18 6L6 18"/></svg>`;
+    const costNote = (t.cost!=null) ? ` · cost $${t.cost}${t.pct!=null?` (${t.pct>0?"+":""}${t.pct}% vs seed)`:""}` : "";
+    return `<div class="row">
+        <div class="rail"><div class="marker ${cls}">${icon}</div></div>
+        <div class="card-t">
+          <div class="thead">
+            <span class="tnum">Episode #${t.n}</span>
+            <span class="tbadge ${cls}">${t.success?"improved":"rolled back"}</span>
+            <span class="tmeta">${t.steps.length} steps in the chain${costNote}</span>
+            <p class="tq"><b>Goal:</b> ${esc(t.question)}</p>
+          </div>
+          <div class="chain-wrap"><div class="chain">${chainHtml(t,ti)}</div></div>
+        </div>
+      </div>`;
+  }).join("");
+  track.querySelectorAll(".node").forEach(n=>
+    n.addEventListener("click",()=> openModal(+n.dataset.t, +n.dataset.i, n)));
+}
+
+/* ── popup ── */
+function renderModal(){
+  const t = TASKS[modal.t], st = t.steps[modal.s], inf = info(st.role), c = roleColor(st.role);
+  document.getElementById("pdot").style.background = c;
+  document.getElementById("pwho").textContent = st.agent;
+  document.getElementById("prole").textContent = "· " + st.role;
+  const tool = document.getElementById("ptool");
+  const toolName = st.tool || inf.tool || "";
+  tool.textContent = toolName ? toolName + "()" : ""; tool.style.display = toolName ? "" : "none";
+
+  const body = document.getElementById("pbody");
+  let html = "";
+  if(!st.thought){
+    html += `<div class="empty">This agent won the turn but returned no text.</div>`;
+  } else {
+    html += `<div class="block-label">${st.final?"Final action":"Action"}</div>`;
+    html += `<div class="thought">${esc(st.thought)}</div>`;
+  }
+  // result, only for the last agent in the chain
+  if(modal.s >= t.steps.length-1){
+    const outcome = t.modelAnswer ? `<br><b>Outcome:</b> ${esc(t.modelAnswer)}` : "";
+    html += `<div class="verdict-box">
+      <div class="vrow">Result <span class="badge ${t.success?"ok":"no"}">${t.success?"mutation accepted":"rolled back"}</span></div>
+      <div class="judge"><b>Goal:</b> ${esc(t.expected)||"—"}${outcome}${t.judge?`<br><b>Score:</b> ${esc(t.judge)}`:""}</div>
+    </div>`;
+  }
+  body.innerHTML = html; body.scrollTop = 0;
+}
+function openModal(t,i,anchor){
+  modal.t=t; modal.s=i; modal.open=true;
+  document.getElementById("modal").hidden=false;
+  // anchor the card vertically near the clicked agent, clamped to the page
+  const card = document.querySelector("#modal .card");
+  const docH = document.documentElement.scrollHeight;
+  const y = anchor ? anchor.getBoundingClientRect().top + window.scrollY : window.scrollY + 80;
+  const top = Math.max(12, Math.min(y - 24, docH - 580));
+  card.style.top = top + "px";
+  renderModal();
+}
+function closeModal(){ modal.open=false; document.getElementById("modal").hidden=true; }
+/* step left/right through the open episode's chain without leaving the popup */
+function modalStep(d){
+  if(!modal.open) return;
+  const t = TASKS[modal.t];
+  modal.s = Math.max(0, Math.min(t.steps.length-1, modal.s + d));
+  renderModal();
+}
+
+buildTimeline();
+
+/* report content height so the embedding page can size the iframe to fit
+   (the whole time axis reads top→bottom — no scroll box inside the figure) */
+function postHeight(){
+  const h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+  if(window.parent !== window) window.parent.postMessage({type:"transcriptHeight", h}, "*");
+}
+window.addEventListener("load", postHeight);
+window.addEventListener("resize", postHeight);
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(postHeight);
+postHeight();
+
+document.getElementById("modalClose").addEventListener("click", closeModal);
+document.getElementById("backdrop").addEventListener("click", closeModal);
+document.addEventListener("keydown", e=>{
+  if(e.key==="Escape"){ closeModal(); }
+  else if(modal.open && e.key==="ArrowRight"){ e.preventDefault(); modalStep(1); }
+  else if(modal.open && e.key==="ArrowLeft"){ e.preventDefault(); modalStep(-1); }
+});
+</script>
+</body>
+</html>
