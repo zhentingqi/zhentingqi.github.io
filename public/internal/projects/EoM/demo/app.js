@@ -387,7 +387,7 @@ function renderDetail() {
       : state.phase === 1 ? "Bidding…"
       : state.phase === 2 ? (step.winner ? esc(step.winner.name) + " wins & acts" : "Auction")
       : (step.winner ? esc(step.winner.name) + " pays the bid" : "Payment");
-    header = `<div><p class="d-eyebrow">${esc(t.taskId)} · step ${step.step} / ${step.maxSteps}</p><h3>${title}</h3>` +
+    header = `<div><p class="d-eyebrow">Episode ${t.index} · step ${step.step} / ${step.maxSteps}</p><h3>${title}</h3>` +
       `<p class="d-narration">${esc(beatNarration(step, state.phase))}</p></div>` +
       (state.phase >= 2 && step.tool ? `<span class="tool-pill">${esc(step.tool)}()</span>` : "") +
       payHtml +
@@ -396,7 +396,7 @@ function renderDetail() {
     const evHtml = (t.events || [])
       .map((e) => `<div class="event ${esc(e.type)}"><span class="tag">${esc(e.type)}</span><span>${esc(e.text)}</span></div>`)
       .join("");
-    header = `<div><p class="d-eyebrow">${esc(t.taskId)} · settled</p>` +
+    header = `<div><p class="d-eyebrow">Episode ${t.index} · settled</p>` +
       `<h3>${t.costNow != null ? fmtPct((t.pctNow || 0) / 100) + " vs seed" : "rolled back"}</h3>` +
       `<p class="d-narration">${esc(beatNarration(null))}</p></div>` +
       (evHtml ? `<div class="events">${evHtml}</div>` : "");
@@ -650,9 +650,9 @@ function openProgram() {
   const diff = prev ? lineDiff(prev.programBlock || "", cur) : cur.split("\n").map((l) => ["ctx", l]);
   const adds = diff.filter((d) => d[0] === "add").length;
   const dels = diff.filter((d) => d[0] === "del").length;
-  $("progEyebrow").textContent = `${t.taskId} · EVOLVE block`;
+  $("progEyebrow").textContent = `Episode ${t.index} · EVOLVE block`;
   $("progTitle").textContent = (adds || dels)
-    ? `What changed vs ${prev.taskId}`
+    ? `What changed vs Episode ${prev.index}`
     : (t.rollbackDelta || 0) > 0
       ? `No net change — explored, then rolled back ${t.rollbackDelta}× to the best snapshot`
       : "No net change — no edit beat the persisted best this episode";
