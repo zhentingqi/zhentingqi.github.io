@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>MATH agent transcripts</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- load data BEFORE the logic script (no defer: inline script runs synchronously) -->
+<script src="./data.js"></script>
+<style>
+:root{
+  --bg:#f7f7f5; --surface:#f0f0ee; --ink:#1f1f23; --ink-body:#3c4043;
+  --muted:#6b7177; --line:#e6e8eb; --line-soft:#eef0f2;
+  --blue:#1a73e8; --blue-deep:#0b57d0; --blue-tint:#e8f0fe;
+  --pos:#0ca678; --neg:#e8384f; --panel:#ffffff;
+  --shadow-sm:0 1px 2px rgba(17,24,39,0.04), 0 1px 1px rgba(17,24,39,0.03);
+  --shadow:0 6px 24px rgba(17,24,39,0.06), 0 1px 2px rgba(17,24,39,0.04);
+  --shadow-lg:0 24px 60px -20px rgba(20,40,80,0.35);
+  /* agent role colors */
+  --r-planner:#2563eb; --r-executor:#0ca678; --r-verifier:#f08c00;
+  --card-w:300px;   /* card width — axis dots use the same so they line up */
+}
+*{box-sizing:border-box;}
+.i{width:1em; height:1em; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; display:block;}
+html,body{margin:0;}
+body{
+  font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  background:var(--bg); color:var(--ink-body);
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+}
+.win{display:flex; flex-direction:column; background:var(--bg);}
+.winbar{position:sticky; top:0; z-index:30; flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; gap:11px; padding:10px 16px; background:#fff; border-bottom:1px solid var(--line);}
+.dots{display:flex; gap:7px;}
+.dots i{width:11px; height:11px; border-radius:50%; background:#e2e4e7; display:inline-block;}
+.dots i:nth-child(1){background:#ff5f57;}
+.dots i:nth-child(2){background:#febc2e;}
+.dots i:nth-child(3){background:#28c840;}
+.wintitle{font-size:12.5px; color:var(--muted); font-weight:600;}
+.app{flex:1 1 auto; padding:18px 22px 12px; width:100%;}
+
+/* held-out problem banner */
+.prob{background:#fff; border:1px solid var(--line); border-radius:12px; padding:11px 15px; box-shadow:var(--shadow-sm); margin-bottom:18px;}
+.prob .tag{font-size:10px; letter-spacing:.09em; text-transform:uppercase; color:var(--blue-deep); font-weight:800;}
+.prob p{margin:5px 0 0; font-size:14px; line-height:1.5; color:var(--ink);}
+.prob p b{color:var(--muted); font-weight:700;}
+
+/* ── horizontal stream of checkpoint cards (scrollbar sits at its bottom) ── */
+.stream-wrap{overflow-x:auto; overflow-y:hidden; padding:4px 2px 2px;}
+.stream-wrap::-webkit-scrollbar{height:11px;}
+.stream-wrap::-webkit-scrollbar-thumb{background:#cbd0d7; border-radius:9px;}
+.stream-wrap::-webkit-scrollbar-track{background:transparent;}
+.stream{display:flex; align-items:stretch; gap:18px; min-width:min-content;}
+
+.ckpt{
+  flex:0 0 auto; width:var(--card-w); display:flex; flex-direction:column;
+  background:#fff; border:1px solid var(--line); border-radius:16px;
+  box-shadow:var(--shadow-sm); cursor:pointer; overflow:hidden;
+  transition:transform .14s, box-shadow .18s, border-color .18s;
+}
+.ckpt:hover{transform:translateY(-2px); box-shadow:var(--shadow); border-color:#d3d7dc;}
+.ckpt-head{padding:12px 14px 10px; border-bottom:1px solid var(--line-soft);}
+.ckpt-when{font-size:11.5px; font-weight:800; color:var(--ink); margin-bottom:7px; letter-spacing:.01em;}
+.ckpt-coord{margin-top:8px; font-size:11.5px; line-height:1.45; color:var(--muted); font-style:italic;}
+.chips{display:flex; flex-wrap:wrap; gap:6px;}
+.chip{font-size:11px; font-weight:800; border-radius:6px; padding:2px 8px; letter-spacing:.01em;}
+.chip.ok{color:#0a6b4d; background:#e6f6ef;} .chip.no{color:#9a1c2c; background:#fdecee;}
+.chip.perf{color:var(--muted); background:#eef0f2; font-weight:700;}
+
+/* transcript preview inside a card (clipped; click for full) */
+.ckpt-body{position:relative; flex:1 1 auto; height:300px; overflow:hidden; padding:12px 14px 0;}
+.tline{font-size:12px; line-height:1.5; margin-bottom:7px; color:var(--ink-body);}
+.tline b{font-weight:800;}
+.ckpt-body::after{content:""; position:absolute; left:0; right:0; bottom:0; height:54px;
+  background:linear-gradient(to bottom, rgba(255,255,255,0), #fff);}
+.ckpt-foot{flex:0 0 auto; padding:9px 14px; border-top:1px solid var(--line-soft); display:flex; align-items:center; gap:6px;
+  font-size:11.5px; font-weight:700; color:var(--blue-deep);}
+.ckpt-foot .i{width:14px; height:14px;}
+.ellip{flex:0 0 auto; align-self:center; color:var(--muted); font-size:30px; font-weight:700; padding:0 10px;}
+
+/* ── bold x-axis: full visible width, does NOT scroll; dots are positioned
+   under each card and tracked as the cards scroll ── */
+.axis{position:relative; height:22px; margin-top:10px;}
+.axis .aline{position:absolute; left:2px; right:16px; top:50%; transform:translateY(-50%); height:4px; background:#8b93a0; border-radius:4px;}
+.axis .ahead{position:absolute; right:0; top:50%; transform:translateY(-50%); width:0; height:0;
+  border-top:8px solid transparent; border-bottom:8px solid transparent; border-left:15px solid #8b93a0;}
+.axis .adot{position:absolute; top:50%; transform:translate(-50%,-50%); width:13px; height:13px; border-radius:50%;
+  background:#8b93a0; border:3px solid var(--bg); box-shadow:0 0 0 1px #c7ccd3;}
+/* label pinned to the lower-right of the window (does not scroll) */
+.axis-label{text-align:right; margin-top:12px; font-size:19px; font-weight:800; color:var(--muted); letter-spacing:.01em;}
+
+/* ── popup: full transcript laid out vertically ── */
+.modal{position:absolute; left:0; top:0; width:100%; z-index:60;}
+.modal[hidden]{display:none;}
+.backdrop{position:fixed; inset:0; background:rgba(20,28,45,.34); backdrop-filter:blur(2px);}
+.card{position:absolute; left:50%; transform:translateX(-50%); z-index:1; width:min(720px,calc(100% - 32px)); max-height:80vh; background:#fff; border:1px solid var(--line);
+  border-radius:16px; box-shadow:var(--shadow-lg); display:flex; flex-direction:column; overflow:hidden;}
+.phead{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:13px 16px; border-bottom:1px solid var(--line); background:var(--surface); flex:0 0 auto;}
+.phead .ptitle{font-size:14px; font-weight:800; color:var(--ink);}
+.modal-close{margin-left:auto; width:30px; height:30px; flex:0 0 auto; border-radius:8px; border:1px solid var(--line); background:#fff;
+  color:var(--ink); cursor:pointer; display:inline-flex; align-items:center; justify-content:center;}
+.modal-close:hover{background:var(--bg);}
+.modal-close .i{width:16px; height:16px;}
+.pbody{flex:1 1 auto; min-height:0; overflow:auto; padding:16px 18px 18px;}
+
+/* vertical chain inside popup — flexbox rail keeps line + dots perfectly centered */
+.vchain{position:relative;}
+.vstep{display:flex; gap:14px; padding-bottom:18px;}
+.vrail{position:relative; flex:0 0 18px; display:flex; justify-content:center;}
+.vrail::after{content:""; position:absolute; top:13px; bottom:-18px; left:50%; transform:translateX(-50%);
+  width:2px; background:var(--line);}
+.vstep:last-child .vrail::after{display:none;}
+.vdot{position:relative; z-index:1; margin-top:4px; width:18px; height:18px; border-radius:50%;
+  background:var(--c); border:3px solid #fff; box-shadow:0 0 0 1px var(--line);}
+.vbody{flex:1 1 auto; min-width:0;}
+.vhead{display:flex; align-items:center; gap:8px; margin-bottom:4px;}
+.vrole{font-size:9.5px; font-weight:800; letter-spacing:.04em; color:#fff; background:var(--c); border-radius:5px; padding:2px 7px;}
+.vname{font-size:12px; font-weight:700; color:var(--ink);}
+.vfin{font-size:9.5px; font-weight:800; color:var(--blue-deep); background:var(--blue-tint); border-radius:5px; padding:2px 7px;}
+.vtext{font-size:13px; line-height:1.55; color:var(--ink-body); white-space:pre-wrap;}
+
+.verdict-box{margin-top:6px; border-top:1px solid var(--line-soft); padding-top:13px;}
+.verdict-box .vrow{display:flex; align-items:center; gap:8px; font-size:13px; font-weight:700; color:var(--ink); margin-bottom:6px;}
+.badge{font-size:10.5px; font-weight:700; border-radius:999px; padding:3px 9px;}
+.badge.ok{color:#0a6b4d; background:#e6f6ef;} .badge.no{color:#9a1c2c; background:#fdecee;}
+.verdict-box .judge{font-size:12.5px; color:var(--muted); line-height:1.6;}
+.verdict-box .judge b{color:var(--ink-body);}
+
+@media (max-width:640px){ :root{ --card-w:250px; } .app{padding:14px 12px 22px;} }
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="winbar">
+    <div class="dots"><i></i><i></i><i></i></div>
+    <span class="wintitle">MATH · agent transcripts</span>
+  </div>
+  <div class="app">
+    <div class="prob">
+      <span class="tag">Held-out test problem</span>
+      <p id="probText"></p>
+    </div>
+
+    <div class="stream-wrap" id="streamWrap">
+      <div class="stream" id="stream"></div>
+    </div>
+    <div class="axis" id="axis"><div class="aline"></div><div class="ahead"></div></div>
+    <div class="axis-label">Stream of Training Tasks</div>
+  </div>
+</div>
+
+<!-- full-transcript popup (vertical) -->
+<div class="modal" id="modal" hidden>
+  <div class="backdrop" id="backdrop"></div>
+  <div class="card">
+    <div class="phead" id="phead"></div>
+    <div class="pbody" id="pbody"></div>
+  </div>
+</div>
+
+<script>
+const ROLE = { planner:"PLAN", executor:"EXEC", verifier:"CHECK" };
+const roleColor = r => getComputedStyle(document.documentElement).getPropertyValue("--r-"+r).trim() || "#888";
+const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const label = r => ROLE[r] || r.toUpperCase().slice(0,5);
+const cap1 = r => r.charAt(0).toUpperCase()+r.slice(1);
+
+const DATA = window.TRANSCRIPT_DATA;
+const TASKS = DATA.tasks;
+
+document.getElementById("probText").textContent = DATA.problem || "";
+
+/* ── horizontal stream of checkpoint cards ── */
+function previewHtml(t){
+  return t.steps.map(st=>{
+    const c = roleColor(st.role);
+    return `<div class="tline"><b style="color:${c}">${cap1(st.role)}:</b> ${esc(st.gist||st.thought||"")}</div>`;
+  }).join("");
+}
+function buildStream(){
+  const el = document.getElementById("stream");
+  el.innerHTML = TASKS.map((t,ti)=>{
+    const perf = (t.perf!=null)?Math.round(t.perf):0;
+    return `<div class="ckpt" data-t="${ti}">
+        <div class="ckpt-head">
+          <div class="ckpt-when">After ${t.after_train} training tasks</div>
+          <div class="chips">
+            <span class="chip ${t.success?"ok":"no"}">${t.success?"Correct":"Incorrect"}</span>
+            <span class="chip perf">Performance on full test set ${perf}%</span>
+          </div>
+        </div>
+        <div class="ckpt-body">${previewHtml(t)}</div>
+        <div class="ckpt-foot">
+          <svg viewBox="0 0 24 24" class="i"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M21 14v7H3V3h7"/></svg>
+          ${t.steps.length} steps · click to read the full transcript
+        </div>
+      </div>`;
+  }).join("") + `<div class="ellip">…</div>`;
+  el.querySelectorAll(".ckpt").forEach(n=> n.addEventListener("click", ()=> openModal(+n.dataset.t)));
+}
+/* one dot per card on the fixed axis; positioned under each card's centre and
+   re-tracked as the cards scroll, so the axis end + label stay in view always */
+let DOTS=[];
+function buildAxis(){
+  const axis = document.getElementById("axis");
+  DOTS = TASKS.map(()=>{ const d=document.createElement("div"); d.className="adot"; axis.appendChild(d); return d; });
+  placeDots();
+}
+function placeDots(){
+  const wrap = document.getElementById("streamWrap");
+  const cards = document.querySelectorAll("#stream .ckpt");
+  const wr = wrap.getBoundingClientRect();
+  cards.forEach((card,i)=>{
+    const dot = DOTS[i]; if(!dot) return;
+    const r = card.getBoundingClientRect();
+    const cx = r.left + r.width/2 - wr.left;          // centre x within the visible strip
+    if(cx < 6 || cx > wr.width - 6){ dot.style.display="none"; }
+    else { dot.style.display=""; dot.style.left = cx + "px"; }
+  });
+}
+
+/* ── popup: full vertical transcript ── */
+function openModal(ti){
+  const t = TASKS[ti];
+  const perf = (t.perf!=null)?Math.round(t.perf):0;
+  document.getElementById("phead").innerHTML =
+    `<span class="ptitle">After ${t.after_train} training tasks</span>`+
+    `<span class="chip ${t.success?"ok":"no"}">${t.success?"Correct":"Incorrect"}</span>`+
+    `<span class="chip perf">Performance on full test set ${perf}%</span>`+
+    `<button class="modal-close" id="modalClose" title="Close"><svg viewBox="0 0 24 24" class="i"><path d="M6 6l12 12M18 6L6 18"/></svg></button>`;
+
+  let html = `<div class="vchain">`;
+  t.steps.forEach(st=>{
+    const c = roleColor(st.role);
+    html += `<div class="vstep" style="--c:${c}">
+        <div class="vrail"><span class="vdot"></span></div>
+        <div class="vbody">
+          <div class="vhead"><span class="vrole">${label(st.role)}</span><span class="vname">${esc(st.agent||cap1(st.role))}</span>${st.final?`<span class="vfin">final answer</span>`:""}</div>
+          <div class="vtext">${esc(st.thought||st.gist||"")}</div>
+        </div>
+      </div>`;
+  });
+  html += `</div>`;
+  html += `<div class="verdict-box">
+      <div class="vrow">Result <span class="badge ${t.success?"ok":"no"}">${t.success?"solved":"not solved"}</span></div>
+      <div class="judge"><b>Correct answer:</b> \\boxed{${esc(t.answer)}} &nbsp;·&nbsp; <b>held-out accuracy at this checkpoint:</b> ${perf}%</div>
+    </div>`;
+
+  document.getElementById("pbody").innerHTML = html;
+  const m = document.getElementById("modal"); m.hidden=false;
+  const card = m.querySelector(".card");
+  card.style.top = Math.max(12, window.scrollY + 24) + "px";
+  document.getElementById("pbody").scrollTop = 0;
+  document.getElementById("modalClose").addEventListener("click", closeModal);
+}
+function closeModal(){ document.getElementById("modal").hidden=true; }
+
+buildStream();
+buildAxis();
+
+/* report content height so the embedding page can size the iframe to fit */
+function postHeight(){
+  const h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+  if(window.parent !== window) window.parent.postMessage({type:"transcriptHeight", h}, "*");
+}
+window.addEventListener("load", ()=>{ postHeight(); placeDots(); });
+window.addEventListener("resize", ()=>{ postHeight(); placeDots(); });
+if(document.fonts && document.fonts.ready) document.fonts.ready.then(()=>{ postHeight(); placeDots(); });
+postHeight();
+
+document.getElementById("streamWrap").addEventListener("scroll", placeDots, {passive:true});
+document.getElementById("backdrop").addEventListener("click", closeModal);
+document.addEventListener("keydown", e=>{ if(e.key==="Escape") closeModal(); });
+</script>
+</body>
+</html>
