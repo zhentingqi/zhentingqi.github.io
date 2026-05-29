@@ -158,6 +158,9 @@ h1.title em { font-style: normal; color: var(--blue-deep); }
   background: #0b0d12;
 }
 .hero-media video, .hero-media img { width: 100%; height: auto; display: block; }
+/* MATH transcripts demo — same width as the teaser video; height auto-fits via postMessage */
+.frame.tdemo { background: #f7f7f5; }
+.frame.tdemo iframe { width: 100%; height: 620px; border: 0; display: block; }
 /* videos are muted (no audio track) — hide the volume/mute control */
 video::-webkit-media-controls-mute-button,
 video::-webkit-media-controls-volume-control-container,
@@ -168,6 +171,8 @@ video::-webkit-media-controls-volume-slider-container { display: none !important
 
 /* ─────────────── Article body ─────────────── */
 article { padding: 8px 0 24px; }
+p code { font-family: "JetBrains Mono", monospace; font-size: 0.85em; background: var(--surface);
+  border: 1px solid var(--line); border-radius: 5px; padding: 1px 5px; color: var(--ink); }
 section { padding: 30px 0; }
 
 /* major topic sections: clear divider + generous breathing room */
@@ -335,7 +340,7 @@ figcaption b { color: var(--ink); font-weight: 600; }
 /* keep these single-image result figures from stretching across the wide reading column */
 #fig-robustness-a { max-width: 680px; margin-left: auto; margin-right: auto; }
 #fig-math-levels { max-width: 780px; margin-left: auto; margin-right: auto; }
-#fig-transaction { max-width: 860px; margin-left: auto; margin-right: auto; }
+#fig-transaction { max-width: 760px; margin-left: auto; margin-right: auto; }
 
 /* three-panel main-result figure: column tracks ∝ aspect ratio ⇒ equal image heights, one row.
    finance 0.935 · frontierscience 1.084 · CloudCast 1.576 (w/h). */
@@ -520,7 +525,16 @@ footer a:hover { text-decoration: underline; }
         </video>
       </div>
       <div class="cap">
-        <b>Figure 1 · Evolution of an agent society over a stream of Financial Research tasks.</b> Five agents are initially created as "ancestors": Edgar, Tavily, ParseHTML, RetrieveInfo, and Answer, each with a different tool. Agents are continuously created and eliminated through economy. As the society encounters more tasks, poor agents are removed and corrected while wealthy ones persist and diversify, yielding an alive and increasingly structured population.
+        <b>Figure 1.1 · Evolution of an agent society over a stream of Financial Research tasks.</b> Five agents are initially created: Edgar, Tavily, ParseHTML, RetrieveInfo, and Answer, each with a different tool. Agents are continuously spawned and eliminated through economy. As the society encounters more tasks, poor agents are removed and corrected while wealthy ones persist and diversify, yielding an alive and increasingly structured population.
+      </div>
+    </div>
+
+    <div class="hero-media" id="math-transcripts">
+      <div class="frame tdemo">
+        <iframe src="transcripts_math/index.html" title="MATH agent transcripts" loading="lazy"></iframe>
+      </div>
+      <div class="cap">
+        <b>Figure 1.2 · The agent society gradually learns to coordinate to solve math problems.</b> One held-out math problem, attempted by the population at six training checkpoints (left → right). Early chains are long and disorganized, with agents sometimes bouncing around and still missing the answer; over training the roles specialize and the team solves the same problem in fewer, better-coordinated steps. Click any checkpoint to read its full transcript.
       </div>
     </div>
 
@@ -537,12 +551,17 @@ footer a:hover { text-decoration: underline; }
       backward between agents. Scrub the timeline, click any agent for its prompt, economics, and lineage, or open
       <em>current program &amp; topology</em> to see what each accepted mutation changed.
     </p>
-
     <p>
-      The transcripts below shows the actions of the winning agent for six episodes
-      spanning the same run (earliest at the top). Early on they are long and disorganized, with agents thrashing — redoing edits,
-      builds, and evaluations out of order and even regressing the program. By the end the same population has
-      learned to divide the labor into a shorter and more structured pipeline. Watch how the agent chains change over time!
+      <b>The task.</b> CloudCast asks the society to evolve a single Python file, <code>initial_program.py</code>,
+      that routes a multi-cloud broadcast: given source and destination regions and a network graph of link costs and
+      throughputs, the program must produce a delivery topology. A simulator scores each program by its total egress
+      cost across five inter- and intra-cloud scenarios, relative to a single-path Dijkstra seed (~$1035); the reward
+      is the fractional cost reduction, <em>max(0, 1 − cost/1035)</em>. The workspace persists across episodes, so each
+      episode keeps editing the previous program rather than starting over. Six roles divide the labor — a
+      <b>Reader</b> inspects files, a <b>Planner</b> proposes the next sub-goal, an <b>Implementer</b> edits the code, a
+      <b>Builder</b> runs an import/build check, an <b>Evaluator</b> calls the scorer, and a <b>Finalizer</b> finalizes the
+      program — but nothing fixes which roles act, or in what order: the auction decides at every step, so the workflow
+      is whatever shape the current code calls for.
     </p>
 
     <div class="demo-frame">
@@ -551,10 +570,6 @@ footer a:hover { text-decoration: underline; }
         <span class="lbl">CloudCast · agent society</span>
       </div>
       <iframe src="demo/index.html" title="Economy of Minds live demo" loading="lazy"></iframe>
-    </div>
-
-    <div class="cc-frame" id="cc-transcripts">
-      <iframe src="transcripts_cloudcast/index.html" title="CloudCast agent transcripts" loading="lazy"></iframe>
     </div>
   </section>
 
@@ -1004,14 +1019,16 @@ footer a:hover { text-decoration: underline; }
 </div>
 
 <script>
-/* size the CloudCast transcripts iframe to its content so the whole
-   top→bottom time axis is visible */
+/* size the MATH transcripts iframe to its content */
 (function () {
-  var frame = document.querySelector("#cc-transcripts iframe");
-  if (!frame) return;
+  var frames = [
+    document.querySelector("#math-transcripts iframe")
+  ].filter(Boolean);
+  if (!frames.length) return;
   window.addEventListener("message", function (e) {
     if (!(e.data && e.data.type === "transcriptHeight" && e.data.h > 0)) return;
-    if (e.source === frame.contentWindow) frame.style.height = e.data.h + "px";
+    var f = frames.filter(function (fr) { return fr.contentWindow === e.source; })[0];
+    if (f) f.style.height = e.data.h + "px";
   });
 })();
 </script>
