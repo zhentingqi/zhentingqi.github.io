@@ -1,0 +1,12 @@
+# Research section (markdown).
+
+body = """
+My research studies how to design the mechanisms under which AI systems self-evolve, from search and evolution within a single agent to coordination across a collective of agents.
+
+- **Within an agent**, these mechanisms take the form of search and evolution over the agent's own attempts, letting it reach solutions it would rarely produce by sampling alone ([rStar](https://arxiv.org/abs/2408.06195), [Satori](https://arxiv.org/abs/2502.02508), [BES](https://arxiv.org/abs/2605.28814)).
+- **Across agents**, they become rules of interaction: in [Economy of Minds](https://arxiv.org/abs/2606.02859), agents bid for the right to act and pay those whose work they build on, and coordinated strategies emerge that no one programmed.
+
+Yet improvement matters only if it transfers, and gains that rest on memorization or self-reinforcement often do not ([Scylla](https://arxiv.org/abs/2410.01769), [EvoLM](https://arxiv.org/abs/2506.16029), [Generalization Gap](https://arxiv.org/abs/2606.01075)). I therefore aim for systems that learn modularity, reusability, and composability, forming structures such as specialized agents and skills that can be reused and recombined, with robustness to local perturbations and generality to out-of-distribution scenarios.
+
+For more information about my research, please see [Google Scholar](https://scholar.google.com/citations?hl=en&user=WZ00HCUAAAAJ), [Semantic Scholar](https://www.semanticscholar.org/author/Zhenting-Qi/2186056193), or [DBLP](https://dblp.org/pid/329/2118.html).
+"""

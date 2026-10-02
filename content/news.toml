@@ -1,4 +1,28 @@
 [[news]]
+date = "2026-09"
+content = "Our paper [_Economy of Minds: Emerging Multi-Agent Intelligence with Economic Interactions_](https://arxiv.org/abs/2606.02859) has been accepted to NeurIPS 2026."
+
+[[news]]
+date = "2026-07"
+content = "Recognized as a **Silver Reviewer** at ICML 2026."
+
+[[news]]
+date = "2026-06"
+content = "Joining **FAIR at Meta** as a Research Scientist Intern this summer, working on scalable multi-agent coordination."
+
+[[news]]
+date = "2026-05"
+content = "Our paper [_On the Generalization Gap in Self-Evolving Language Model Reasoning_](https://arxiv.org/abs/2606.01075), from my internship at Google DeepMind, has been accepted to ICML 2026."
+
+[[news]]
+date = "2026-04"
+content = "Received an Honorable Mention for the **Jane Street Graduate Research Fellowship**."
+
+[[news]]
+date = "2025-12"
+content = "Released [_Confucius Code Agent: Scalable Agent Scaffolding for Real-World Codebases_](https://arxiv.org/abs/2512.10398), a software engineering agent for large-scale codebases."
+
+[[news]]
 date = "2025-09"
 content = "Our paper [_EvoLM: In Search of Lost Language Model Training Dynamics_](https://arxiv.org/abs/2506.16029) has been accepted to NeurIPS 2025 (oral)."
 

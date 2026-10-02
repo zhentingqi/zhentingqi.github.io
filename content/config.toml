@@ -2,7 +2,7 @@
 title = "Zhenting Qi"
 description = "Computer Science Ph.D. student at Harvard University, researching intelligent and reliable AI systems"
 favicon = "/favicon.svg"
-last_updated = "December 1, 2025"
+last_updated = "October 1, 2026"
 
 [author]
 name = "Zhenting Qi"
@@ -27,21 +27,18 @@ linkedin = "https://www.linkedin.com/in/zhentingqi"
 instagram = "https://www.instagram.com/heptacol/"
 twitter = "https://x.com/ZhentingQi"
 
-[features]
-# Show a like button on the about page
-enable_likes = true
-
-# Display all subpages on a single page
-enable_one_page_mode = false
-
 [[navigation]]
 title = "About"
-type = "page"
-target = "about"
-href = "/"
+href = "#about"
+
+[[navigation]]
+title = "Research"
+href = "#research"
+
+[[navigation]]
+title = "News"
+href = "#news"
 
 [[navigation]]
 title = "Publications"
-type = "page"
-target = "publications"
-href = "/publications"
+href = "#publications"

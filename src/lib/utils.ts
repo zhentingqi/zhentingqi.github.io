@@ -1,27 +1,23 @@
 import { type ClassValue, clsx } from "clsx";
+import { Publication } from "@/types/publication";
 
 export function cn(...inputs: ClassValue[]) {
   return clsx(inputs);
 }
 
-export function formatDate(date: string | Date): string {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }).format(new Date(date));
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+// "2025-09" -> "Sep 2025"
+export function formatNewsDate(date: string): string {
+  const [year, month] = date.split('-');
+  const m = parseInt(month, 10);
+  return m >= 1 && m <= 12 ? `${MONTHS[m - 1]} ${year}` : year;
 }
 
-export function formatYear(date: string | Date): string {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric'
-  }).format(new Date(date));
-}
-
-export function generateSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/[\s_-]+/g, '-')
-    .replace(/^-+|-+$/g, '');
+// "Advances in Neural Information Processing Systems (NeurIPS)" -> "NeurIPS 2025"; a `venue` field overrides
+export function shortVenue(pub: Publication): string {
+  if (pub.venue) return pub.venue;
+  const full = pub.conference || pub.journal || '';
+  const abbr = /arxiv/i.test(full) ? 'arXiv' : full.match(/\(([^)]+)\)\s*$/)?.[1];
+  return `${abbr || full || 'Preprint'} ${pub.year}`.trim();
 }

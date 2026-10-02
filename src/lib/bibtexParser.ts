@@ -81,7 +81,9 @@ export function parseBibTeX(bibtexContent: string): Publication[] {
       doi: tags.doi,
       code: tags.code,
       abstract: cleanBibTeXString(tags.abstract),
-      description: cleanBibTeXString(tags.description || tags.note),
+      description: cleanBibTeXString(tags.description),
+      note: cleanBibTeXString(tags.note) || undefined,
+      venue: cleanBibTeXString(tags.venue) || undefined,
       selected,
       preview,
       
@@ -95,7 +97,7 @@ export function parseBibTeX(bibtexContent: string): Publication[] {
       pdfUrl: tags.pdf || (tags.arxiv ? convertArxivToPdf(tags.arxiv) : (tags.url && tags.url.includes('arxiv.org') ? convertArxivToPdf(tags.url) : undefined)),
       
       // Store original BibTeX (excluding custom fields)
-      bibtex: reconstructBibTeX(entry, ['selected', 'preview', 'description', 'keywords', 'code', 'award']),
+      bibtex: reconstructBibTeX(entry, ['selected', 'preview', 'description', 'keywords', 'code', 'award', 'venue', 'abstract']),
     };
     
     // Clean up undefined fields
@@ -148,11 +150,9 @@ function parseAuthors(authorsStr: string): Array<{ name: string; isHighlighted?:
         name = `${parts[1]} ${parts[0]}`;
       }
       
-      // Check if this is Zhenting Qi or Jiale Liu (to highlight)
-      const isHighlighted = name.toLowerCase().includes('zhenting qi') || 
-                          name.toLowerCase().includes('qi zhenting') ||
-                          name.toLowerCase().includes('jiale liu') || 
-                          name.toLowerCase().includes('liu jiale');
+      // Highlight the site owner
+      const isHighlighted = name.toLowerCase().includes('zhenting qi') ||
+                          name.toLowerCase().includes('qi zhenting');
       
       return {
         name: cleanBibTeXString(name),

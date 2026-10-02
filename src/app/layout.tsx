@@ -1,113 +1,63 @@
 import type { Metadata } from "next";
+import { Inter, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
-import Navigation from "@/components/layout/Navigation";
-import Footer from "@/components/layout/Footer";
-import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { getConfig } from "@/lib/config";
+import ThemeProvider from "@/components/ThemeProvider";
+import SiteHeader from "@/components/SiteHeader";
+import TabNav from "@/components/TabNav";
+import BackToTop from "@/components/BackToTop";
+
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
+const sourceSerif = Source_Serif_4({
+  subsets: ["latin"],
+  variable: "--font-source-serif",
+  display: "swap",
+});
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = getConfig();
   return {
     title: {
       default: config.site.title,
-      template: `%s | ${config.site.title}`
+      template: `%s | ${config.site.title}`,
     },
     description: config.site.description,
     keywords: [config.author.name, "PhD", "Research", config.author.institution],
     authors: [{ name: config.author.name }],
-    creator: config.author.name,
-    publisher: config.author.name,
-    icons: {
-      icon: config.site.favicon,
-    },
+    icons: { icon: config.site.favicon },
     openGraph: {
       type: "website",
       locale: "en_US",
       title: config.site.title,
       description: config.site.description,
-      siteName: `${config.author.name}'s Academic Website`,
+      siteName: config.author.name,
     },
   };
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const config = getConfig();
+  const year = new Date().getFullYear();
 
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
-      <head>
-        <link rel="icon" href={config.site.favicon} type="image/svg+xml" />
-        {/* Speed up font connections */}
-        <link rel="dns-prefetch" href="https://google-fonts.jialeliu.com" />
-        <link rel="preconnect" href="https://google-fonts.jialeliu.com" crossOrigin="" />
-        {/* Non-blocking Google Fonts: preload + print media swap to avoid render-blocking */}
-        <link
-          rel="preload"
-          as="style"
-          href="https://google-fonts.jialeliu.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap"
-        />
-        <link
-          rel="stylesheet"
-          id="gfonts-css"
-          href="https://google-fonts.jialeliu.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap"
-          media="print"
-        />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function(){
-                var l = document.getElementById('gfonts-css');
-                if (!l) return;
-                if (l.media !== 'all') {
-                  l.addEventListener('load', function(){ try { l.media = 'all'; } catch(e){} });
-                }
-              })();
-            `,
-          }}
-        />
-        <noscript>
-          {/* Fallback for no-JS environments */}
-          <link
-            rel="stylesheet"
-            href="https://google-fonts.jialeliu.com/css2?family=Inter:wght@300;400;500;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap"
-          />
-        </noscript>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                const theme = localStorage.getItem('theme-storage');
-                const parsed = theme ? JSON.parse(theme) : null;
-                const setting = parsed?.state?.theme || 'system';
-                const prefersDark = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-                const effective = setting === 'dark' ? 'dark' : (setting === 'light' ? 'light' : (prefersDark ? 'dark' : 'light'));
-                var root = document.documentElement;
-                root.classList.add(effective);
-                root.setAttribute('data-theme', effective);
-              } catch (e) {
-                var root = document.documentElement;
-                root.classList.add('light');
-                root.setAttribute('data-theme', 'light');
-              }
-            `,
-          }}
-        />
-      </head>
-      <body className={`font-sans antialiased`}>
+    <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`} suppressHydrationWarning>
+      <body className="min-h-screen">
         <ThemeProvider>
-          <Navigation
-            items={config.navigation}
-            siteTitle={config.site.title}
-            enableOnePageMode={config.features.enable_one_page_mode}
-          />
-          <main className="min-h-screen pt-16 lg:pt-20">
-            {children}
-          </main>
-          <Footer lastUpdated={config.site.last_updated} />
+          <div id="top" className="h-1 bg-crimson" />
+          <div className="mx-auto max-w-[720px] px-4 sm:px-6">
+            <SiteHeader config={config} />
+          </div>
+          <TabNav items={config.navigation} />
+          <main className="mx-auto max-w-[720px] px-4 pt-10 pb-16 sm:px-6 sm:pt-12">{children}</main>
+          <footer className="border-t border-line">
+            <div className="mx-auto flex max-w-[720px] flex-col items-center gap-1 px-4 py-8 text-center text-[0.8rem] text-muted sm:px-6">
+              <p>
+                © {year} {config.author.name}
+              </p>
+              {config.site.last_updated && <p>Last updated {config.site.last_updated}</p>}
+              <BackToTop />
+            </div>
+          </footer>
         </ThemeProvider>
       </body>
     </html>
