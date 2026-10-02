@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Deployment script for GitHub Pages
-# This script builds the site and deploys it to the gh-pages branch
+# This script builds the site and publishes out/ as the entire contents of the gh-pages branch
 
 set -e  # Exit on any error
 
@@ -37,36 +37,38 @@ if [ ! -d "out" ]; then
     exit 1
 fi
 
-# Step 2: Switch to gh-pages branch (create if it doesn't exist)
-echo "🔄 Switching to gh-pages branch..."
+# Step 2: Check out gh-pages in a temporary worktree (the main checkout is never switched)
+echo "🔄 Preparing gh-pages worktree..."
+WORKTREE=$(mktemp -d)
+cleanup() {
+    git worktree remove --force "$WORKTREE" 2>/dev/null || true
+    rm -rf "$WORKTREE"
+}
+trap cleanup EXIT
+
 if git show-ref --verify --quiet refs/heads/gh-pages; then
-    git checkout gh-pages
-    # Remove all files except .git
-    git rm -rf --cached . 2>/dev/null || true
+    git worktree add --quiet "$WORKTREE" gh-pages
 else
-    git checkout --orphan gh-pages
-    git rm -rf --cached . 2>/dev/null || true
+    git worktree add --quiet --detach "$WORKTREE"
+    git -C "$WORKTREE" checkout --quiet --orphan gh-pages
 fi
 
-# Step 3: Copy built files
+# Step 3: Replace the branch contents with the fresh build, so stale files never linger
 echo "📋 Copying built files..."
-cp -r out/* .
-cp out/.nojekyll . 2>/dev/null || touch .nojekyll
+git -C "$WORKTREE" rm -rf --quiet --ignore-unmatch .
+cp -R out/. "$WORKTREE"/
+touch "$WORKTREE/.nojekyll"
 
 # Step 4: Add and commit
 echo "💾 Committing changes..."
-git add -A
-git commit -m "Deploy website to GitHub Pages - $(date +'%Y-%m-%d %H:%M:%S')" || {
+git -C "$WORKTREE" add -A
+git -C "$WORKTREE" commit --quiet -m "Deploy website to GitHub Pages - $(date +'%Y-%m-%d %H:%M:%S')" || {
     echo "⚠️  No changes to commit (site is already up to date)"
 }
 
 # Step 5: Push to GitHub
 echo "📤 Pushing to GitHub..."
-git push -u origin gh-pages
-
-# Step 6: Switch back to main branch
-echo "🔄 Switching back to main branch..."
-git checkout main
+git -C "$WORKTREE" push -u origin gh-pages
 
 echo "✅ Deployment complete!"
 echo "🌐 Your site should be live at: https://zhentingqi.github.io"
