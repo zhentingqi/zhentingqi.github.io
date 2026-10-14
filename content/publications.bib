@@ -1,3 +1,15 @@
+@inproceedings{scalemas2026,
+  selected={true},
+  title={Scaling Multi-Agent Intelligence with Substrate-Centric Coordination},
+  author={Zhenting Qi and Zhuokai Zhao and Rulin Shao and Kerem Oktar and Zhiyuan Yao and Himabindu Lakkaraju and Wen-tau Yih and Ansong Ni and Bhargavi Paranjape and Yilun Du},
+  year={2026},
+  month=oct,
+  booktitle={arXiv preprint arXiv:2610.16120},
+  abstract={Existing large language model (LLM) based multi-agent systems have been shown to scale poorly, and we identify three problems: reading burden that grows with the group, useful information diluted by shared work of unknown quality, and fragility to failed agents. We argue that the problems are largely due to agent-centric designs: the coordination structure is wired into fixed workflows, central coordinators, or peer-to-peer messaging, and recent blackboard-style methods that move the coordination into a shared medium relieve only the last problem. To close the gaps, we build ScaleMAS, where asynchronous agents interact with a shared datastore of linked messages via three operations: publishing messages with optional references to earlier ones that they build on, searching for messages by content, and visiting messages by address. Search returns at most k messages, so an agent's read stays bounded at any group size; results are ranked by relevance and by how often they are cited, which we find to be an effective proxy for quality; and messages persist after their producers leave, so the group carries on when individual agents fail. Across four agentic tasks, ScaleMAS outperforms agent-centric and blackboard-style baselines at lower inference compute, continues to scale up to 128 agents, and tolerates losing agents midway.},
+  description={ScaleMAS coordinates asynchronous agents through a shared datastore of linked messages, keeping each agent's reading bounded and scaling to 128 agents while tolerating agent failures.},
+  arxiv={https://arxiv.org/abs/2610.16120},
+}
+
 @inproceedings{eom2026,
   selected={true},
   title={Economy of Minds: Emerging Multi-Agent Intelligence with Economic Interactions},
