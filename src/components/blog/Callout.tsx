@@ -1,8 +1,9 @@
 import type { ReactNode } from 'react';
 
 /**
- * A labelled aside set off by a rule at the left. `tone="key"` (a definition or takeaway)
- * uses the crimson rule; `tone="aside"` (a comment) uses a hairline and is a little quieter.
+ * A labelled block set apart from the text. Every callout looks the same; the label says what
+ * kind it is. `tone` is kept so posts can still mark a callout as a key point or an aside, but
+ * it no longer changes the styling.
  */
 export default function Callout({ label, tone = 'key', children }: { label?: string; tone?: 'key' | 'aside'; children: ReactNode }) {
     return (

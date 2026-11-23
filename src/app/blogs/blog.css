@@ -1057,24 +1057,15 @@ html.is-lightbox-open {
 }
 
 /* ---------- Callouts ---------- */
-/* A callout is a tinted block, set a little smaller than the text around it. `key` (a
-   definition or takeaway) has a crimson tint; `aside` (a comment) has a neutral one. */
+/* Every callout is the same light grey block, set a little smaller than the text around it.
+   Its small label (Definition, Takeaway, Comment) is what says which kind it is. */
 .callout {
   margin: 1.8em 0;
   padding: 16px 22px 18px;
   border-radius: var(--radius-media);
-  background: color-mix(in srgb, var(--crimson) 7%, var(--paper));
+  background: var(--surface);
   font-size: 0.93em;
   line-height: 1.55;
-}
-
-.dark .blog .callout {
-  background: color-mix(in srgb, var(--crimson) 11%, var(--paper));
-}
-
-.callout-aside,
-.dark .blog .callout-aside {
-  background: var(--surface);
 }
 
 .b-prose .callout p,
@@ -1095,10 +1086,6 @@ html.is-lightbox-open {
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--crimson);
-}
-
-.b-prose .callout-aside .callout-label {
   color: var(--muted);
 }
 
