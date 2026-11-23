@@ -2,6 +2,7 @@ import { createElement, type ComponentProps, type ReactNode } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import Byline from '@/components/blog/Byline';
 import Callout from '@/components/blog/Callout';
 import ReadingProgress from '@/components/blog/ReadingProgress';
 import TocDrawer from '@/components/blog/TocDrawer';
@@ -83,9 +84,6 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
 
     // The margin column exists for notes and citations. A post with none of them has nothing to
     // put there, so its text is centered on the page instead of sitting to the left of an empty column.
-    // Affiliations in order of first appearance; authors point at them by number.
-    const affiliations = [...new Set(post.authors.map((author) => author.affiliation).filter((a): a is string => !!a))];
-
     const hasMarginNotes = /<(Sidenote|Cite)\b/.test(post.content);
 
     return (
@@ -97,29 +95,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                     <p className="b-kicker">{TYPE_LABEL[post.type]}</p>
                     <h1 className="b-post-title">{post.title}</h1>
                     {post.description && <p className="b-standfirst">{post.description}</p>}
-                    {post.authors.length > 0 && (
-                        <div className="b-authors">
-                            <p>
-                                {post.authors.map((author, i) => (
-                                    <span key={author.name}>
-                                        {author.name}
-                                        {author.affiliation && affiliations.length > 1 && <sup>{affiliations.indexOf(author.affiliation) + 1}</sup>}
-                                        {i < post.authors.length - 1 && ', '}
-                                    </span>
-                                ))}
-                            </p>
-                            {affiliations.length > 0 && (
-                                <p className="b-affiliations">
-                                    {affiliations.map((name, i) => (
-                                        <span key={name}>
-                                            {affiliations.length > 1 && <sup>{i + 1}</sup>}
-                                            {name}
-                                        </span>
-                                    ))}
-                                </p>
-                            )}
-                        </div>
-                    )}
+                    <Byline authors={post.authors} />
                     <p className="b-meta">
                         <time dateTime={post.date}>{formatDate(post.date)}</time> · {post.readingMinutes} min read
                     </p>

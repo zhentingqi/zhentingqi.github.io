@@ -11,11 +11,14 @@ Notion page is edited:
   3. If any image or video changed, download it into public/blogs/<slug>/ (videos are re-encoded
      with ffmpeg and get a <name>.poster.jpg).
 
-The title, description, date, tags and affiliations below are specific to this post.
+The title, description, date and tags below are specific to this post. Authors are written by
+name; their affiliations and photos come from the profile library in content/people.toml.
 """
 import json
+import pathlib
 import re
 import sys
+import tomllib
 
 src, dest, slug = sys.argv[1], sys.argv[2], sys.argv[3]
 BASE = f"/blogs/{slug}"
@@ -29,8 +32,6 @@ body = re.sub(r'<span color="[^"]*">', "", body)
 body = body.replace("</span>", "")
 
 authors = []
-# Affiliations given by the post's author; everyone not listed here is at MIT.
-HARVARD = {"Zhenting Qi", "Yilun Du", "Guowei Xu"}
 
 
 def plain(text):
@@ -227,8 +228,7 @@ front = "\n".join([
     "date: 2026-11-23",
     "type: essay",
     "tags: [multi-agent, collective intelligence, scaling]",
-    "authors:",
-    *[f"  - {{ name: {a}, affiliation: {'Harvard University' if a in HARVARD else 'MIT'} }}" for a in authors],
+    f"authors: [{', '.join(authors)}]",
     f"cover: {BASE}/cover.jpg",
     "---",
     "",
@@ -238,6 +238,11 @@ open(dest, "w", encoding="utf-8").write(front + text)
 
 # ---- report --------------------------------------------------------------------------------
 print("authors:", authors)
+people_file = pathlib.Path(__file__).resolve().parent.parent / "content" / "people.toml"
+known = {p["name"] for p in tomllib.loads(people_file.read_text(encoding="utf-8")).get("people", [])}
+missing = [a for a in authors if a not in known]
+if missing:
+    print("NOT IN content/people.toml (no affiliation or photo will show):", missing)
 print("chars:", len(text), "figures:", text.count("<Figure "), "videos:", text.count("<Video "),
       "callouts:", text.count("<Callout "), "h2:", len(re.findall(r"^## ", text, re.M)), "h3:", len(re.findall(r"^### ", text, re.M)))
 left = sorted(set(re.findall(r"</?[a-z][a-z0-9-]*", text)))

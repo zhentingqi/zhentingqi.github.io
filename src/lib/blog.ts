@@ -3,6 +3,7 @@ import path from 'path';
 import matter from 'gray-matter';
 import GithubSlugger from 'github-slugger';
 import { getConfig } from '@/lib/config';
+import { findPerson } from '@/lib/people';
 import { POST_TYPES, tagSlug, type PostAuthor, type PostMeta, type PostType } from '@/lib/blog-shared';
 
 export * from '@/lib/blog-shared';
@@ -120,16 +121,24 @@ function extractCiteKeys(content: string): string[] {
     return keys;
 }
 
-/** Authors may be plain names, or `{ name, affiliation }` entries. */
+/**
+ * Authors are listed by name and filled in from the profile library (`content/people.toml`).
+ * An entry may also be `{ name, affiliation, avatar, url }`: for someone who is not in the library,
+ * or to print a different affiliation on one post.
+ */
 function parseAuthors(value: unknown): PostAuthor[] {
     if (!Array.isArray(value)) return [];
     return value
         .map((entry): PostAuthor => {
-            if (entry && typeof entry === 'object') {
-                const { name, affiliation } = entry as { name?: unknown; affiliation?: unknown };
-                return { name: String(name ?? ''), affiliation: affiliation ? String(affiliation) : undefined };
-            }
-            return { name: String(entry) };
+            const given: Record<string, unknown> = entry && typeof entry === 'object' ? (entry as Record<string, unknown>) : { name: entry };
+            const name = String(given.name ?? '').trim();
+            const person = findPerson(name);
+            return {
+                name: person?.name ?? name,
+                affiliation: given.affiliation ? String(given.affiliation) : person?.affiliation,
+                avatar: given.avatar ? String(given.avatar) : person?.avatar,
+                url: given.url ? String(given.url) : person?.url,
+            };
         })
         .filter((author) => author.name);
 }

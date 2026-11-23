@@ -1,0 +1,57 @@
+# Profile library: the people who appear as authors on blog posts.
+#
+# A post lists its authors by name in the frontmatter (`authors: [Zhenting Qi, Baiyu Zhu]`);
+# the affiliation, photo and link come from here, so they are written once.
+#
+#   name         as it should be printed; posts refer to a person by exactly this name
+#   affiliation  shown under the author line
+#   avatar       a square photo in public/people/, 256px or larger; without one the page
+#                shows the person's initials
+#   url          where a click on the author goes: their homepage (or "/" for this site)
+
+[[people]]
+name = "Zhenting Qi"
+affiliation = "Harvard University"
+avatar = "/people/zhenting-qi.jpg"
+url = "/"
+
+[[people]]
+name = "Baiyu Zhu"
+affiliation = "MIT"
+url = "https://www.linkedin.com/in/baiyu-zhu-9a66b633a/"
+
+[[people]]
+name = "Bowen Yu"
+affiliation = "MIT"
+avatar = "/people/bowen-yu.jpg"
+url = "https://bowenyu066.github.io/"
+
+[[people]]
+name = "Guowei Xu"
+affiliation = "Harvard University"
+avatar = "/people/guowei-xu.jpg"
+url = "https://guoweixu.com/"
+
+[[people]]
+name = "Xingjian Bai"
+affiliation = "MIT"
+avatar = "/people/xingjian-bai.jpg"
+url = "https://xingjianbai.com/"
+
+[[people]]
+name = "Qiyao Liang"
+affiliation = "MIT"
+avatar = "/people/qiyao-liang.jpg"
+url = "https://qiyaoliang.com/about/"
+
+[[people]]
+name = "Fuming Yang"
+affiliation = "MIT"
+avatar = "/people/fuming-yang.jpg"
+url = "https://fumingyang-felix.github.io/"
+
+[[people]]
+name = "Yilun Du"
+affiliation = "Harvard University"
+avatar = "/people/yilun-du.jpg"
+url = "https://yilundu.github.io/"

@@ -97,13 +97,20 @@ description: One or two sentences, used as the standfirst, in lists, and in RSS.
 date: 2026-11-12
 type: paper          # note | paper | essay | project
 tags: [multi-agent, mechanism design]
-authors:                         # optional; shown under the title
-  - { name: Ada Lovelace, affiliation: Harvard University }
-  - { name: Alan Turing, affiliation: MIT }
+authors: [Zhenting Qi, Yilun Du]  # optional; names from content/people.toml
 cover: /blogs/<slug>/cover.png    # optional, shown when the post leads the home page
 thumb: /blogs/<slug>/thumb.png    # optional, shown in lists
 ---
 ```
+
+Authors come from the profile library, `content/people.toml`: one entry per person with
+`name`, `affiliation`, `avatar` (a square photo in `public/people/`, 256px or larger) and `url`
+(their homepage; `/` for this site). A post lists names only; under the title each author gets
+a 26px round photo beside the name, or their initials on a grey disc while the library has no
+photo for them, followed by the numbered affiliations. Photo and name are one link to the
+homepage: other sites open in a new tab, and the name turns crimson on hover. An entry written
+as `{ name, affiliation, avatar, url }` covers a one-off guest or a different affiliation on a
+single post.
 
 Headings are numbered automatically: `##` gets 1, 2, 3, `###` gets 1.1, and `####` gets 1.1.1.
 Acknowledgements, Citation, References and appendices are left unnumbered. The contents block

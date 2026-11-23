@@ -1121,12 +1121,69 @@ html.is-lightbox-open {
 }
 
 .b-authors {
-  margin: 0 0 8px;
+  margin: 0 0 10px;
   max-width: var(--w-text);
   font-family: var(--ui);
   font-size: 14px;
   line-height: 1.55;
   color: var(--ink);
+}
+
+/* Each author is a small round photo and a name; the pairs wrap as units. */
+.b-authors ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.b-authors li {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.b-author {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: inherit;
+  text-decoration: none;
+}
+
+a.b-author:hover .b-author-name,
+a.b-author:focus-visible .b-author-name {
+  color: var(--crimson);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a.b-author:hover .b-avatar,
+a.b-author:focus-visible .b-avatar {
+  box-shadow: 0 0 0 1.5px var(--crimson);
+}
+
+.b-avatar {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  object-fit: cover;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--rule);
+}
+
+/* Initials, for someone whose photo is not in the profile library yet. */
+span.b-avatar {
+  display: inline-grid;
+  place-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--muted);
 }
 
 .b-authors sup {
@@ -1137,7 +1194,7 @@ html.is-lightbox-open {
 }
 
 .b-affiliations {
-  margin-top: 2px;
+  margin-top: 7px;
   display: flex;
   flex-wrap: wrap;
   gap: 0 16px;

@@ -31,6 +31,10 @@ export const TYPE_PLURAL: Record<PostType, string> = {
 export interface PostAuthor {
     name: string;
     affiliation?: string;
+    /** Site path of a square photo; initials are shown without one. */
+    avatar?: string;
+    /** The author's homepage; the name links there. */
+    url?: string;
 }
 
 export interface PostMeta {
