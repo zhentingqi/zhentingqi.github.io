@@ -13,14 +13,14 @@ authors:
   - { name: Qiyao Liang, affiliation: MIT }
   - { name: Fuming Yang, affiliation: MIT }
   - { name: Yilun Du, affiliation: Harvard University }
-cover: /blog/steps-towards-artificial-collective-intelligence/cover.jpg
+cover: /blogs/steps-towards-artificial-collective-intelligence/cover.jpg
 ---
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/teaser.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/teaser.poster.jpg" loop controls wide photo numbered={false} />
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/teaser.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/teaser.poster.jpg" loop controls photo numbered={false} />
 
 The idea of “multi-agent systems” (MAS) has been pitched as a test-time scaling method for years. On one hand, MAS seems to show strong capabilities beyond single agents. OpenAI reported that 10,000 agents had resolved the Navier–Stokes problem ([OpenAI 2026a](https://openai.com/index/navier-stokes-solution/)), and Anthropic reported that an agent team formalized Fermat’s Last Theorem ([Anthropic 2026a](https://www.anthropic.com/research/formalizing-fermats-last-theorem)), later reproduced by a team of 1,000 agents with Fable 5.2 ([Anthropic 2026b](https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/)). We have also seen the darker side of such strong capabilities: OpenAI’s agents formed a team on their own and broke into parts of Hugging Face’s systems ([OpenAI 2026b](https://openai.com/index/hugging-face-incident-and-the-road-ahead/)). This collective grew out of a shared workspace to write and read, and, in OpenAI’s words, it amplified the agents’ capabilities “well beyond what any individual agent might achieve alone.”
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/agents_over_time.png" wide numbered={false} alt={"A few of the largest agent teams reported in 2026, on a log scale: the Kimi K2.5 swarm (Moonshot AI 2026), the Hugging Face incident (METR 2026), the Navier–Stokes run (OpenAI 2026"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/agents_over_time.png" numbered={false} alt={"A few of the largest agent teams reported in 2026, on a log scale: the Kimi K2.5 swarm (Moonshot AI 2026), the Hugging Face incident (METR 2026), the Navier–Stokes run (OpenAI 2026"}>
 
 **Figure 1.** A few of the largest agent teams reported in 2026, on a log scale: the Kimi K2.5 swarm ([Moonshot AI 2026](https://www.kimi.com/en/blog/kimi-k2-5)), the Hugging Face incident ([METR 2026](https://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/)), the Navier–Stokes run ([OpenAI 2026a](https://openai.com/index/navier-stokes-solution/)), Agensh ([Zhan et al. 2026](https://arxiv.org/abs/2609.26781)) and the Fable 5.2 Fermat run ([Anthropic 2026b](https://claude.dev/blog/safely-scaling-multi-agent-teams-with-fable-5-2/)).
 
@@ -28,7 +28,7 @@ The idea of “multi-agent systems” (MAS) has been pitched as a test-time scal
 
 On the other hand, studies have also shown that MAS often fails to beat single agents. Across six benchmarks and four MAS architectures, [Kim et al. (2025a)](https://arxiv.org/abs/2512.08296) find that moving from a single agent to a MAS changes performance by −0.3% on average. In their experiments, multi-agent designs also tended to help less when the underlying model was more capable. Moreover, on multi-hop reasoning problems, a single agent with the same thinking budget consistently matches or beats multi-agent designs ([Tran and Kiela 2026](https://arxiv.org/abs/2604.02460)). Teams built on a single shared LLM largely plateau after about four agents ([Yang et al. 2026a](https://arxiv.org/abs/2602.03794)) or follow an inverted-U scaling curve (SIMAS; [Li et al. 2026](https://arxiv.org/abs/2606.00655)).
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/kim_perf.png" wide numbered={false} alt={"Average performance on six agentic benchmarks for a single agent and four multi-agent architectures"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/kim_perf.png" numbered={false} alt={"Average performance on six agentic benchmarks for a single agent and four multi-agent architectures"}>
 
 **Figure 2** (Redrawn from [Kim et al. 2025a](https://arxiv.org/abs/2512.08296), Figure 1). Average performance on six agentic benchmarks for a single agent and four multi-agent architectures.
 
@@ -66,7 +66,7 @@ Existing systems fall roughly into six geometries.
 
 Early multi-agent systems wire the agents together at design time. Every agent has a role, and each agent’s output becomes the next one’s input. MetaGPT ([Hong et al. 2023](https://arxiv.org/abs/2308.00352)) hands a software project from a product manager to an architect, an engineer, and a tester, and ChatDev ([Qian et al. 2023](https://arxiv.org/abs/2307.07924)) runs a similar chain of role-played phases. AFlow ([Zhang et al. 2024](https://arxiv.org/abs/2410.10762)) and similar methods search for the wiring automatically; once the wiring is found, it stays fixed for the whole run. A fixed workflow works well at small scale but is hard to grow and adapt to a different domain.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/shape_1_fixed_workflow.png" numbered={false} alt={"A fixed workflow"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/shape_1_fixed_workflow.png" numbered={false} alt={"A fixed workflow"}>
 
 **Figure 3.** A fixed workflow. Roles and hand-offs are set before the run. The squares are the state before and after.
 
@@ -76,7 +76,7 @@ Early multi-agent systems wire the agents together at design time. Every agent h
 
 A simple way to use many agents is to let them work in parallel and combine their results at the end. [von Neumann (1956)](https://doi.org/10.1515/9781400882618-003) showed that unreliable components can make a reliable circuit if you copy them and take a majority vote, and N-version programming did the same with independently written programs ([Avizienis 1985](https://doi.org/10.1109/TSE.1985.231893)). With LLMs, it shows up as self-consistency ([Wang et al. 2022](https://arxiv.org/abs/2203.11171)), majority voting over many agents ([Li et al. 2024](https://arxiv.org/abs/2402.05120)), and best-of-N selection. Since nobody reads anybody else’s work, extra agents add no coordination cost. What one buys is more independent samples, and they are only worth as much as they are independent.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/shape_2_parallel_agents.png" numbered={false} alt={"Parallel agents"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/shape_2_parallel_agents.png" numbered={false} alt={"Parallel agents"}>
 
 **Figure 4.** Parallel agents. Each agent works on its own line and never sees the others’ work, and an aggregation step, such as a vote or picking the best, combines the results at the end. The squares are the state before and after.
 
@@ -86,7 +86,7 @@ A simple way to use many agents is to let them work in parallel and combine thei
 
 A lead agent splits the problem into subtasks, hands them to subagents, and merges what comes back. This is the old coordinator model with LLMs as the manager/workers, and it is the most common design today. Claude Code and Codex delegate to subagents this way, and so do Anthropic’s research system ([Anthropic 2025](https://www.anthropic.com/engineering/multi-agent-research-system)) and the Kimi K2.5 agent swarm ([Kimi Team 2026](https://arxiv.org/abs/2602.02276)). A lead is also a bottleneck though: it reads everything its subagents send back, so as the team grows, it needs to split the work well, keep track of a growing context, sort out dependencies between subagents, and filter out their noise.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/shape_3_coordinator.png" numbered={false} alt={"A coordinator"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/shape_3_coordinator.png" numbered={false} alt={"A coordinator"}>
 
 **Figure 5.** A coordinator. The main agent splits the task, hands subtasks to subagents and merges what comes back. The squares are the state before and after.
 
@@ -96,7 +96,7 @@ A lead agent splits the problem into subtasks, hands them to subagents, and merg
 
 Agents talk to each other directly. In multi-agent debate, an early example, every agent sees the others’ answers over several rounds and revises its own ([Du et al. 2023](https://arxiv.org/abs/2305.14325)). In more flexible systems, each agent decides whom to message and when. With LLM agents, this is usually implemented through a `send_message(to, content)` tool. The role-playing pairs of CAMEL ([Li et al. 2023](https://arxiv.org/abs/2303.17760)) and the group chats of AutoGen ([Wu et al. 2023](https://arxiv.org/abs/2308.08155)) work the same way. Nobody has to wait on a central server. The catch is reading: each agent has to read what the message senders deliver, so its reading burden could grow with the size of the team.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/shape_4_message_passing.png" numbered={false} alt={"Message passing: agents talk to each other directly"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/shape_4_message_passing.png" numbered={false} alt={"Message passing: agents talk to each other directly"}>
 
 **Figure 6.** Message passing: agents talk to each other directly. Each line is one agent over time, and each red arrow is a message from one agent to another.
 
@@ -108,7 +108,7 @@ Here, agents never talk to each other directly. They read and write through a sh
 
 LLM systems use a few kinds of boards. In a **shared context**, all agents read and append to one common context ([Mao et al. 2026](https://arxiv.org/abs/2606.10662)). In a **shared file system**, agents work through a terminal and a repository, as in the C compiler that 16 Claude agents built ([Carlini 2026](https://www.anthropic.com/engineering/building-c-compiler)) and in CORAL ([Qu et al. 2026](https://arxiv.org/abs/2604.01658)). In a **shared research index**, agents post messages with reference links and read back only the few that a search returns, as in ScaleMAS ([Qi et al. 2026a](https://arxiv.org/abs/2610.16120)). The boards differ mostly in how agents read and write. They share one useful property: whatever an agent produced stays on the medium even if that agent later exits or fails.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/shape_5_blackboard.png" numbered={false} alt={"A blackboard: agents coordinate only through a shared medium"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/shape_5_blackboard.png" numbered={false} alt={"A blackboard: agents coordinate only through a shared medium"}>
 
 **Figure 7.** A blackboard: agents coordinate only through a shared medium.
 
@@ -118,7 +118,7 @@ LLM systems use a few kinds of boards. In a **shared context**, all agents read 
 
 Agents take turns, one step at a time, and each picks up the work where the last one stopped. The name comes from the bucket brigade algorithm for classifier systems ([Holland 1985](https://www.taylorfrancis.com/chapters/edit/10.4324/9781315799674-1/properties-bucket-brigade-algorithm-john-holland)). There, rules bid for the right to act, and each winner pays its bid to the rule that set up its turn, so credit flows back along the chain. [Baum (1999)](https://doi.org/10.1023/A:1007593124513) later built an economy of programs on this idea, and Economy of Minds ([Qi et al. 2026b](https://arxiv.org/abs/2606.02859)) and Market-based Post-training (MPT; [Xu et al. 2026a](https://arxiv.org/abs/2610.22322)) brought it to LLM agents. Seen this way, an ordinary ReAct agent is a special case of bucket brigade: only one member keeps picking up its own work. Since only one agent acts at a time, adding agents widens the range of skills and makes the team more tolerant of failures, but it does not make the work go faster.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/shape_6_bucket_brigade.png" numbered={false} alt={"A bucket brigade"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/shape_6_bucket_brigade.png" numbered={false} alt={"A bucket brigade"}>
 
 **Figure 8.** A bucket brigade. At each step one agent is chosen to act (red), and it picks up the state where the last one left it. The squares are the states between steps.
 
@@ -154,7 +154,7 @@ How far a task can be split eventually depends on the task, not on the agents.
 
 Every task has some steps that must happen in a fixed order. No team, however large, can finish faster than that longest chain of steps, and with good scheduling a team gets within about twice that limit as soon as it has enough agents to cover the pieces that can run side by side ([Brent 1974](https://doi.org/10.1145/321812.321815)). Past that point, more agents only wait. Pushing a serial task onto many agents also hurts accuracy.
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/brent.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/brent.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/brent.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/brent.poster.jpg" loop controls numbered={false}>
 
 **Figure 9.** One task of 14 steps, run by teams of 1 to 16 agents with greedy scheduling. No team finishes before the longest chain of dependent steps (red). Once there are enough agents for the steps that can run side by side, the finish time stops moving, and the extra agents only wait (dotted).
 
@@ -180,7 +180,7 @@ The same holds for LLM agents. If many agents can gather sources at once but one
 
 In [Mieczkowski et al. (2026a)](https://arxiv.org/abs/2603.12229), teams of one to five LLM agents built small Python libraries, with the subtasks handed out in advance. The teams got faster when most subtasks were independent and did not get faster at all when most formed one chain. Even in the best case, they stayed, on average, below what Amdahl’s law allows (Figure 10).
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/amdahl_teams.png" wide numbered={false} alt={"Speedup of LLM coding teams against Amdahl’s bound for programs in which 90%, 50%, or 20% of the work can run in parallel"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/amdahl_teams.png" numbered={false} alt={"Speedup of LLM coding teams against Amdahl’s bound for programs in which 90%, 50%, or 20% of the work can run in parallel"}>
 
 **Figure 10** (Redrawn from [Mieczkowski et al. 2026a](https://arxiv.org/abs/2603.12229), Table 1). Speedup of LLM coding teams against Amdahl’s bound for programs in which 90%, 50%, or 20% of the work can run in parallel. Subtasks were assigned in advance, and speedup is the time one agent takes divided by the time the team takes.
 
@@ -192,7 +192,7 @@ Some tasks also make hand-offs expensive. When the parts of a task are tied toge
 
 TravelPlanner ([Xie et al. 2024a](https://arxiv.org/abs/2402.01622)), as studied by [Yu et al. (2026)](https://arxiv.org/abs/2607.16133), shows both cases inside one task. The trip is split among agents that handle transport, lodging, dining, and sights separately and share only a short list of cities. On commonsense checks that each part can pass on its own, such as whether a chosen restaurant or attraction is valid, the split helps all three models tested. On hard constraints that span the whole trip, such as the total budget or a minimum number of nights, the split lowers Qwen3.5-27B’s pass rate by 0.23 compared with a single agent that works through the same subtasks with all earlier context in view (Figure 11). Once a model can read the full context, such tasks are better left to a single agent rather than split among multiple agents. As [Imas et al. (2026)](https://institute.deepmind.com/essays/the-economics-of-intelligence/) put it for human teams, passing work from one person to another “compresses rich context into lossy summaries.”
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/handoff_travelplanner.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/handoff_travelplanner.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/handoff_travelplanner.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/handoff_travelplanner.poster.jpg" loop controls numbered={false}>
 
 **Figure 11** (Based on [Yu et al. 2026](https://arxiv.org/abs/2607.16133), Appendix C.2). One TravelPlanner task, run with Qwen3.5-27B: a three-day trip from Oakland to Tucson on a \$1,400 budget. Both rows run the same steps in the same order, with the running total on the right. One agent carries the budget in its context, so the \$1,400 cap is in view at every pick and the plan stays within it. The four agents’ relays carry only the city, and the budget sits with the final step, so the total grows with no cap in sight and comes to \$1,599.
 
@@ -227,7 +227,7 @@ For LLM agents, the “private copy” is the context. An agent learns what its 
 
 The cost also does more damage than in hardware. A processor that falls behind only waits. An agent whose reading no longer fits in its context works from a partial copy, and it may redo a teammate’s work, undo a fix or build on an idea the others have already dropped. Processors lose speed, and agents lose accuracy.
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/usl.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/usl.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/usl.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/usl.poster.jpg" loop controls numbered={false}>
 
 **Figure 12.** A schematic of Gunther’s universal scalability law, not data. Processors wait for a shared resource and must keep their copies of shared data consistent, so throughput rises, peaks and falls. For LLM agents, the copy is the context: each agent reads updates from teammates, and once that reading no longer fits, performance could drop.
 
@@ -237,7 +237,7 @@ Even if an LLM had infinite context, the model still needs strong fundamentals b
 
 Second, coordination is also a skill in its own right, and a model that is strong as a single agent could be bad at cross-agent coordination. MAC Bench ([Pimpalgaonkar et al. 2026](https://benchmarks.bespokelabs.ai/multi-agent-coordination-bench/)) has twelve long tasks in which each agent’s work depends on its teammates’. It compares a single agent, eight agents that cannot coordinate, and a team of eight that can message each other. Opus 5.5 and GPT-6.1 Sol score about the same alone, and both gain about as much from eight agents working without coordination. Once the agents can message one another, Opus 5.5 gains another 0.06, while GPT-6.1 Sol loses 0.07 and Gemini 4 Argon loses 0.04 (Figure 13). Averaged over the three models, a team of eight costs about nine times as much as one agent and scores 0.42 against 0.35.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/macbench_coordination.png" wide numbered={false} alt={"Mean final score over the twelve MAC Bench tasks"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/macbench_coordination.png" numbered={false} alt={"Mean final score over the twelve MAC Bench tasks"}>
 
 **Figure 13** (Redrawn from [Pimpalgaonkar et al. 2026](https://benchmarks.bespokelabs.ai/multi-agent-coordination-bench/), leaderboard). Mean final score over the twelve MAC Bench tasks. Each bar is a single agent’s score plus what eight agents add when they cannot coordinate (the best of eight working alone, or a team with its message channels closed). The crimson arrow shows what letting the eight agents message each other changes: to the right where it adds, back to the left where it costs.
 
@@ -245,7 +245,7 @@ Second, coordination is also a skill in its own right, and a model that is stron
 
 Models also differ in their “willingness” to talk. In World of SWECraft ([Shen et al. 2026](https://arxiv.org/abs/2610.24061)), each agent maintains one of a set of interdependent Python packages and is free to contact the others. Claude Opus 5 agents exchange 323 issues, pull requests, and comments, while GPT-5.6 Sol agents make no contact at all when talking is optional (Figure 14). More talk is not necessarily better in itself. Opus talks more than five times as much as Gemini 3.8 Flash, yet Gemini scores higher, and prompting Sol to reach out raises its exchanges but not its score. What pays off is information a teammate cannot get alone. In one Opus run, the maintainer of requests timed its own code and found a slow spot inside urllib3 that urllib3’s own benchmarks never exercise, and sharing the measurements led to a fix. Effective collaboration depends less on how much agents talk than on what they share, with whom and when.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/swecraft_interactions.png" wide numbered={false} alt={"Interactions between the six packages of one software world: issues and pull requests by the human maintainers on GitHub, and issues, pull requests and comments between packages by"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/swecraft_interactions.png" numbered={false} alt={"Interactions between the six packages of one software world: issues and pull requests by the human maintainers on GitHub, and issues, pull requests and comments between packages by"}>
 
 **Figure 14** (Redrawn from [Shen et al. 2026](https://arxiv.org/abs/2610.24061), Figure 5). Interactions between the six packages of one software world: issues and pull requests by the human maintainers on GitHub, and issues, pull requests and comments between packages by agent maintainers of four models. Thicker lines mean more interactions. Packages sit in the same place in every panel.
 
@@ -265,7 +265,7 @@ Intuitively, agents that differ in what they know or how they work are less like
 
 Diversity helps, but sometimes less than one might hope. Studies have shown that teams that mix base models and personas keep improving up to about eight agents, where teams built on one model plateau near four, and two fully diverse agents beat sixteen identical ones ([Yang et al. 2026a](https://arxiv.org/abs/2602.03794); Figure 15). Mixing different LLMs, however, often lowers the average quality of the agents. Aggregating outputs from only the single best model beats a mixture by 6.6% on AlpacaEval 2.0 (Self-MoA, [Li et al. 2025](https://arxiv.org/abs/2502.00674)). Diversity seems to pay mainly when the agents are about equally strong, and as models converge, that kind of diversity gets harder to find.
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/diversity_yang.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/diversity_yang.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/diversity_yang.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/diversity_yang.poster.jpg" loop controls numbered={false}>
 
 **Figure 15** (Redrawn from [Yang et al. 2026a](https://arxiv.org/abs/2602.03794), Figure 4a, average over seven tasks). Majority-vote accuracy as the team grows, for agents that are identical, differ only in persona prompt, differ only in base model (Qwen-2.5-7B, Llama-3.1-8B or Mistral-7B), or differ in both. Shapes mark base models and shades mark persona prompts. The arrows, showing how alike the agents reason, are schematic.
 
@@ -283,7 +283,7 @@ A quick calculation: if each agent fails 1% of the time, the chance that a team 
 
 Many designs can break when agents drop out, especially designs that fix each agent’s role in advance or route everything through one coordinator. In [Qi et al. (2026a)](https://arxiv.org/abs/2610.16120), a coordinator-based system loses more than half its score when each agent drops out of each step with probability 0.2, and a shared-context system, where all agents read one common context, degrades to below 1% when a single member fails for good (Figure 16). And dropping out is an easy kind of failure which can be detected by a monitor program. A failing LLM agent can also keep going, which is much harder to detect. It hallucinates, stalls or produces wrong outputs that spread through the team, and it may report a task as done when it is not ([Mieczkowski et al. 2026a](https://arxiv.org/abs/2603.12229)).
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/resilience.png" wide numbered={false} alt={"Left: accuracy on theorem proving (FATE-M) when each agent is away from each step with the given chance, for ScaleMAS, a substrate-centric system, with 1, 2, 4 and 8 agents and for"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/resilience.png" numbered={false} alt={"Left: accuracy on theorem proving (FATE-M) when each agent is away from each step with the given chance, for ScaleMAS, a substrate-centric system, with 1, 2, 4 and 8 agents and for"}>
 
 **Figure 16** (Redrawn from [Qi et al. 2026a](https://arxiv.org/abs/2610.16120), Figures 7 and 11). Left: accuracy on theorem proving (FATE-M) when each agent is away from each step with the given chance, for ScaleMAS, a substrate-centric system, with 1, 2, 4 and 8 agents and for a coordinator-based system. Right: evidence recall on a contradiction-finding task, for ScaleMAS and for a shared-context system, when one agent fails on every step (dashed, hollow dots) and when every agent is healthy (solid). The x-axis counts all agents, the failing one included.
 
@@ -303,7 +303,7 @@ A teammate that keeps talking normally while acting against the team is harder t
 
 ## Tradeoff: performance vs. efficiency
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/budget_three_ways.png" wide numbered={false} alt={"Three ways to spend the same budget: one agent thinking longer, many agents sampling independently and voting, or many agents reading each other"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/budget_three_ways.png" numbered={false} alt={"Three ways to spend the same budget: one agent thinking longer, many agents sampling independently and voting, or many agents reading each other"}>
 
 **Figure 17.** Three ways to spend the same budget: one agent thinking longer, many agents sampling independently and voting, or many agents reading each other. Each dot is one step of work, and each red arrow is one agent reading another.
 
@@ -323,7 +323,7 @@ Many published comparisons fall in the first case, “case A”. Early on, [Huan
 
 Why, in “case A”, do these systems consume more tokens yet perform worse than a single agent? [Kim et al. (2025a)](https://arxiv.org/abs/2512.08296) and [Bertalanič and Fortuna (2026b)](https://arxiv.org/abs/2605.00914) analyze token usage and interaction transcripts in depth, and they find that much of the additional cost comes from agents reading one another’s files and conversations. However, agents built on the same underlying model often reinforce one another’s conclusions rather than critically challenge them, and as a result, even incorrect answers can become increasingly entrenched, and the additional tokens spent on coordination fail to translate into better performance.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/sharing_progress.png" numbered={false} alt={"Working alone, each agent has to get lucky at every step to reach the goal"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/sharing_progress.png" numbered={false} alt={"Working alone, each agent has to get lucky at every step to reach the goal"}>
 
 **Figure 18.** Working alone, each agent has to get lucky at every step to reach the goal. In an ideal team, each agent starts where the last one stopped, so only one of them has to get lucky at each step.
 
@@ -331,13 +331,13 @@ Why, in “case A”, do these systems consume more tokens yet perform worse tha
 
 Things start to change when agents can be divided into separate parts, or build upon each other’s work, and this is where “case B” scenarios are observed. At matched token budgets, [Kim et al. (2025a)](https://arxiv.org/abs/2512.08296) report gains of 57–81% on a finance benchmark by letting subtasks run in parallel. [Jwalapuram et al. (2026)](https://arxiv.org/abs/2606.13003) also report that by building a MAS by hand for a financial task that splits by investor, GPT-5 scores 96.5% against 57.0% for self-consistency at comparable cost.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/park_perf.png" wide numbered={false} alt={"Solve rate vs"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/park_perf.png" numbered={false} alt={"Solve rate vs"}>
 
 **Figure 19** (Redrawn from [Park et al. 2026](https://arxiv.org/abs/2609.21032), Figure 3). Solve rate vs. output tokens for independent and communicating agents. Below about 400K output tokens per agent (about 1.2M in total for the team of three and 2.0M for the team of five), independent agents lead. Past that point the team pulls ahead. The arrows show how many times more tokens independent agents need to reach the same solve rate.
 
 </Figure>
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/scalemas_perf.png" wide numbered={false} alt={"Accuracy vs"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/scalemas_perf.png" numbered={false} alt={"Accuracy vs"}>
 
 **Figure 20** (Redrawn from [Qi et al. 2026a](https://arxiv.org/abs/2610.16120), Figure 1). Accuracy vs. tokens per example (log scale) on deep research (BrowseComp-Plus) and theorem proving (FATE).
 
@@ -379,7 +379,7 @@ In 1987, Craig Reynolds showed that complex flocking behavior emerges from just 
 2. **Alignment:** steer toward the average heading of nearby flockmates.
 3. **Cohesion:** steer toward the average position of nearby flockmates.
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/boids.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/boids.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/boids.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/boids.poster.jpg" loop controls numbered={false}>
 
 **Figure 21.** Each bird follows the same three rules, separation, alignment and cohesion, using only its nearest neighbors. There is no leader, yet the flock lines up.
 
@@ -389,7 +389,7 @@ In 1987, Craig Reynolds showed that complex flocking behavior emerges from just 
 
 As ants walk, they leave behind a trail of pheromones ([Goss et al. 1989](https://doi.org/10.1007/BF00462870)). Those on a shorter path finish their round trips sooner, so the scent builds up more quickly along that route. Later ants tend to follow the stronger trail and add even more pheromone as they go. As a result, the whole colony converges to the shortest path, even though no single ant ever sees the whole terrain.
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/ants.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/ants.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/ants.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/ants.poster.jpg" loop controls numbered={false}>
 
 **Figure 22.** Ants on the short route return sooner, so pheromone builds up there and traffic converges on it, though no ant sees the map. [Goss et al. (1989)](https://doi.org/10.1007/BF00462870)
 
@@ -406,7 +406,7 @@ We also draw inspiration from artificial games to see how simple rules could lea
 
 Some starting patterns turn into **gliders:** small shapes that glide through the grid. Starting from gliders, one can build logic gates (AND, OR, NOT), memory, and clocks, which is enough to make the Game of Life **Turing complete** (Berlekamp et al. 1982), meaning that this game can simulate a computer that’s capable of running any program. [Rendell (2002)](https://doi.org/10.1007/978-1-4471-0129-1_18) later built a working Turing machine out of gliders. No single cell computes anything, but collective behavior could simulate a computer.
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/life.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/life.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/life.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/life.poster.jpg" loop controls numbered={false}>
 
 **Figure 23.** Each cell counts its live neighbors to decide whether it dies or is born. A glider gun built from these rules emits a stream of gliders, which can carry signals across the grid.
 
@@ -416,7 +416,7 @@ Some starting patterns turn into **gliders:** small shapes that glide through th
 
 In siphonophores, individual members are so tightly specialized that the entire colony looks like a single jellyfish (Figure 24).
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/superorganism.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/superorganism.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/superorganism.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/superorganism.poster.jpg" loop controls numbered={false}>
 
 **Figure 24.** A Portuguese man o’ war (order Siphonophorae) looks like one jellyfish, but it is actually a colony of small individuals that together function as one integrated organism ([Mapstone 2014](https://doi.org/10.1371/journal.pone.0087737)). All of them are clones, and each kind does one job ([Munro et al. 2019](https://doi.org/10.1038/s41598-019-51842-1)): the float, tentacle-bearing individuals that sting and catch prey, feeding polyps that only digest, and reproductive clusters.
 
@@ -424,7 +424,7 @@ In siphonophores, individual members are so tightly specialized that the entire
 
 Biologists define a **superorganism** as a group of individual organisms that operates as a single functional unit ([Hölldobler and Wilson 2009](https://wwnorton.com/books/9780393067040)). No single ant holds a map of the nest, its climate requirements, or the surrounding foraging grounds. Yet through stigmergy and a division of labor among workers, soldiers, and a queen, the colony as a whole regulates its metabolism, keeps the nest at the right temperature, defends its territory, and solves hard spatial problems. In effect, the colony is the organism, and each ant acts like one of its cells. Colonies even follow biological scaling laws: whole-colony metabolism grows roughly as the 3/4 power of colony mass ([Waters et al. 2010](https://doi.org/10.1086/656266); Figure 25).
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/colony_scaling.png" wide numbered={false} alt={"If a colony’s energy use grew in proportion to its mass, a colony ten times heavier would use ten times the energy (dashed)"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/colony_scaling.png" numbered={false} alt={"If a colony’s energy use grew in proportion to its mass, a colony ten times heavier would use ten times the energy (dashed)"}>
 
 **Figure 25** (After [Waters et al. 2010](https://doi.org/10.1086/656266); a schematic, not data). If a colony’s energy use grew in proportion to its mass, a colony ten times heavier would use ten times the energy (dashed). Its metabolic rate grows only as the 3/4 power of its mass, so it uses about 5.6 times as much (crimson): the larger the colony, the less energy each ant uses. Groups of workers taken out of the colony lose this saving, and their metabolic rate grows in proportion to their mass.
 
@@ -448,7 +448,7 @@ Smith gives three reasons why the division of labor pays off:
 - Second, **saved time from context switching**: moving from one task to another costs time, and a worker “commonly saunters a little” before settling into the new one, much as an agent pays to load a new context.
 - Third, **invention of machinery**: a worker who does one simple step all day tends to find an easier way to do it, and many machines in such workshops were first invented by workers.
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/pinfactory.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/pinfactory.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/pinfactory.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/pinfactory.poster.jpg" loop controls numbered={false}>
 
 **Figure 26.** Ten workers and the eighteen steps of making a pin. Working alone, each worker does every step (grey), and the team makes under 200 pins a day. One by one, with no one assigning them, workers settle on one or two steps (crimson) and pass half-made pins along, and output climbs to 48,000 (right, log scale). On the second page the team grows from one worker to eighteen, and the more workers there are, the fewer steps each one does. After [Smith (1776)](https://www.econlib.org/library/Smith/smWN.html), Book I, Chapters 1 and 3; the order in which workers specialize is illustrative.
 
@@ -559,7 +559,7 @@ The right y-axis depends on what the system is for, and many papers claim one pu
 
 **Robustness.** We suggest two tests. Let agents drop out at random during a run, and let one agent fail constantly, e.g. always outputting error messages / malicious messages.
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/scalable_recommended.png" wide numbered={false} alt={"How we suggest plotting scalability (a schematic, not data)"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/scalable_recommended.png" numbered={false} alt={"How we suggest plotting scalability (a schematic, not data)"}>
 
 **Figure 27.** How we suggest plotting scalability (a schematic, not data). The x-axis is the system’s total inference-time compute on a linear scale, and each dot doubles the number of agents. The baseline spends the same compute on parallel agents that never communicate. Performance should rise and then level off, never fall, and stay above the baseline. Latency ideally falls as compute grows. Growing more slowly than compute, below the dashed line that marks linear growth, is acceptable even when it ends above the baseline. The last row is a suboptimal example: performance peaks and then falls, and latency grows faster than compute.
 
@@ -594,7 +594,7 @@ Before trusting any multi-agent system’s result, ask:
 
 ## Learning to coordinate: training and self-evolution
 
-<Figure src="/blog/steps-towards-artificial-collective-intelligence/learning.png" numbered={false} alt={"In multi-agent RL, agents are trained together and then act alone"}>
+<Figure src="/blogs/steps-towards-artificial-collective-intelligence/learning.png" numbered={false} alt={"In multi-agent RL, agents are trained together and then act alone"}>
 
 **Figure 28.** In multi-agent RL, agents are trained together and then act alone. Inference-time LLM agents are trained alone and then act together.
 
@@ -625,7 +625,7 @@ In the left column, MAPoRL and MALT reward answers that a verifier or the known 
 
 Whenever individual agents learn, someone has to decide who earned the team’s success or failure. This is the **credit assignment** problem. Multi-agent RL has two classic answers. COMA asks how much better an agent’s action was than its other options ([Foerster et al. 2018](https://arxiv.org/abs/1705.08926)), and QMIX learns a value for each agent and combines them into the team’s value ([Rashid et al. 2018](https://arxiv.org/abs/1803.11485)). Markets pass credit backward, with the agent that acts paying its bid to the one before it ([Qi et al. 2026b](https://arxiv.org/abs/2606.02859); Figure 29). LLM methods mostly borrow from these ideas. MALT samples several continuations from each agent’s output and credits the output by how often they end up correct ([Motwani et al. 2024](https://arxiv.org/abs/2412.01928)). MAPoRL rewards each agent for its own answer plus the later answers it influenced ([Park et al. 2025](https://arxiv.org/abs/2502.18439)). Kimi K2.5 sidesteps the problem by training only the orchestrator and freezing its subagents ([Kimi Team 2026](https://arxiv.org/abs/2602.02276)), and Multiagent Finetuning trains each model only on answers that agree with the majority ([Subramaniam et al. 2025](https://arxiv.org/abs/2501.05707)).
 
-<Video src="/blog/steps-towards-artificial-collective-intelligence/eom_credit.mp4" poster="/blog/steps-towards-artificial-collective-intelligence/eom_credit.poster.jpg" loop controls wide numbered={false}>
+<Video src="/blogs/steps-towards-artificial-collective-intelligence/eom_credit.mp4" poster="/blogs/steps-towards-artificial-collective-intelligence/eom_credit.poster.jpg" loop controls numbered={false}>
 
 **Figure 29** (Based on [Qi et al. 2026b](https://arxiv.org/abs/2606.02859), Sections 2.2–2.3). How Economy of Minds assigns credit. The top row shows the existing agents, each in its own color with its wealth below it, and the squares $S_t, S_{t+1}, \dots$ are the states of the task. Agents that can act bid for each step, and the highest bid wins. Each winner pays its bid to the agent that acted before it (the crimson arcs along the chain), and the agent whose step solves the task collects the reward, so money flows back along the steps that led to success. Agents whose wealth falls below zero are removed, and wealthy agents spawn variants.
 
@@ -674,7 +674,7 @@ If you find this post useful, please cite it as:
   year         = {2026},
   month        = nov,
   howpublished = {Blog post},
-  url          = {https://zhentingqi.github.io/blog/steps-towards-artificial-collective-intelligence/}
+  url          = {https://zhentingqi.github.io/blogs/steps-towards-artificial-collective-intelligence/}
 }
 ```
 

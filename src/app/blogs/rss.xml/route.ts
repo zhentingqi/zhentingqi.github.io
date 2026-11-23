@@ -8,11 +8,11 @@ const escape = (value: string) =>
 export function GET() {
     const blog = getBlogConfig();
     const posts = getAllPosts();
-    const home = `${blog.url}/blog/`;
+    const home = `${blog.url}/blogs/`;
 
     const items = posts
         .map((post) => {
-            const link = `${blog.url}/blog/${post.slug}/`;
+            const link = `${blog.url}/blogs/${post.slug}/`;
             return `    <item>
       <title>${escape(post.title)}</title>
       <link>${link}</link>
@@ -32,7 +32,7 @@ ${post.tags.map((tag) => `      <category>${escape(tag)}</category>`).join('\n')
     <link>${home}</link>
     <description>${escape(blog.description)}</description>
     <language>en</language>
-    <atom:link href="${blog.url}/blog/rss.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="${blog.url}/blogs/rss.xml" rel="self" type="application/rss+xml" />
 ${posts[0] ? `    <lastBuildDate>${new Date(`${posts[0].date}T12:00:00Z`).toUTCString()}</lastBuildDate>\n` : ''}${items}
   </channel>
 </rss>

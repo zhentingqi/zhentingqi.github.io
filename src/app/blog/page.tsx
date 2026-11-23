@@ -1,21 +1,11 @@
-'use client';
+import type { Metadata } from 'next';
+import RedirectTo from '@/components/RedirectTo';
 
-import { useEffect } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+// Posts used to live under /blog/. These pages forward old links to their new /blogs/ addresses.
+export const metadata: Metadata = { robots: { index: false }, alternates: { canonical: '/#blogs' } };
 
-// The list of posts is the Blogs view of the home page. This address only forwards there,
-// so links to /blog/ (for example from the RSS feed) keep working.
-export default function BlogIndexRedirect() {
-    const router = useRouter();
+const fallback = 'mx-auto max-w-[790px] px-4 py-16 text-crimson underline underline-offset-4 sm:px-6';
 
-    useEffect(() => {
-        router.replace('/#blogs');
-    }, [router]);
-
-    return (
-        <p className="b-empty">
-            <Link href="/#blogs">Go to Blogs</Link>
-        </p>
-    );
+export default function OldBlogIndexRedirect() {
+    return <RedirectTo to="/#blogs" label="Go to Blogs" className={fallback} />;
 }

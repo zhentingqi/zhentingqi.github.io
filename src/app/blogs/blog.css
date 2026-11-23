@@ -1200,8 +1200,15 @@ body:has(.blog) {
 
 /* ---------- Centered posts (no margin notes) ---------- */
 .b-centered {
-  --w-text: 680px;
+  --w-text: 730px;
   --w-page: 880px;
+}
+
+/* The wider column gets slightly larger type, so a line stays a comfortable length. */
+@media (min-width: 900px) {
+  .b-centered .b-prose {
+    font-size: 20px;
+  }
 }
 
 .b-centered .b-post-head,

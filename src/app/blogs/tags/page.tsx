@@ -14,7 +14,7 @@ export default function TagsPage() {
             </p>
             <p className="b-tags">
                 {tags.map(({ tag, slug, count }) => (
-                    <Link key={slug} href={`/blog/tags/${slug}/`}>
+                    <Link key={slug} href={`/blogs/tags/${slug}/`}>
                         {tag}
                         <sup>{count}</sup>
                     </Link>

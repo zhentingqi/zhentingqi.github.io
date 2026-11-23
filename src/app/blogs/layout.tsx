@@ -24,7 +24,7 @@ export function generateMetadata(): Metadata {
         metadataBase: new URL(blog.url),
         description: blog.description,
         alternates: {
-            types: { 'application/rss+xml': [{ url: '/blog/rss.xml', title: `${blog.author} · ${blog.title}` }] },
+            types: { 'application/rss+xml': [{ url: '/blogs/rss.xml', title: `${blog.author} · ${blog.title}` }] },
         },
     };
 }
@@ -44,8 +44,8 @@ export default function BlogLayout({ children }: Readonly<{ children: React.Reac
                         © {year} {blog.author}
                     </span>
                     <Link href="/#blogs">All posts</Link>
-                    <Link href="/blog/tags/">Tags</Link>
-                    <a href="/blog/rss.xml">RSS</a>
+                    <Link href="/blogs/tags/">Tags</Link>
+                    <a href="/blogs/rss.xml">RSS</a>
                 </footer>
             </div>
         </div>

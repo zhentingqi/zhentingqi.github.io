@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 
 // The home page shows one of three views under the top bar. The active view lives in the
@@ -36,8 +36,13 @@ export function useTab(): TabId {
     // without firing any event, so the hash is read again whenever the path changes.
     const pathname = usePathname();
 
-    useEffect(() => {
-        const read = () => setTab(tabFromHash(window.location.hash));
+    // A layout effect, so the view is switched before the browser paints and never flashes About.
+    useLayoutEffect(() => {
+        const read = () => {
+            const next = window.location.pathname === '/' ? tabFromHash(window.location.hash) : 'about';
+            document.documentElement.dataset.tab = next;
+            setTab(next);
+        };
         read();
         window.addEventListener('hashchange', read);
         window.addEventListener('popstate', read);

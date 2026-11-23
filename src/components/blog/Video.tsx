@@ -28,6 +28,12 @@ export default function Video({ src, poster, caption, children, loop, controls, 
     useEffect(() => {
         const element = video.current;
         if (!loop || !element) return;
+
+        // Browsers only allow playback without a click when the video is muted, and some read
+        // that from the element itself, so it is set here as well as in the markup.
+        element.muted = true;
+        element.defaultMuted = true;
+        element.loop = true;
         if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
         const observer = new IntersectionObserver(
@@ -35,7 +41,7 @@ export default function Video({ src, poster, caption, children, loop, controls, 
                 if (entry.isIntersecting) element.play().catch(() => {});
                 else element.pause();
             },
-            { threshold: 0.25 },
+            { threshold: 0.1 },
         );
         observer.observe(element);
         return () => observer.disconnect();
@@ -66,6 +72,12 @@ export default function Video({ src, poster, caption, children, loop, controls, 
                     muted={loop}
                     onPlay={() => setPlaying(true)}
                     onPause={() => setPlaying(false)}
+                    onEnded={(event) => {
+                        // Belt and braces for browsers that stop at the end despite `loop`.
+                        if (!loop) return;
+                        event.currentTarget.currentTime = 0;
+                        event.currentTarget.play().catch(() => {});
+                    }}
                 />
                 {loop && !controls && (
                     <button type="button" className="fig-video-btn" onClick={toggle} aria-label={playing ? 'Pause' : 'Play'}>

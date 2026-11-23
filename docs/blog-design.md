@@ -1,6 +1,6 @@
 # Blog design spec (direction B2, "Reading Room")
 
-Blog posts live at `/blog/<slug>/` inside the personal site, under the site's top bar. It is English-only, text-first, and
+Blog posts live at `/blogs/<slug>/` inside the personal site, under the site's top bar. It is English-only, text-first, and
 serif-led. The feel is a quiet university press page: cream paper, one dark crimson, hairline
 rules, no cards, no shadows, no decorative motion.
 
@@ -50,9 +50,9 @@ than the titles' scale would suggest. Chinese names and stray CJK fall back to t
   belong to. Below that, the margin column disappears and a note opens in place when its
   number is tapped.
 - A post with no notes or citations has nothing for the margin column, so its text is centered
-  instead: a 680px column in the middle of the page, with wide figures reaching 100px past it
-  on each side.
-- Figures default to the text column. `wide` figures span all 880px.
+  instead: a 730px column in the middle of the page, set in 20px type on wide screens.
+- Figures and videos are set at the width of the text. `wide` is available for one that needs
+  all 880px, but posts do not use it by default.
 - Phone gutters are 20px. Display math, tables, and code scroll horizontally inside their own
   box; the page itself never scrolls sideways.
 
@@ -68,8 +68,9 @@ than the titles' scale would suggest. Chinese names and stray CJK fall back to t
   viewport shows reading progress. A Contents button fixed at the left (bottom-left on
   phones) opens the table of contents as a side panel with the current section marked; from
   1440px up the panel fits in the margin and can stay open.
-- Footer of a post: references, tags, previous and next. Tag pages live at `/blog/tags/`.
-  There is no separate blog home: `/blog/` forwards to the Blogs view.
+- Footer of a post: references, tags, previous and next. Tag pages live at `/blogs/tags/`.
+  There is no separate blog home: `/blogs/` forwards to the Blogs view. Old `/blog/...` addresses forward
+  to their `/blogs/...` equivalents.
 
 ## Components available in posts
 
@@ -81,12 +82,12 @@ than the titles' scale would suggest. Chinese names and stray CJK fall back to t
 | `<Video src caption loop />` | Video with controls; `loop` plays it muted like a GIF, with a pause button |
 | `<FigureTabs>` | Several images in one numbered figure, switched by tabs |
 | `<Callout label tone>` | A labelled aside: `tone="key"` for a definition or takeaway, `tone="aside"` for a comment |
-| Interactive figures | None yet. Put a client component in `src/components/blog/interactive/`, wrap it in `FigureShell`, and register it in `src/app/blog/[slug]/page.tsx` |
+| Interactive figures | None yet. Put a client component in `src/components/blog/interactive/`, wrap it in `FigureShell`, and register it in `src/app/blogs/[slug]/page.tsx` |
 | Fenced code, `$math$`, `$$math$$`, tables | Shiki, KaTeX, GFM |
 
 ## Writing a post
 
-Add `content/blog/<slug>.mdx` and put its media in `public/blog/<slug>/`.
+Add `content/blog/<slug>.mdx` and put its media in `public/blogs/<slug>/`.
 
 ```yaml
 ---
@@ -98,9 +99,9 @@ tags: [multi-agent, mechanism design]
 authors:                         # optional; shown under the title
   - { name: Ada Lovelace, affiliation: Harvard University }
   - { name: Alan Turing, affiliation: MIT }
-cover: /blog/<slug>/cover.png    # optional, shown when the post leads the home page
-thumb: /blog/<slug>/thumb.png    # optional, shown in lists
+cover: /blogs/<slug>/cover.png    # optional, shown when the post leads the home page
+thumb: /blogs/<slug>/thumb.png    # optional, shown in lists
 ---
 ```
 
-The contents block is built from the `##` headings. RSS is served at `/blog/rss.xml`.
+The contents block is built from the `##` headings. RSS is served at `/blogs/rss.xml`.

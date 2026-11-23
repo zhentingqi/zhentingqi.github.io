@@ -8,7 +8,7 @@ Notion page is edited:
   2. python3 scripts/notion_post_to_mdx.py <saved text> \\
          content/blog/steps-towards-artificial-collective-intelligence.mdx \\
          steps-towards-artificial-collective-intelligence
-  3. If any image or video changed, download it into public/blog/<slug>/ (videos are re-encoded
+  3. If any image or video changed, download it into public/blogs/<slug>/ (videos are re-encoded
      with ffmpeg and get a <name>.poster.jpg).
 
 The title, description, date, tags and affiliations below are specific to this post.
@@ -18,7 +18,7 @@ import re
 import sys
 
 src, dest, slug = sys.argv[1], sys.argv[2], sys.argv[3]
-BASE = f"/blog/{slug}"
+BASE = f"/blogs/{slug}"
 
 raw = open(src, encoding="utf-8").read()
 body = raw[raw.index("<content>") + len("<content>"): raw.rindex("</content>")]
@@ -27,13 +27,6 @@ body = raw[raw.index("<content>") + len("<content>"): raw.rindex("</content>")]
 body = re.sub(r'<span discussion-urls="[^"]*">', "", body)
 body = re.sub(r'<span color="[^"]*">', "", body)
 body = body.replace("</span>", "")
-
-# Schematic diagrams read better at text width; plots and animations get the wide slot.
-COLUMN_WIDTH = {
-    "shape_1_fixed_workflow", "shape_2_parallel_agents", "shape_3_coordinator",
-    "shape_4_message_passing", "shape_5_blackboard", "shape_6_bucket_brigade",
-    "sharing_progress", "learning",
-}
 
 authors = []
 # Affiliations given by the post's author; everyone not listed here is at MIT.
@@ -57,7 +50,7 @@ def caption_md(line):
 
 def media_block(kind, name, caption):
     stem = name.rsplit(".", 1)[0]
-    wide = "" if stem in COLUMN_WIDTH else " wide"
+    wide = ""  # every figure and video is set at the width of the text
     if kind == "image":
         alt = ""
         if caption:

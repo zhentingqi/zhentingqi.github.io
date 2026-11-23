@@ -33,13 +33,20 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const TAB_BOOTSTRAP =
+  "(function(){var h=location.hash.slice(1);document.documentElement.dataset.tab=location.pathname==='/'&&(h==='publications'||h==='blogs')?h:'about'})()";
+
 // The root layout sets up the document, fonts and theme, and owns the one top bar that stays
 // pinned above every page. What sits under the bar comes from the route layouts:
-// `(site)/layout.tsx` for the home page, `blog/layout.tsx` for blog posts.
+// `(site)/layout.tsx` for the home page, `blogs/layout.tsx` for blog posts.
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const config = getConfig();
   return (
     <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Pick the home page's view from the URL before anything is painted. */}
+        <script dangerouslySetInnerHTML={{ __html: TAB_BOOTSTRAP }} />
+      </head>
       <body className="min-h-screen">
         <ThemeProvider>
           <div id="top" className="h-1 bg-crimson" />

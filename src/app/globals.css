@@ -4,7 +4,7 @@
 
 /* ---------- Design tokens ---------- */
 :root {
-  /* Same paper as the blog (src/app/blog/blog.css), so every page shares one background. */
+  /* Same paper as the blog (src/app/blogs/blog.css), so every page shares one background. */
   --paper: #faf7f0;
   --surface: #ffffff;
   --ink: #1d1a18;
@@ -52,6 +52,20 @@
 /* ---------- Base ---------- */
 html {
   -webkit-text-size-adjust: 100%;
+  /* Keep room for the scrollbar even on short views, so switching views never shifts the page. */
+  scrollbar-gutter: stable;
+}
+
+/* The home page's view is chosen from the URL before the first paint (see the inline script in
+   layout.tsx), so opening /#blogs directly never shows About first. */
+html[data-tab='publications'] #view-about,
+html[data-tab='blogs'] #view-about {
+  display: none;
+}
+
+html[data-tab='publications'] #view-publications,
+html[data-tab='blogs'] #view-blogs {
+  display: block;
 }
 
 body {

@@ -12,7 +12,7 @@ export default function BlogList({ posts }: { posts: PostMeta[] }) {
                         <span className="font-medium text-muted"> · {TYPE_LABEL[post.type]}</span>
                     </p>
                     <h3 className="mt-1.5 font-serif text-[1.15rem] font-semibold leading-snug text-ink">
-                        <Link href={`/blog/${post.slug}/`} className="transition-colors hover:text-crimson">
+                        <Link href={`/blogs/${post.slug}/`} className="transition-colors hover:text-crimson">
                             {post.title}
                         </Link>
                     </h3>

@@ -25,7 +25,7 @@ export default async function TagPage({ params }: { params: Promise<{ tag: strin
     return (
         <>
             <p className="b-kicker" style={{ marginTop: 52 }}>
-                <Link href="/blog/tags/">Tags</Link>
+                <Link href="/blogs/tags/">Tags</Link>
             </p>
             <h1 className="b-page-title" style={{ marginTop: 8 }}>
                 {entry.tag}

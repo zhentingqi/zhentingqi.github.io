@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { POST_TYPES, TYPE_PLURAL, TYPE_SHORT, formatDate, type PostMeta, type PostType } from '@/lib/blog-shared';
 
 function PostRow({ post }: { post: PostMeta }) {
-    const href = `/blog/${post.slug}/`;
+    const href = `/blogs/${post.slug}/`;
     return (
         <li className={`b-row${post.thumb ? ' has-thumb' : ''}`}>
             <div className="b-row-meta">

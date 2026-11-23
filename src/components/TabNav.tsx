@@ -13,7 +13,7 @@ export default function TabNav({ items }: { items: { title: string; href: string
     const pathname = usePathname() ?? '/';
     const hashTab = useTab();
     const onHome = pathname === '/';
-    const active: TabId = onHome ? hashTab : pathname.startsWith('/blog') ? 'blogs' : 'about';
+    const active: TabId = onHome ? hashTab : pathname.startsWith('/blogs') ? 'blogs' : 'about';
 
     const tabs = items
         .map((item) => ({ title: item.title, id: item.href.replace(/^#/, '') as TabId }))
@@ -21,7 +21,7 @@ export default function TabNav({ items }: { items: { title: string; href: string
 
     return (
         <nav aria-label="Main" className="sticky top-0 z-20 border-b border-line bg-paper/85 backdrop-blur-md">
-            <div className="mx-auto flex max-w-[720px] items-center px-4 sm:px-6">
+            <div className="mx-auto flex max-w-[790px] items-center px-4 sm:px-6">
                 {/* Spacer balancing the toggle so the tabs stay centered on wider screens */}
                 <span className="hidden w-9 shrink-0 sm:block" />
                 <ul className="flex min-w-0 flex-1 justify-center gap-2 sm:gap-4">
@@ -38,8 +38,11 @@ export default function TabNav({ items }: { items: { title: string; href: string
                                         goToTab(id);
                                     }}
                                     aria-current={isActive ? 'page' : undefined}
+                                    data-title={title}
                                     className={cn(
                                         'relative block whitespace-nowrap px-2 py-3 text-[0.9rem] transition-colors sm:px-3 sm:text-[0.95rem]',
+                                        // An invisible bold copy of the label reserves the active width, so tabs never shift.
+                                        'after:invisible after:block after:h-0 after:overflow-hidden after:font-medium after:content-[attr(data-title)]',
                                         isActive ? 'font-medium text-ink' : 'text-muted hover:text-ink',
                                     )}
                                 >
