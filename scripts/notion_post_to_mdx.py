@@ -59,8 +59,10 @@ def media_block(kind, name, caption):
         open_tag = f'<Figure src="{BASE}/{name}"{wide} numbered={{false}} alt={{{json.dumps(alt, ensure_ascii=False)}}}>'
         close_tag = "</Figure>"
     else:
-        photo = " photo" if stem == "teaser" else ""
-        open_tag = f'<Video src="{BASE}/{name}" poster="{BASE}/{stem}.poster.jpg" loop controls{wide}{photo} numbered={{false}}>'
+        # The teaser is footage, not a diagram: it keeps its own background and just loops, with
+        # no controls. The diagram videos loop too, but keep a progress bar for scrubbing.
+        mode = " ambient photo" if stem == "teaser" else " controls"
+        open_tag = f'<Video src="{BASE}/{name}" poster="{BASE}/{stem}.poster.jpg" loop{mode}{wide} numbered={{false}}>'
         close_tag = "</Video>"
     if not caption:
         return [open_tag[:-1] + " />", ""]

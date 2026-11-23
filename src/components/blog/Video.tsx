@@ -13,6 +13,8 @@ interface VideoProps {
     loop?: boolean;
     /** With `loop`, also show the browser's controls so the reader can scrub. */
     controls?: boolean;
+    /** With `loop`, show no controls at all: the clip just plays on a loop, like a moving picture. */
+    ambient?: boolean;
     wide?: boolean;
     /** Footage keeps its own background instead of blending into the paper. */
     photo?: boolean;
@@ -20,7 +22,7 @@ interface VideoProps {
     numbered?: boolean;
 }
 
-export default function Video({ src, poster, caption, children, loop, controls, wide, photo, numbered = true }: VideoProps) {
+export default function Video({ src, poster, caption, children, loop, controls, ambient, wide, photo, numbered = true }: VideoProps) {
     const video = useRef<HTMLVideoElement>(null);
     const [playing, setPlaying] = useState(false);
     const [fullscreen, setFullscreen] = useState(false);
@@ -70,7 +72,7 @@ export default function Video({ src, poster, caption, children, loop, controls, 
         else element.pause();
     };
 
-    const nativeControls = !loop || !!controls;
+    const nativeControls = !loop || (!!controls && !ambient);
     const text = caption ?? children;
     const className = ['fig', 'fig-video', wide && 'fig-wide', photo && 'fig-photo', !numbered && 'fig-unnumbered'].filter(Boolean).join(' ');
 
@@ -85,6 +87,7 @@ export default function Video({ src, poster, caption, children, loop, controls, 
                     playsInline
                     preload={poster ? 'none' : 'metadata'}
                     controls={nativeControls}
+                    disablePictureInPicture={ambient}
                     loop={loop}
                     muted={loop}
                     onPlay={() => setPlaying(true)}
@@ -96,7 +99,7 @@ export default function Video({ src, poster, caption, children, loop, controls, 
                         event.currentTarget.play().catch(() => {});
                     }}
                 />
-                {loop && !controls && (
+                {loop && !controls && !ambient && (
                     <button type="button" className="fig-video-btn" onClick={toggle} aria-label={playing ? 'Pause' : 'Play'}>
                         {playing ? <Pause size={14} strokeWidth={1.75} /> : <Play size={14} strokeWidth={1.75} />}
                     </button>
