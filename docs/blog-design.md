@@ -32,7 +32,7 @@ Raster figures keep a white plate in dark mode so plots from papers stay legible
 
 | Role | Font | Desktop | Phone |
 |---|---|---|---|
-| Body | STIX Two Text 400 | 19.5px / 1.6 | 18.5px / 1.6 |
+| Body | STIX Two Text 400 | 18.5px / 1.6 | 18px / 1.6 |
 | Post title | Newsreader 500 | 44px / 1.04 | 31px / 1.08 |
 | Section heading (h2) | Newsreader 500 | 26px / 1.15 | 23px / 1.2 |
 | Subheading (h3) | Newsreader 500 italic | 21px / 1.25 | 19px / 1.3 |
@@ -50,7 +50,7 @@ than the titles' scale would suggest. Chinese names and stray CJK fall back to t
   belong to. Below that, the margin column disappears and a note opens in place when its
   number is tapped.
 - A post with no notes or citations has nothing for the margin column, so its text is centered
-  instead: a 730px column in the middle of the page, set in 20px type on wide screens.
+  instead: a 730px column in the middle of the page, set in 19px type on wide screens.
 - Figures and videos are set at the width of the text. `wide` is available for one that needs
   all 880px, but posts do not use it by default.
 - Phone gutters are 20px. Display math, tables, and code scroll horizontally inside their own

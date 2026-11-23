@@ -483,13 +483,13 @@ body:has(.blog) {
   padding-top: 30px;
   counter-reset: sn fig;
   font-family: var(--serif-text);
-  font-size: 18.5px;
+  font-size: 18px;
   line-height: 1.6;
 }
 
 @media (min-width: 640px) {
   .b-prose {
-    font-size: 19.5px;
+    font-size: 18.5px;
   }
 }
 
@@ -1335,7 +1335,7 @@ html.is-lightbox-open {
 /* The wider column gets slightly larger type, so a line stays a comfortable length. */
 @media (min-width: 900px) {
   .b-centered .b-prose {
-    font-size: 20px;
+    font-size: 19px;
   }
 }
 
