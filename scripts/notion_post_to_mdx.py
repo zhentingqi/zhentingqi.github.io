@@ -203,6 +203,14 @@ text = re.sub(r"<b>(\s*)(.*?)(\s*)</b>", lambda m: f"{m.group(1)}**{m.group(2)}*
 text = re.sub(r"<i>(\s*)(.*?)(\s*)</i>", lambda m: f"{m.group(1)}*{m.group(2)}*{m.group(3)}", text)
 text = re.sub(r"<code>(.*?)</code>", r"`\1`", text)
 
+# ---- Unicode superscript and subscript digits become real <sup>/<sub> -----------------------
+# The text font has only some of these characters (¹²³ but not ⁰ or ⁴ to ⁹), so a run such as
+# "¹⁰⁰" would otherwise be drawn in two different fonts.
+SUPERSCRIPTS = str.maketrans("⁰¹²³⁴⁵⁶⁷⁸⁹", "0123456789")
+SUBSCRIPTS = str.maketrans("₀₁₂₃₄₅₆₇₈₉", "0123456789")
+text = re.sub(r"[⁰¹²³⁴⁵⁶⁷⁸⁹]+", lambda m: f"<sup>{m.group(0).translate(SUPERSCRIPTS)}</sup>", text)
+text = re.sub(r"[₀₁₂₃₄₅₆₇₈₉]+", lambda m: f"<sub>{m.group(0).translate(SUBSCRIPTS)}</sub>", text)
+
 # ---- citation block points at the blog, not the private Notion page ------------------------
 text = text.replace("```txt", "```bibtex")
 text = re.sub(r"url\s+= \{https://app\.notion\.com/p/[0-9a-f]+\}",
