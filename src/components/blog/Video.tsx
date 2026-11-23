@@ -23,6 +23,22 @@ interface VideoProps {
 export default function Video({ src, poster, caption, children, loop, controls, wide, photo, numbered = true }: VideoProps) {
     const video = useRef<HTMLVideoElement>(null);
     const [playing, setPlaying] = useState(false);
+    const [fullscreen, setFullscreen] = useState(false);
+
+    // Track fullscreen, so the styles that blend the video into the page can be switched off there.
+    useEffect(() => {
+        const update = () => {
+            const doc = document as Document & { webkitFullscreenElement?: Element | null };
+            const current = document.fullscreenElement ?? doc.webkitFullscreenElement ?? null;
+            setFullscreen(!!video.current && current === video.current);
+        };
+        document.addEventListener('fullscreenchange', update);
+        document.addEventListener('webkitfullscreenchange', update);
+        return () => {
+            document.removeEventListener('fullscreenchange', update);
+            document.removeEventListener('webkitfullscreenchange', update);
+        };
+    }, []);
 
     // Looping clips start on their own only when in view, and never under reduced motion.
     useEffect(() => {
@@ -63,6 +79,7 @@ export default function Video({ src, poster, caption, children, loop, controls, 
             <div className="fig-video-frame">
                 <video
                     ref={video}
+                    className={fullscreen ? 'is-fullscreen' : undefined}
                     src={src}
                     poster={poster}
                     playsInline

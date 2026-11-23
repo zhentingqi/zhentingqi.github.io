@@ -953,6 +953,42 @@ body:has(.blog) {
   filter: brightness(0.92);
 }
 
+/* In fullscreen the browser puts black behind the video, and multiplying against black gives a
+   black screen. A fullscreen video is shown as it is: no blending, dimming or rounded corners.
+   The two pseudo-classes need separate rules, because a browser drops a whole rule when it
+   does not know one of its selectors. The class is set from script as a third way in. */
+.blog .fig-video:not(.fig-photo) video:fullscreen,
+.dark .blog .fig-video:not(.fig-photo) video:fullscreen {
+  mix-blend-mode: normal;
+  filter: none;
+  border-radius: 0;
+  background: #fff;
+}
+
+.blog .fig-video:not(.fig-photo) video:-webkit-full-screen,
+.dark .blog .fig-video:not(.fig-photo) video:-webkit-full-screen {
+  mix-blend-mode: normal;
+  filter: none;
+  border-radius: 0;
+  background: #fff;
+}
+
+.blog .fig-video:not(.fig-photo) video.is-fullscreen,
+.dark .blog .fig-video:not(.fig-photo) video.is-fullscreen {
+  mix-blend-mode: normal;
+  filter: none;
+  border-radius: 0;
+  background: #fff;
+}
+
+.blog .fig-video video:fullscreen {
+  border-radius: 0;
+}
+
+.blog .fig-video video:-webkit-full-screen {
+  border-radius: 0;
+}
+
 /* ---------- Callouts ---------- */
 .callout {
   margin: 1.7em 0;
