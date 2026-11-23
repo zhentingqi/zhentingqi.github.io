@@ -3,9 +3,7 @@ import { Inter, Source_Serif_4 } from "next/font/google";
 import "./globals.css";
 import { getConfig } from "@/lib/config";
 import ThemeProvider from "@/components/ThemeProvider";
-import SiteHeader from "@/components/SiteHeader";
 import TabNav from "@/components/TabNav";
-import BackToTop from "@/components/BackToTop";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const sourceSerif = Source_Serif_4({
@@ -35,29 +33,18 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+// The root layout sets up the document, fonts and theme, and owns the one top bar that stays
+// pinned above every page. What sits under the bar comes from the route layouts:
+// `(site)/layout.tsx` for the home page, `blog/layout.tsx` for blog posts.
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const config = getConfig();
-  const year = new Date().getFullYear();
-
   return (
     <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`} suppressHydrationWarning>
       <body className="min-h-screen">
         <ThemeProvider>
           <div id="top" className="h-1 bg-crimson" />
-          <div className="mx-auto max-w-[720px] px-4 sm:px-6">
-            <SiteHeader config={config} />
-          </div>
           <TabNav items={config.navigation} />
-          <main className="mx-auto max-w-[720px] px-4 pt-10 pb-16 sm:px-6 sm:pt-12">{children}</main>
-          <footer className="border-t border-line">
-            <div className="mx-auto flex max-w-[720px] flex-col items-center gap-1 px-4 py-8 text-center text-[0.8rem] text-muted sm:px-6">
-              <p>
-                © {year} {config.author.name}
-              </p>
-              {config.site.last_updated && <p>Last updated {config.site.last_updated}</p>}
-              <BackToTop />
-            </div>
-          </footer>
+          {children}
         </ThemeProvider>
       </body>
     </html>

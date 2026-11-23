@@ -2,7 +2,7 @@
 title = "Zhenting Qi"
 description = "Computer Science Ph.D. student at Harvard University, researching intelligent and reliable AI systems"
 favicon = "/favicon.svg"
-last_updated = "October 18, 2026"
+last_updated = "November 23, 2026"
 
 [author]
 name = "Zhenting Qi"
@@ -27,18 +27,22 @@ linkedin = "https://www.linkedin.com/in/zhentingqi"
 instagram = "https://www.instagram.com/heptacol/"
 twitter = "https://x.com/ZhentingQi"
 
+# The top bar. It is the same on every page: each entry switches the view under it.
+# href must be "#about", "#publications" or "#blogs".
 [[navigation]]
 title = "About"
 href = "#about"
 
 [[navigation]]
-title = "Research"
-href = "#research"
-
-[[navigation]]
-title = "News"
-href = "#news"
-
-[[navigation]]
 title = "Publications"
 href = "#publications"
+
+[[navigation]]
+title = "Blogs"
+href = "#blogs"
+
+[blog]
+# Used for the RSS feed.
+title = "Blogs"
+description = "Research notes, paper walkthroughs, essays, and project logs on self-evolving AI systems."
+url = "https://zhentingqi.github.io"

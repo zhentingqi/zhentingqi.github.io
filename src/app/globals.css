@@ -4,7 +4,8 @@
 
 /* ---------- Design tokens ---------- */
 :root {
-  --paper: #faf8f5;
+  /* Same paper as the blog (src/app/blog/blog.css), so every page shares one background. */
+  --paper: #faf7f0;
   --surface: #ffffff;
   --ink: #1d1a18;
   --ink-soft: #3f3a36;
@@ -19,7 +20,7 @@
 }
 
 .dark {
-  --paper: #151312;
+  --paper: #171411;
   --surface: #1c1a18;
   --ink: #efebe6;
   --ink-soft: #d3cdc6;

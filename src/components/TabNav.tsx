@@ -1,61 +1,51 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { smoothScrollTo } from '@/lib/scroll';
+import { TAB_IDS, goToTab, tabHref, useTab, type TabId } from '@/lib/tabs';
 import ThemeToggle from '@/components/ThemeToggle';
 
-// Highlights the section currently under the sticky bar; links jump to in-page anchors.
+// The site's one top bar, pinned above every page. On the home page a tab swaps the view in
+// place; from a blog post it links back to that view. Items come from content/config.toml,
+// where each href is "#about", "#publications" or "#blogs".
 export default function TabNav({ items }: { items: { title: string; href: string }[] }) {
-    const [active, setActive] = useState(items[0]?.href);
+    const pathname = usePathname() ?? '/';
+    const hashTab = useTab();
+    const onHome = pathname === '/';
+    const active: TabId = onHome ? hashTab : pathname.startsWith('/blog') ? 'blogs' : 'about';
 
-    useEffect(() => {
-        const sections = items
-            .map((item) => document.getElementById(item.href.slice(1)))
-            .filter((el): el is HTMLElement => el !== null);
-
-        const onScroll = () => {
-            const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-            let current = sections[0];
-            for (const section of sections) {
-                if (section.getBoundingClientRect().top <= 120) current = section;
-            }
-            if (atBottom) current = sections[sections.length - 1];
-            if (current) setActive(`#${current.id}`);
-        };
-
-        onScroll();
-        window.addEventListener('scroll', onScroll, { passive: true });
-        return () => window.removeEventListener('scroll', onScroll);
-    }, [items]);
+    const tabs = items
+        .map((item) => ({ title: item.title, id: item.href.replace(/^#/, '') as TabId }))
+        .filter((item) => (TAB_IDS as readonly string[]).includes(item.id));
 
     return (
-        <nav className="sticky top-0 z-20 border-y border-line bg-paper/85 backdrop-blur-md">
+        <nav aria-label="Main" className="sticky top-0 z-20 border-b border-line bg-paper/85 backdrop-blur-md">
             <div className="mx-auto flex max-w-[720px] items-center px-4 sm:px-6">
                 {/* Spacer balancing the toggle so the tabs stay centered on wider screens */}
                 <span className="hidden w-9 shrink-0 sm:block" />
-                <ul className="flex flex-1 justify-center sm:gap-4">
-                    {items.map((item) => {
-                        const isActive = item.href === active;
+                <ul className="flex min-w-0 flex-1 justify-center gap-2 sm:gap-4">
+                    {tabs.map(({ id, title }) => {
+                        const isActive = id === active;
                         return (
-                            <li key={item.href}>
-                                <a
-                                    href={item.href}
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        smoothScrollTo(item.href);
+                            <li key={id}>
+                                <Link
+                                    href={tabHref(id)}
+                                    scroll={false}
+                                    onClick={(event) => {
+                                        if (!onHome || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                                        event.preventDefault();
+                                        goToTab(id);
                                     }}
-                                    aria-current={isActive ? 'true' : undefined}
+                                    aria-current={isActive ? 'page' : undefined}
                                     className={cn(
-                                        'relative block px-2 py-3 text-[0.9rem] transition-colors sm:px-3 sm:text-[0.95rem]',
-                                        isActive ? 'font-medium text-ink' : 'text-muted hover:text-ink'
+                                        'relative block whitespace-nowrap px-2 py-3 text-[0.9rem] transition-colors sm:px-3 sm:text-[0.95rem]',
+                                        isActive ? 'font-medium text-ink' : 'text-muted hover:text-ink',
                                     )}
                                 >
-                                    {item.title}
-                                    {isActive && (
-                                        <span className="absolute inset-x-2 -bottom-px h-[2px] rounded-full bg-crimson sm:inset-x-3" />
-                                    )}
-                                </a>
+                                    {title}
+                                    {isActive && <span className="absolute inset-x-2 bottom-0 h-[2px] rounded-full bg-crimson sm:inset-x-3" />}
+                                </Link>
                             </li>
                         );
                     })}
