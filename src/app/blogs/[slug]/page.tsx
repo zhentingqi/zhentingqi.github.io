@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { createElement, type ReactNode } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
@@ -57,6 +57,16 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         // FigureShell for the ruled panel and caption), import it above, and register it here.
     } as unknown as MdxComponents;
 
+    // Section numbers (1, 1.1, 1.1.1) are worked out from the headings and shown in front of them.
+    const numbers = new Map(post.toc.map((item) => [item.id, item.number]));
+    const heading = (level: 2 | 3 | 4) =>
+        function Heading({ id, children }: { id?: string; children?: ReactNode }) {
+            const number = id ? numbers.get(id) : undefined;
+            return createElement(`h${level}`, { id }, number && <span className="h-num">{number}</span>, children);
+        };
+    Object.assign(components, { h2: heading(2), h3: heading(3), h4: heading(4) });
+    const sections = post.toc.filter((item) => item.level === 2);
+
     const body = await renderMdx(post.content, components);
     const cited = post.citeKeys.map((key) => allReferences.get(key)).filter((ref): ref is Reference => !!ref);
 
@@ -76,7 +86,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
     return (
         <div className={hasMarginNotes ? undefined : 'b-centered'}>
             <ReadingProgress />
-            {post.toc.length > 1 && <TocDrawer items={post.toc} />}
+            {sections.length > 1 && <TocDrawer items={post.toc} />}
             <article id="post" className="b-post">
                 <header className="b-post-head">
                     <p className="b-kicker">{TYPE_LABEL[post.type]}</p>
@@ -110,11 +120,12 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                     </p>
                 </header>
 
-                {post.toc.length > 1 && (
-                    <nav className="b-contents" aria-label="Contents" style={{ '--toc-rows': Math.ceil(post.toc.length / 2) } as CSSProperties}>
+                {sections.length > 1 && (
+                    <nav className="b-contents" aria-label="Contents">
                         <ol>
-                            {post.toc.map((item) => (
+                            {sections.map((item) => (
                                 <li key={item.id}>
+                                    <span className="b-contents-num">{item.number}</span>
                                     <a href={`#${item.id}`}>{item.text}</a>
                                 </li>
                             ))}

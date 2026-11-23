@@ -15,6 +15,10 @@ const BLOG_DIR = path.join(process.cwd(), 'content', 'blog');
 export interface TocItem {
     id: string;
     text: string;
+    /** 2 for a section (##), 3 and 4 for the levels under it. */
+    level: 2 | 3 | 4;
+    /** "1", "1.1", "1.1.1". Missing for back matter such as References. */
+    number?: string;
 }
 
 export interface Post extends PostMeta {
@@ -70,18 +74,40 @@ function proseBlocks(content: string): string[] {
         .filter((block) => block && !/^(#|<|\||import |export |!\[|>|-{3,})/.test(block));
 }
 
+// Back matter keeps its place in the contents but is not numbered.
+const BACK_MATTER = /^(acknowledge?ments?|citation|references|bibliography|appendix\b.*)$/i;
+
+/**
+ * The headings of a post (## to ####) with their ids and section numbers: 1, 1.1, 1.1.1.
+ * Ids are produced the same way rehype-slug does, so they match the rendered headings.
+ */
 function extractToc(content: string): TocItem[] {
     const slugger = new GithubSlugger();
     const toc: TocItem[] = [];
+    const counters = [0, 0, 0];
     let inFence = false;
+    let backMatter = false;
     for (const line of content.split('\n')) {
         if (line.startsWith('```')) inFence = !inFence;
         if (inFence) continue;
-        const match = /^##\s+(.+?)\s*$/.exec(line);
-        if (match) {
-            const text = stripInline(match[1]);
-            toc.push({ id: slugger.slug(text), text });
+        const match = /^(#{1,6})\s+(.+?)\s*$/.exec(line);
+        if (!match) continue;
+        const level = match[1].length;
+        const text = stripInline(match[2]);
+        const id = slugger.slug(text);
+        if (level < 2 || level > 4) continue;
+
+        if (level === 2) backMatter = BACK_MATTER.test(text);
+        if (!backMatter) {
+            counters[level - 2] += 1;
+            for (let deeper = level - 1; deeper < counters.length; deeper++) counters[deeper] = 0;
         }
+        toc.push({
+            id,
+            text,
+            level: level as TocItem['level'],
+            number: backMatter ? undefined : counters.slice(0, level - 1).join('.'),
+        });
     }
     return toc;
 }

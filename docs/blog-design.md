@@ -104,4 +104,6 @@ thumb: /blogs/<slug>/thumb.png    # optional, shown in lists
 ---
 ```
 
-The contents block is built from the `##` headings. RSS is served at `/blogs/rss.xml`.
+Headings are numbered automatically: `##` gets 1, 2, 3, `###` gets 1.1, and `####` gets 1.1.1.
+Acknowledgements, Citation, References and appendices are left unnumbered. The contents block
+lists the `##` headings, and the side panel lists all three levels. RSS is served at `/blogs/rss.xml`.

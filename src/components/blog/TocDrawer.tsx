@@ -6,6 +6,8 @@ import { TableOfContents, X } from 'lucide-react';
 interface TocItem {
     id: string;
     text: string;
+    level: 2 | 3 | 4;
+    number?: string;
 }
 
 /** From this width up the open panel sits in the free left margin and can stay open while reading. */
@@ -59,8 +61,16 @@ export default function TocDrawer({ items }: { items: TocItem[] }) {
             if (event.key === 'Escape') close();
         };
         window.addEventListener('keydown', onKey);
-        panel.current?.querySelector<HTMLElement>('a[aria-current], a')?.focus({ preventScroll: true });
-        return () => window.removeEventListener('keydown', onKey);
+        // Bring the section being read into view inside the panel, then put focus on it.
+        const current =
+            panel.current?.querySelector<HTMLElement>('a[aria-current]') ?? panel.current?.querySelector<HTMLElement>('a');
+        current?.scrollIntoView({ block: 'center' });
+        // The panel only becomes focusable once it is shown, which is a frame after this runs.
+        const frame = requestAnimationFrame(() => current?.focus({ preventScroll: true }));
+        return () => {
+            cancelAnimationFrame(frame);
+            window.removeEventListener('keydown', onKey);
+        };
     }, [open, close]);
 
     const onJump = () => {
@@ -92,8 +102,9 @@ export default function TocDrawer({ items }: { items: TocItem[] }) {
                 </div>
                 <ol>
                     {items.map((item) => (
-                        <li key={item.id}>
+                        <li key={item.id} className={`lv-${item.level}`}>
                             <a href={`#${item.id}`} aria-current={item.id === active ? 'location' : undefined} onClick={onJump}>
+                                <span className="b-toc-num">{item.number}</span>
                                 {item.text}
                             </a>
                         </li>

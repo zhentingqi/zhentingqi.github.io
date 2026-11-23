@@ -463,14 +463,14 @@ body:has(.blog) {
   gap: 10px;
 }
 
-.b-contents li::before {
-  content: counter(toc);
+.b-contents-num {
   flex: none;
   width: 1em;
   font-family: var(--ui);
   font-size: 13px;
   line-height: 1.66;
   color: var(--crimson);
+  font-variant-numeric: tabular-nums;
 }
 
 .b-contents a:hover {
@@ -533,6 +533,23 @@ body:has(.blog) {
     font-size: 21px;
     line-height: 1.25;
   }
+}
+
+/* Section numbers in front of headings. */
+.h-num {
+  margin-right: 0.55em;
+  font-style: normal;
+  color: var(--crimson);
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+.b-prose h4 {
+  margin: 1.6em 0 0.35em;
+  font-family: var(--serif);
+  font-size: 18.5px;
+  line-height: 1.3;
+  font-weight: 600;
+  scroll-margin-top: 72px;
 }
 
 .b-prose a,
@@ -1312,12 +1329,14 @@ body:has(.blog) {
   border-right: 1px solid var(--rule);
   transform: translateX(-100%);
   visibility: hidden;
-  transition: transform 0.2s ease, visibility 0.2s;
+  /* Hidden only after it has slid out; shown at once when opening, so it can take focus. */
+  transition: transform 0.2s ease, visibility 0s 0.2s;
 }
 
 .b-toc-panel.is-open {
   transform: none;
   visibility: visible;
+  transition: transform 0.2s ease, visibility 0s;
 }
 
 .b-toc-head {
@@ -1331,8 +1350,8 @@ body:has(.blog) {
 }
 
 .b-toc-panel ol {
-  counter-reset: toc;
-  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  padding-bottom: 6px;
 }
 
 .b-toc-panel li {
@@ -1348,14 +1367,42 @@ body:has(.blog) {
   line-height: 1.3;
 }
 
-.b-toc-panel li a::before {
-  content: counter(toc);
+.b-toc-num {
   flex: none;
-  width: 1.1em;
+  min-width: 1.1em;
   font-family: var(--ui);
   font-size: 13px;
   line-height: 1.7;
   color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Subsections sit under their section: smaller, indented, without a rule between them. */
+.b-toc-panel li.lv-3,
+.b-toc-panel li.lv-4 {
+  border-bottom: 0;
+}
+
+.b-toc-panel li.lv-3 a,
+.b-toc-panel li.lv-4 a {
+  padding: 5px 0 5px 20px;
+  font-size: 15px;
+  color: var(--muted);
+}
+
+.b-toc-panel li.lv-4 a {
+  padding-left: 40px;
+}
+
+.b-toc-panel li.lv-3 .b-toc-num,
+.b-toc-panel li.lv-4 .b-toc-num {
+  min-width: 2em;
+  font-size: 12px;
+}
+
+.b-toc-panel li.lv-2 {
+  border-bottom: 0;
+  border-top: 1px solid var(--rule);
 }
 
 .b-toc-panel li a:hover,
@@ -1363,7 +1410,7 @@ body:has(.blog) {
   color: var(--crimson);
 }
 
-.b-toc-panel li a[aria-current]::before {
+.b-toc-panel li a[aria-current] .b-toc-num {
   color: var(--crimson);
   font-weight: 600;
 }

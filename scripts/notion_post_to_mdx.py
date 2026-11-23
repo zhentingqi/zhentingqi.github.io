@@ -127,6 +127,14 @@ while i < len(lines):
         i += 1
         continue
 
+    # A line that is only a bold, hand-numbered title ("<b>1. Flocking behavior…</b>") is a
+    # third-level heading. The site numbers headings itself, so the hand-written number goes.
+    m = re.match(r"^<b>\d+\.\s+(.+?)\s*</b>$", s)
+    if m:
+        out.extend(["", f"#### {m.group(1)}", ""])
+        i += 1
+        continue
+
     if s == "<h4>":
         title = re.sub(r"</?b>", "", lines[i + 1]).strip()
         out.extend(["", f"### {title}", ""])
