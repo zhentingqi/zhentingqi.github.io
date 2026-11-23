@@ -34,7 +34,7 @@ Raster figures keep a white plate in dark mode so plots from papers stay legible
 |---|---|---|---|
 | Body | STIX Two Text 400 | 19.5px / 1.6 | 18.5px / 1.6 |
 | Post title | Newsreader 500 | 44px / 1.04 | 31px / 1.08 |
-| Section heading (h2) | Newsreader 500 | 27px / 1.15 | 23px / 1.2 |
+| Section heading (h2) | Newsreader 500 | 26px / 1.15 | 23px / 1.2 |
 | Subheading (h3) | Newsreader 500 italic | 21px / 1.25 | 19px / 1.3 |
 | UI, metadata, captions, notes | Instrument Sans 400/600 | 13px / 1.5 | 13px / 1.5 |
 | Code | JetBrains Mono 400 | 13.5px / 1.6 | 13px / 1.6 |
