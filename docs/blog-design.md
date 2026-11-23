@@ -112,6 +112,12 @@ homepage: other sites open in a new tab, and the name turns crimson on hover. An
 as `{ name, affiliation, avatar, url }` covers a one-off guest or a different affiliation on a
 single post.
 
+Link previews: `python3 scripts/make_social_card.py <slug>` draws `public/blogs/<slug>/card.jpg`
+(1200x630), the picture X, Slack and iMessage show for the post's URL. The default `art` style
+sets the title and authors over the post's cover; `--style paper` is the blog's own look for a
+post without a cover. The title is on the picture because X shows the picture alone. Run it
+again when the title, the authors or the cover change. Without a card the cover is used.
+
 Headings are numbered automatically: `##` gets 1, 2, 3, `###` gets 1.1, and `####` gets 1.1.1.
 Acknowledgements, Citation, References and appendices are left unnumbered. The contents block
 lists the `##` headings, and the side panel lists all three levels. RSS is served at `/blogs/rss.xml`.

@@ -46,6 +46,32 @@ export function getBlogConfig(): BlogConfig {
     };
 }
 
+/* ---------- Link previews ---------- */
+
+export interface ShareImage {
+    url: string;
+    width?: number;
+    height?: number;
+}
+
+/**
+ * The picture shown when a post's URL is pasted into X, Slack, iMessage and the like.
+ * `public/blogs/<slug>/card.jpg` (drawn by scripts/make_social_card.py, with the title on it)
+ * is used when it exists; otherwise the post's cover.
+ */
+export function getShareImage(post: Pick<PostMeta, 'slug' | 'cover'>): ShareImage | undefined {
+    const card = `/blogs/${post.slug}/card.jpg`;
+    if (fs.existsSync(path.join(process.cwd(), 'public', card))) return { url: card, width: 1200, height: 630 };
+    return post.cover ? { url: post.cover } : undefined;
+}
+
+/** The site owner's X handle, read from the profile link in config.toml. */
+export function getTwitterHandle(): string | undefined {
+    const link = getConfig().social.twitter;
+    const handle = typeof link === 'string' ? link.match(/(?:x|twitter)\.com\/@?([A-Za-z0-9_]+)/)?.[1] : undefined;
+    return handle ? `@${handle}` : undefined;
+}
+
 /* ---------- Posts ---------- */
 
 function toIsoDate(value: unknown): string {

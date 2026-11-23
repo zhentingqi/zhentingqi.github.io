@@ -11,7 +11,18 @@ import { Anchor, Pre, Table } from '@/components/blog/CodeBlock';
 import { Figure, FigureTabs, MarkdownImage, imageSize } from '@/components/blog/Figure';
 import { CiteNote, References, Sidenote } from '@/components/blog/Sidenote';
 import Video from '@/components/blog/Video';
-import { TYPE_LABEL, formatDate, getAllPosts, getPost, getReferences, tagSlug, type Reference } from '@/lib/blog';
+import {
+    TYPE_LABEL,
+    formatDate,
+    getAllPosts,
+    getBlogConfig,
+    getPost,
+    getReferences,
+    getShareImage,
+    getTwitterHandle,
+    tagSlug,
+    type Reference,
+} from '@/lib/blog';
 import { renderMdx, type MdxComponents } from '@/lib/mdx';
 
 export const dynamicParams = false;
@@ -24,16 +35,31 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const { slug } = await params;
     const post = getPost(slug);
     if (!post) return {};
+
+    // What a pasted link shows: title, standfirst and a 1200x630 picture.
+    const share = getShareImage(post);
+    const images = share ? [{ ...share, alt: post.title }] : undefined;
     return {
         title: post.title,
         description: post.description,
+        authors: post.authors.map((author) => ({ name: author.name })),
         openGraph: {
             type: 'article',
+            url: `/blogs/${post.slug}/`,
+            siteName: getBlogConfig().author,
             title: post.title,
             description: post.description,
             publishedTime: post.date,
+            authors: post.authors.map((author) => author.name),
             tags: post.tags,
-            images: post.cover ? [post.cover] : undefined,
+            images,
+        },
+        twitter: {
+            card: 'summary_large_image',
+            title: post.title,
+            description: post.description,
+            creator: getTwitterHandle(),
+            images,
         },
     };
 }
