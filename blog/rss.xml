@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Zhenting Qi · Blogs</title>
+    <link>https://zhentingqi.github.io/blog/</link>
+    <description>Research notes, paper walkthroughs, essays, and project logs on self-evolving AI systems.</description>
+    <language>en</language>
+    <atom:link href="https://zhentingqi.github.io/blog/rss.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 23 Nov 2026 12:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Steps Towards Artificial Collective Intelligence</title>
+      <link>https://zhentingqi.github.io/blog/steps-towards-artificial-collective-intelligence/</link>
+      <guid isPermaLink="true">https://zhentingqi.github.io/blog/steps-towards-artificial-collective-intelligence/</guid>
+      <pubDate>Mon, 23 Nov 2026 12:00:00 GMT</pubDate>
+      <description>Some multi-agent systems keep improving as agents are added and many do not. What sets the ceiling, what a team costs, how natural and human collectives scale, and how to test a claim that a system scales.</description>
+      <category>Essay</category>
+      <category>multi-agent</category>
+      <category>collective intelligence</category>
+      <category>scaling</category>
+    </item>
+  </channel>
+</rss>
