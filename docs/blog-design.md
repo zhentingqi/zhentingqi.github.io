@@ -78,10 +78,10 @@ than the titles' scale would suggest. Chinese names and stray CJK fall back to t
 |---|---|
 | `<Sidenote>` | Numbered margin note |
 | `<Cite k="key" />` | Numbered margin citation; also listed under References. Entries are read from `content/blog/references.bib` (BibTeX), which you create when the first post needs it |
-| `<Figure src caption wide />` | Image with a numbered caption; size is read at build time so the page never shifts |
+| `<Figure src caption wide />` | Image with a numbered caption; size is read at build time so the page never shifts. Clicking it opens it enlarged |
 | `<Video src caption loop />` | Video with controls; `loop` plays it muted like a GIF, with a pause button |
 | `<FigureTabs>` | Several images in one numbered figure, switched by tabs |
-| `<Callout label tone>` | A labelled aside: `tone="key"` for a definition or takeaway, `tone="aside"` for a comment |
+| `<Callout label tone>` | A tinted, slightly smaller block with a label: `tone="key"` (crimson tint) for a definition or takeaway, `tone="aside"` (neutral tint) for a comment |
 | Interactive figures | None yet. Put a client component in `src/components/blog/interactive/`, wrap it in `FigureShell`, and register it in `src/app/blogs/[slug]/page.tsx` |
 | Fenced code, `$math$`, `$$math$$`, tables | Shiki, KaTeX, GFM |
 

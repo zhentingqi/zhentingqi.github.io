@@ -939,6 +939,73 @@ body:has(.blog) {
   text-decoration-color: color-mix(in srgb, var(--muted) 60%, transparent);
 }
 
+/* ---------- Click an image to enlarge it ---------- */
+.fig-zoom {
+  display: block;
+  width: 100%;
+  padding: 0;
+  cursor: zoom-in;
+}
+
+.fig-lightbox {
+  width: 100vw;
+  height: 100vh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-out;
+}
+
+.fig-lightbox[open] {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fig-lightbox::backdrop {
+  background: rgb(10 8 6 / 0.82);
+}
+
+/* The enlarged image is shown as it is, on its own white ground: nothing to blend with here. */
+.blog .fig .fig-lightbox img,
+.dark .blog .fig .fig-lightbox img {
+  width: auto;
+  height: auto;
+  max-width: 96vw;
+  max-height: 92vh;
+  object-fit: contain;
+  mix-blend-mode: normal;
+  filter: none;
+  background: #fff;
+  border-radius: 8px;
+}
+
+.fig-lightbox-close {
+  position: fixed;
+  top: 14px;
+  right: 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgb(255 255 255 / 0.14);
+  color: #fff;
+  cursor: pointer;
+}
+
+.fig-lightbox-close:hover {
+  background: rgb(255 255 255 / 0.26);
+}
+
+html.is-lightbox-open {
+  overflow: hidden;
+}
+
 /* Animated diagrams on a white ground take on the paper color, like plots do. */
 .fig-video:not(.fig-photo) .fig-video-frame {
   background: transparent;
@@ -990,32 +1057,53 @@ body:has(.blog) {
 }
 
 /* ---------- Callouts ---------- */
+/* A callout is a tinted block, set a little smaller than the text around it. `key` (a
+   definition or takeaway) has a crimson tint; `aside` (a comment) has a neutral one. */
 .callout {
-  margin: 1.7em 0;
-  padding: 2px 0 2px 20px;
-  border-left: 2px solid var(--crimson);
+  margin: 1.8em 0;
+  padding: 16px 22px 18px;
+  border-radius: var(--radius-media);
+  background: color-mix(in srgb, var(--crimson) 7%, var(--paper));
+  font-size: 0.93em;
+  line-height: 1.55;
 }
 
-.callout > :last-child {
+.dark .blog .callout {
+  background: color-mix(in srgb, var(--crimson) 11%, var(--paper));
+}
+
+.callout-aside,
+.dark .blog .callout-aside {
+  background: var(--surface);
+}
+
+.b-prose .callout p,
+.b-prose .callout ul,
+.b-prose .callout ol {
+  margin-bottom: 0.7em;
+}
+
+.b-prose .callout > :last-child {
   margin-bottom: 0;
 }
 
 .b-prose .callout-label {
-  margin: 0 0 6px;
+  margin: 0 0 8px;
   font-family: var(--ui);
-  font-size: 13px;
+  font-size: 12px;
   line-height: 1.4;
   font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--crimson);
-}
-
-.callout-aside {
-  border-left-color: var(--rule);
-  font-size: 0.94em;
 }
 
 .b-prose .callout-aside .callout-label {
   color: var(--muted);
+}
+
+.b-prose .callout :not(pre) > code {
+  background: color-mix(in srgb, var(--ink) 9%, transparent);
 }
 
 /* ---------- Long reference lists written in the post body ---------- */
