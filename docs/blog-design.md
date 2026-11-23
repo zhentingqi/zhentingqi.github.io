@@ -67,7 +67,8 @@ than the titles' scale would suggest. Chinese names and stray CJK fall back to t
   metadata, then an inline two-column contents block. A 2px crimson line at the top of the
   viewport shows reading progress. A Contents button fixed at the left (bottom-left on
   phones) opens the table of contents as a side panel with the current section marked; from
-  1440px up the panel fits in the margin and can stay open.
+  1440px up the panel fits in the margin and stays open across jumps. A click anywhere outside
+  the panel closes it at every width.
 - Footer of a post: references, tags, previous and next. Tag pages live at `/blogs/tags/`.
   There is no separate blog home: `/blogs/` forwards to the Blogs view. Old `/blog/...` addresses forward
   to their `/blogs/...` equivalents.

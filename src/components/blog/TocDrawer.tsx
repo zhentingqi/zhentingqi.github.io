@@ -17,7 +17,8 @@ const PINNED_QUERY = '(min-width: 1440px)';
 /**
  * A button fixed at the left edge that opens the table of contents as a side panel.
  * The section being read is marked. On narrow screens the panel overlays the page and
- * closes after a jump; on very wide screens it stays open beside the text.
+ * closes after a jump; on very wide screens it stays open beside the text while the reader
+ * jumps between sections. A click anywhere outside the panel closes it at any width.
  */
 export default function TocDrawer({ items }: { items: TocItem[] }) {
     const [open, setOpen] = useState(false);
@@ -55,13 +56,19 @@ export default function TocDrawer({ items }: { items: TocItem[] }) {
         };
     }, [items]);
 
-    // Escape closes the panel; opening it moves focus inside.
+    // Escape closes the panel, and so does a click anywhere outside it. Opening it moves focus inside.
     useEffect(() => {
         if (!open) return;
         const onKey = (event: KeyboardEvent) => {
             if (event.key === 'Escape') close();
         };
+        const onPointerDown = (event: PointerEvent) => {
+            const target = event.target as Node | null;
+            if (!target || panel.current?.contains(target) || button.current?.contains(target)) return;
+            close(false);
+        };
         window.addEventListener('keydown', onKey);
+        document.addEventListener('pointerdown', onPointerDown);
         // Bring the section being read into view inside the panel, then put focus on it.
         const current =
             panel.current?.querySelector<HTMLElement>('a[aria-current]') ?? panel.current?.querySelector<HTMLElement>('a');
@@ -71,6 +78,7 @@ export default function TocDrawer({ items }: { items: TocItem[] }) {
         return () => {
             cancelAnimationFrame(frame);
             window.removeEventListener('keydown', onKey);
+            document.removeEventListener('pointerdown', onPointerDown);
         };
     }, [open, close]);
 
