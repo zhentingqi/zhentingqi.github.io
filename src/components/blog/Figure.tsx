@@ -5,7 +5,7 @@ import FigureTabsClient from '@/components/blog/FigureTabsClient';
 import ZoomImage from '@/components/blog/ZoomImage';
 
 /** Intrinsic size of an image under /public, read at build time so pages never shift. */
-function imageSize(src: string): { width?: number; height?: number } {
+export function imageSize(src: string): { width?: number; height?: number } {
     if (!src.startsWith('/')) return {};
     try {
         const { width, height } = sizeOf(path.join(process.cwd(), 'public', src));

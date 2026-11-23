@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { TableOfContents, X } from 'lucide-react';
+import { scrollToSection } from '@/components/blog/TocLink';
 
 interface TocItem {
     id: string;
@@ -73,8 +74,11 @@ export default function TocDrawer({ items }: { items: TocItem[] }) {
         };
     }, [open, close]);
 
-    const onJump = () => {
+    // Jumping to a section scrolls there smoothly. On narrow screens the panel gets out of the way first.
+    const onJump = (event: React.MouseEvent<HTMLAnchorElement>, id: string) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
         if (!window.matchMedia(PINNED_QUERY).matches) close(false);
+        scrollToSection(event, id);
     };
 
     return (
@@ -103,14 +107,14 @@ export default function TocDrawer({ items }: { items: TocItem[] }) {
                 <ol>
                     {items.map((item) => (
                         <li key={item.id} className={`lv-${item.level}`}>
-                            <a href={`#${item.id}`} aria-current={item.id === active ? 'location' : undefined} onClick={onJump}>
+                            <a href={`#${item.id}`} aria-current={item.id === active ? 'location' : undefined} onClick={(event) => onJump(event, item.id)}>
                                 <span className="b-toc-num">{item.number}</span>
                                 {item.text}
                             </a>
                         </li>
                     ))}
                 </ol>
-                <a href="#post" className="b-toc-top" onClick={onJump}>
+                <a href="#top" className="b-toc-top" onClick={(event) => onJump(event, 'top')}>
                     Back to top
                 </a>
             </nav>

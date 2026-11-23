@@ -1,12 +1,13 @@
-import { createElement, type ReactNode } from 'react';
+import { createElement, type ComponentProps, type ReactNode } from 'react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import Callout from '@/components/blog/Callout';
 import ReadingProgress from '@/components/blog/ReadingProgress';
 import TocDrawer from '@/components/blog/TocDrawer';
+import TocLink from '@/components/blog/TocLink';
 import { Anchor, Pre, Table } from '@/components/blog/CodeBlock';
-import { Figure, FigureTabs, MarkdownImage } from '@/components/blog/Figure';
+import { Figure, FigureTabs, MarkdownImage, imageSize } from '@/components/blog/Figure';
 import { CiteNote, References, Sidenote } from '@/components/blog/Sidenote';
 import Video from '@/components/blog/Video';
 import { TYPE_LABEL, formatDate, getAllPosts, getPost, getReferences, tagSlug, type Reference } from '@/lib/blog';
@@ -49,7 +50,11 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
         img: MarkdownImage,
         Figure,
         FigureTabs,
-        Video,
+        // The poster's shape is read at build time and reserved for the video before it loads.
+        Video: (props: ComponentProps<typeof Video>) => {
+            const { width, height } = props.poster ? imageSize(props.poster) : {};
+            return <Video {...props} aspectRatio={width && height ? width / height : undefined} />;
+        },
         Sidenote,
         Callout,
         Cite: ({ k }: { k: string }) => <CiteNote k={k} reference={allReferences.get(k)} />,
@@ -126,7 +131,7 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
                             {sections.map((item) => (
                                 <li key={item.id}>
                                     <span className="b-contents-num">{item.number}</span>
-                                    <a href={`#${item.id}`}>{item.text}</a>
+                                    <TocLink id={item.id}>{item.text}</TocLink>
                                 </li>
                             ))}
                         </ol>

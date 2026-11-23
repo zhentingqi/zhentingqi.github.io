@@ -20,9 +20,11 @@ interface VideoProps {
     photo?: boolean;
     /** Set to false when the caption already carries its own "Figure N". */
     numbered?: boolean;
+    /** Width divided by height. Reserves the video's space before it loads, so the page does not shift. */
+    aspectRatio?: number;
 }
 
-export default function Video({ src, poster, caption, children, loop, controls, ambient, wide, photo, numbered = true }: VideoProps) {
+export default function Video({ src, poster, caption, children, loop, controls, ambient, wide, photo, numbered = true, aspectRatio }: VideoProps) {
     const video = useRef<HTMLVideoElement>(null);
     const [playing, setPlaying] = useState(false);
     const [fullscreen, setFullscreen] = useState(false);
@@ -82,6 +84,7 @@ export default function Video({ src, poster, caption, children, loop, controls, 
                 <video
                     ref={video}
                     className={fullscreen ? 'is-fullscreen' : undefined}
+                    style={aspectRatio ? { aspectRatio } : undefined}
                     src={src}
                     poster={poster}
                     playsInline
