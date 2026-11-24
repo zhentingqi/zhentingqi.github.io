@@ -494,7 +494,7 @@ Agentic tasks vary a lot, and not all of them are suited for a multi-agent syste
 **Tasks that split well** (a claim that “a system scales” should be tested on at least one of these).
 
 - **Wide information seeking.** WideSearch ([Wong et al. 2025](https://arxiv.org/abs/2508.07999)) has 200 tasks, each answered by a table of hundreds to thousands of cells that are checked one by one. WideSeek-R1 ([Xu et al. 2026b](https://arxiv.org/abs/2602.04634)) improves steadily on it up to ten subagents, and Kimi K2.5 and WebSwarm ([Song et al. 2026](https://arxiv.org/abs/2607.08662)) report results on it too. DeepWideSearch ([Lan et al. 2025](https://arxiv.org/abs/2510.20168)) adds depth, so that each row takes several steps of research.
-- **Finding or aggregating many items in a large input.** Contradiction Audit in ScaleMAS ([Qi et al. 2026a](https://arxiv.org/abs/2610.16120)) hides subtle contradictions in a large documentation corpus and asks agent teams to find as many as they can. OOLONG ([Bertsch et al. 2025](https://arxiv.org/abs/2511.02817)) and LOONG ([Wang et al. 2024](https://arxiv.org/abs/2406.17419)) ask for statistics or answers spread over inputs much longer than one context.
+- **Finding or aggregating many items in a large input.** Contradiction Audit in ScaleMAS ([Qi et al. 2026a](https://arxiv.org/abs/2610.16120)) hides subtle contradictions in a large documentation corpus and asks agent teams to find as many as they can. OOLONG ([Bertsch et al. 2025](https://arxiv.org/abs/2511.02817)) and LOONG ([Wang et al. 2024](https://arxiv.org/abs/2406.17419)) ask for statistics or answers spread over inputs much longer than one context. SWE-sweep ([Lieret et al. 2026](https://swesweep.com/)) checks out each of 100 repositories at a commit where dozens of real bugs coexist, 4,068 in all, and asks agents to find and fix as many as they can with no hint of where the bugs are.
 - **Exploration whose findings others can reuse.** ARC-AGI-3 ([ARC Prize Foundation 2026](https://arxiv.org/abs/2603.24621)) has 135 interactive environments, 25 of them public, scored by how efficiently an agent clears their levels. In [Park et al. (2026)](https://arxiv.org/abs/2609.21032), a team of five matches the best of 33 independent agents. ExplorationBench ([Zhang et al. 2026a](https://arxiv.org/abs/2609.30199)) asks agents to learn the rules of unfamiliar sandboxes and then solve 140 held-out tasks, each checked exactly by an interpreter or a proof checker.
 
 **Tasks that do not split well** (good controls: a multi-agent system should at least not lose on these, which means it should fall back to acting like a single agent).
@@ -673,7 +673,7 @@ If you find this post useful, please cite it as:
 ## References
 
 <details className="ref-toggle">
-<summary>Show all 138 references</summary>
+<summary>Show all 139 references</summary>
 
 <div className="ref-list">
 
@@ -746,6 +746,7 @@ If you find this post useful, please cite it as:
 - Li, J., et al. (2024). [More Agents Is All You Need](https://arxiv.org/abs/2402.05120). TMLR. arXiv:2402.05120.
 - Li, W., et al. (2025). [Rethinking Mixture-of-Agents: Is Mixing Different Large Language Models Beneficial?](https://arxiv.org/abs/2502.00674) (Self-MoA). arXiv:2502.00674.
 - Li, J., et al. (2026). [Scaling Behavior of Single LLM-Driven Multi-Agent Systems](https://arxiv.org/abs/2606.00655) (SIMAS). arXiv:2606.00655.
+- Lieret, K., et al. (2026). [SWE-sweep: Can Agents Autonomously Find and Fix Bugs?](https://swesweep.com/). Preprint.
 - Liu, B., et al. (2026). [SPIRAL: Self-Play on Zero-Sum Games Incentivizes Reasoning via Multi-Agent Multi-Turn Reinforcement Learning](https://arxiv.org/abs/2506.24119). ICLR 2026. arXiv:2506.24119.
 - Liu, Y. (2026). [The Evaluator Dilemma: Does Recursive Self-Improvement Really Improve?](https://people.csail.mit.edu/ychenliu/evaluator-dilemma/). Blog post, November 2, 2026.
 - Long, Q., et al. (2024). [TeamCraft: A Benchmark for Multi-Modal Multi-Agent Systems in Minecraft](https://arxiv.org/abs/2412.05255). arXiv:2412.05255.
